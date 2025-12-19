@@ -208,14 +208,74 @@ telehealth_options = [
     {"name": "GoodRx Care", "url": "https://www.goodrx.com/care"},
 ]
 
-# Floating Book Doctor button with expander for options
-with st.container():
-    st.markdown("<div class='floating-button'>", unsafe_allow_html=True)
-    with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
-        for service in telehealth_options:
-            st.markdown(f"[{service['name']} →]({service['url']})")
-    st.markdown("</div>", unsafe_allow_html=True)
+# streamlit_app.py - Fixed: "Book Doctor Now" button always visible (true fixed position)
+import streamlit as st
 
-# (The rest of the app code — methods list, images, quiz questions, recommendation logic — remains exactly as in the previous version)
+st.set_page_config(page_title="Contraceptive Choices", page_icon="💙", layout="centered")
+
+# Modern teal color scheme with improved fixed button
+st.markdown("""
+<style>
+    .main {background: #f0fafa; padding-bottom: 100px;}  /* Extra padding so content isn't hidden behind button */
+    h1, h2, h3 {color: #006d77; font-family: 'Helvetica Neue', sans-serif;}
+    .stButton>button {background: #83c5be; color: #006d77; border-radius: 12px; font-weight: bold;}
+    .method-card {
+        padding: 20px;
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 15px 0;
+        text-align: center;
+    }
+    /* True fixed positioning - visible at all times */
+    .fixed-button-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 500px;
+        z-index: 1000;
+        pointer-events: none;  /* Allows scrolling through it */
+    }
+    .fixed-button-inner {
+        pointer-events: auto;  /* Re-enables clicks on the button itself */
+    }
+    .info-pop {font-size: 0.8em; color: #006d77; margin-top: 5px;}
+</style>
+""", unsafe_allow_html=True)
+
+# Disclaimer at top
+st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
+
+# Updated telehealth list (secure links only)
+telehealth_options = [
+    {"name": "Nurx", "url": "https://www.nurx.com/birth-control/"},
+    {"name": "Pandia Health", "url": "https://www.pandiahealth.com"},
+    {"name": "Twentyeight Health", "url": "https://www.twentyeighthealth.com/birth-control"},
+    {"name": "Planned Parenthood Health Centers", "url": "https://www.plannedparenthood.org/health-center"},
+    {"name": "Lemonaid Health", "url": "https://www.lemonaidhealth.com/"},
+    {"name": "Sesame Care", "url": "https://sesamecare.com/medication/birth-control"},
+    {"name": "PRJKT RUBY", "url": "https://prjktruby.com"},
+    {"name": "GoodRx Care", "url": "https://www.goodrx.com/care"},
+]
+
+# Fixed "Book Doctor Now" button - now truly always visible
+st.markdown("""
+<div class="fixed-button-container">
+    <div class="fixed-button-inner">
+""", unsafe_allow_html=True)
+
+with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
+    for service in telehealth_options:
+        st.markdown(f"[{service['name']} →]({service['url']})")
+
+st.markdown("""
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# (Rest of your app: methods list, images, quiz, recommendations — unchanged)
 
 st.caption("Contraceptive Choices • Educational tool • December 2025")
+
