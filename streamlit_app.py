@@ -3,6 +3,26 @@ import streamlit as st
 
 st.set_page_config(page_title="Contraceptive Choices", page_icon="💙", layout="centered")
 
+import streamlit.components.v1 as components
+
+# True fixed button with JS (more reliable on mobile)
+components.html(
+    """
+    <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; z-index: 9999; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); padding: 10px;">
+        <details>
+            <summary style="background: #006d77; color: white; padding: 15px; border-radius: 12px; text-align: center; font-weight: bold; cursor: pointer;">
+                📅 Book Doctor Now – Tap to Choose Service
+            </summary>
+            <div style="padding: 10px;">
+                <a href="https://www.nurx.com/birth-control/" target="_blank" style="display: block; padding: 10px; text-decoration: none;">Nurx →</a>
+                <a href="https://www.pandiahealth.com" target="_blank" style="display: block; padding: 10px; text-decoration: none;">Pandia Health →</a>
+                <!-- Add all others -->
+            </div>
+        </details>
+    </div>
+    """,
+    height=150,
+)
 # Modern teal color scheme (professional health style)
 st.markdown("""
 <style>
