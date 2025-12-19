@@ -159,9 +159,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Disclaimer at top
-st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
-
 # streamlit_app.py - Updated Telehealth List (removed insecure/dead links)
 import streamlit as st
 
@@ -192,9 +189,6 @@ st.markdown("""
     .info-pop {font-size: 0.8em; color: #006d77; margin-top: 5px;}
 </style>
 """, unsafe_allow_html=True)
-
-# Disclaimer at top
-st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
 
 # Updated Top USA telehealth services (secure links only, removed The Pill Club & SimpleHealth)
 telehealth_options = [
@@ -244,9 +238,6 @@ st.markdown("""
     .info-pop {font-size: 0.8em; color: #006d77; margin-top: 5px;}
 </style>
 """, unsafe_allow_html=True)
-
-# Disclaimer at top
-st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
 
 # Updated telehealth list (secure links only)
 telehealth_options = [
