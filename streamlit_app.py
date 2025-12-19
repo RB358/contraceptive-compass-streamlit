@@ -128,15 +128,60 @@ if st.button("Get Recommendations"):
         for m in contraindicated:
             st.markdown(f"- {m['name']}")
 
-# Floating Book Doctor button
+# streamlit_app.py - Updated with Top 10 USA Telehealth Options in Book Doctor Button
+import streamlit as st
+
+st.set_page_config(page_title="Contraceptive Choices", page_icon="💙", layout="centered")
+
+# Modern teal color scheme
 st.markdown("""
-<div class="floating-button">
-    <a href="https://nurx.com" target="_blank" style="text-decoration:none;">
-        <button style="background:#006d77; color:white; padding:15px; font-size:18px; border:none; border-radius:12px; width:100%;">
-            📅 Book Doctor Now
-        </button>
-    </a>
-</div>
+<style>
+    .main {background: #f0fafa;}
+    h1, h2, h3 {color: #006d77; font-family: 'Helvetica Neue', sans-serif;}
+    .stButton>button {background: #83c5be; color: #006d77; border-radius: 12px; font-weight: bold;}
+    .method-card {
+        padding: 20px;
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 15px 0;
+        text-align: center;
+    }
+    .floating-button {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 90%;
+    }
+    .info-pop {font-size: 0.8em; color: #006d77; margin-top: 5px;}
+</style>
 """, unsafe_allow_html=True)
+
+# Disclaimer at top
+st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
+
+# Top 10 USA telehealth services for birth control (2025, all 50 states or most)
+telehealth_options = [
+    {"name": "Nurx", "url": "https://www.nurx.com/birth-control/"},
+    {"name": "Pandia Health", "url": "https://www.pandiahealth.com"},
+    {"name": "The Pill Club / Favored", "url": "https://favored.com"},
+    {"name": "Twentyeight Health", "url": "https://www.twentyeighthealth.com/birth-control"},
+    {"name": "Planned Parenthood Direct", "url": "https://www.plannedparenthood.org/get-care/direct"},
+    {"name": "Lemonaid Health", "url": "https://www.lemonaidhealth.com/services/birth-control"},
+    {"name": "Sesame Care", "url": "https://sesamecare.com/medication/birth-control"},
+    {"name": "SimpleHealth", "url": "https://www.simplehealth.com"},
+    {"name": "PRJKT RUBY", "url": "https://prjktruby.com"},
+    {"name": "HeyDoctor / GoodRx Care", "url": "https://www.goodrx.com/care/birth-control"},
+]
+
+# Floating Book Doctor button with expander for top 10 options
+with st.container():
+    st.markdown("<div class='floating-button'>", unsafe_allow_html=True)
+    with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
+        for service in telehealth_options:
+            st.markdown(f"[{service['name']} →]({service['url']})")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.caption("Contraceptive Choices • Educational tool • December 2025")
