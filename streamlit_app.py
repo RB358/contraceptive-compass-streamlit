@@ -1,89 +1,142 @@
-# streamlit_app.py - Updated: Colored borders around full method tiles, no separate tier plaques
+# streamlit_app.py - Mobile-Optimized Professional Contraceptive Information App
 import streamlit as st
-import pandas as pd
 
-st.set_page_config(page_title="Contraceptive Compass", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="Contraceptive Choices", page_icon="💙", layout="centered")
 
-# Teal palette + tier border colors
+# Modern teal color scheme (professional health style)
 st.markdown("""
 <style>
     .main {background: #f0fafa;}
-    h1, h2, h3 {color: #008080; font-family: 'Helvetica Neue', sans-serif;}
-    .stButton>button {background: #008080; color: white; border-radius: 20px;}
-    .method-tile {
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        margin: 15px 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        cursor: pointer;
+    h1, h2, h3 {color: #006d77; font-family: 'Helvetica Neue', sans-serif;}
+    .stButton>button {background: #83c5be; color: #006d77; border-radius: 12px; font-weight: bold;}
+    .method-card {
+        padding: 20px;
+        border-radius: 16px;
         background: white;
-        border: 8px solid;
-        min-height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 15px 0;
+        text-align: center;
     }
-    .gold-border {border-color: #cd7f32;}   /* Tier 1 - Cool gold */
-    .silver-border {border-color: #c0c0c0;} /* Tier 2 - Silver */
-    .bronze-border {border-color: #8b4513;} /* Tier 3 - Bronze */
-    .floating-button {position: fixed; bottom: 20px; right: 20px; z-index: 1000;}
+    .floating-button {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 90%;
+    }
+    .info-pop {font-size: 0.8em; color: #006d77; margin-top: 5px;}
 </style>
 """, unsafe_allow_html=True)
 
-# Methods data (tier_class for borders)
+# Disclaimer at top
+st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
+
+# Contraceptive methods data (ordered by approximate US popularity 2025, with perfect/typical effectiveness)
 methods = [
-    {"name": "Implant", "effectiveness": ">99%", "tier_class": "gold-border", "mechanism": "Progestin prevents ovulation", "pros": ["Long-lasting (3-5 yrs)", "Reversible", "Low maintenance"], "cons": ["Irregular bleeding", "Insertion procedure"], "side_effects": "Spotting, weight gain possible", "sti": False, "contraindications": ["Breast cancer", "Liver disease"]},
-    {"name": "Hormonal IUD", "effectiveness": ">99%", "tier_class": "gold-border", "mechanism": "Progestin thickens mucus & thins lining", "pros": ["5-8 yrs protection", "Lighter periods"], "cons": ["Insertion cramping"], "side_effects": "Spotting initially", "sti": False, "contraindications": ["Current pelvic infection"]},
-    {"name": "Copper IUD", "effectiveness": ">99%", "tier_class": "gold-border", "mechanism": "Copper toxic to sperm", "pros": ["10+ yrs, hormone-free", "Emergency contraception"], "cons": ["Heavier periods"], "side_effects": "Cramps, heavier flow", "sti": False, "contraindications": ["Copper allergy"]},
-    {"name": "Sterilization", "effectiveness": ">99%", "tier_class": "gold-border", "mechanism": "Permanent block of tubes/vas", "pros": ["Permanent"], "cons": ["Surgical, not easily reversible"], "side_effects": "Surgical risks", "sti": False, "contraindications": ["Desire future fertility"]},
-    {"name": "Injection (Depo)", "effectiveness": "94%", "tier_class": "silver-border", "mechanism": "Progestin shot every 3 months", "pros": ["No daily routine"], "cons": ["Bone density loss (reversible)"], "side_effects": "Weight gain, delayed fertility return", "sti": False, "contraindications": ["Breast cancer"]},
-    {"name": "Pill/Patch/Ring", "effectiveness": "91%", "tier_class": "silver-border", "mechanism": "Hormones prevent ovulation", "pros": ["Regulates periods", "Reversible"], "cons": ["Daily/weekly/monthly adherence"], "side_effects": "Nausea, mood changes", "sti": False, "contraindications": ["Smoking >35", "History of clots", "Migraine with aura"]},
-    {"name": "Condom (Male/Female)", "effectiveness": "82%", "tier_class": "bronze-border", "mechanism": "Barrier", "pros": ["STI protection", "No hormones"], "cons": ["User-dependent"], "side_effects": "Allergy possible", "sti": True, "contraindications": []},
-    {"name": "Diaphragm/Cervical Cap", "effectiveness": "88%", "tier_class": "bronze-border", "mechanism": "Barrier with spermicide", "pros": ["Reusable"], "cons": ["Insertion required"], "side_effects": "UTI risk", "sti": False, "contraindications": []},
-    {"name": "Fertility Awareness", "effectiveness": "76%", "tier_class": "bronze-border", "mechanism": "Track cycle", "pros": ["Hormone-free"], "cons": ["High user effort"], "side_effects": "None", "sti": False, "contraindications": ["Irregular cycles"]},
-    {"name": "Withdrawal", "effectiveness": "78%", "tier_class": "bronze-border", "mechanism": "Pull out", "pros": ["Free"], "cons": ["Pre-ejaculate risk"], "side_effects": "None", "sti": False, "contraindications": []},
+    {"name": "Oral Contraceptive Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg", "perfect": "<1%", "typical": "7%", "pros": ["Regulates periods", "Reduces acne", "Daily control"], "cons": ["Daily pill", "No STI protection", "Side effects possible"]},
+    {"name": "Male Condom", "image": "https://post.healthline.com/wp-content/uploads/2022/02/male-condoms-1296x1000-body-1296x1004.png", "perfect": "2%", "typical": "13%", "pros": ["STI protection", "No hormones", "Widely available"], "cons": ["User-dependent", "Can break"]},
+    {"name": "Contraceptive Implant", "image": "https://blog.thelowdown.com/wp-content/uploads/2020/10/implant-side-effects.png", "perfect": "<1%", "typical": "<1%", "pros": ["3-5 years protection", "Highly effective", "Reversible"], "cons": ["Insertion procedure", "Irregular bleeding"]},
+    {"name": "Hormonal IUD (e.g., Mirena)", "image": "https://www.plannedparenthood.org/uploads/filer_public_thumbnails/filer_public/6b/ed/6bedc931-35c4-4f5a-bc65-e3839ae6b6de/hormonal-and-copper-iud-illustration.gif__1200x1200_q65_subsampling-2.jpg", "perfect": "<1%", "typical": "<1%", "pros": ["5-8 years", "Lighter periods", "Low maintenance"], "cons": ["Insertion cramping"]},
+    {"name": "Copper IUD (ParaGard)", "image": "https://www.mayoclinic.org/-/media/kcms/gbs/patient-consumer/images/2013/08/26/10/19/my00997_im04275_mcdc7_paragard_photothu_jpg.jpg", "perfect": "<1%", "typical": "<1%", "pros": ["10+ years", "Hormone-free", "Emergency option"], "cons": ["Heavier periods"]},
+    {"name": "Depo-Provera Injection", "image": "https://www.verywellhealth.com/thmb/zML8U8nV3QmdRdO_eC1l1QI5Sqs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/depo-56a1c4193df78cf7726dc0e9.jpg", "perfect": "<1%", "typical": "4%", "pros": ["Every 3 months", "No daily routine"], "cons": ["Delayed fertility return", "Bone density concerns"]},
+    {"name": "Contraceptive Patch", "image": "https://www.nhsinform.scot/wp-content/uploads/2024/02/contraceptive-patch-1.jpg", "perfect": "<1%", "typical": "7%", "pros": ["Weekly change", "Regulates periods"], "cons": ["Visible", "Skin irritation possible"]},
+    {"name": "Vaginal Ring (NuvaRing)", "image": "https://www.obgynecologistnyc.com/wp-content/uploads/2016/09/Nuvaring-Birth-Control-Vaginal-Ring.jpg", "perfect": "<1%", "typical": "7%", "pros": ["Monthly", "Low dose hormones"], "cons": ["Insertion required"]},
+    {"name": "Female Condom", "image": "https://www.cdc.gov/condom-use/media/images/Femalecondom5hires.png", "perfect": "5%", "typical": "21%", "pros": ["STI protection", "User control"], "cons": ["Higher failure rate"]},
+    {"name": "Diaphragm", "image": "https://ixbapi.healthwise.net/Resource/14.7/en-us/media/medical/hw/aco3583_368x240.jpg", "perfect": "6%", "typical": "17%", "pros": ["Reusable", "Hormone-free"], "cons": ["Insertion each time", "Spermicide needed"]},
+    {"name": "Fertility Awareness", "image": "https://images.squarespace-cdn.com/content/v1/5ce5fdaed49c8900017d5630/1604508343420-GX1XCK067VKE20TZ1FWY/Cycle+13+marked.png", "perfect": "1-9%", "typical": "24%", "pros": ["No hormones", "Free"], "cons": ["High effort", "Irregular cycles reduce reliability"]},
 ]
 
-# Persistent Book Doctor Now button
+st.title("💙 Contraceptive Choices")
+st.markdown("### Explore methods, learn effectiveness, and find what fits you")
+
+# Methods list (vertical cards for mobile)
+for method in methods:
+    with st.container():
+        st.image(method["image"], use_column_width=True)
+        st.markdown(f"<div class='method-card'><h3>{method['name']}</h3>"
+                    f"<p><strong>Perfect use:</strong> {method['perfect']} failure<br>"
+                    f"<strong>Typical use:</strong> {method['typical']} failure</p>"
+                    f"<p><strong>Pros:</strong> {', '.join(method['pros'])}</p>"
+                    f"<p><strong>Cons:</strong> {', '.join(method['cons'])}</p></div>", unsafe_allow_html=True)
+
+# Quiz section
+st.header("📊 Find Your Match")
+st.markdown("Answer these questions for personalized insights")
+
+# Questions with info pop
+q1 = st.selectbox("1. What is your age group?", ["Under 20", "20-34", "35-44", "45+"], help="Age affects which methods are most suitable.")
+q2 = st.selectbox("2. Do you smoke?", ["No", "<15 cigarettes/day", ">15 cigarettes/day"], help="Smoking affects safety of some hormonal methods.")
+q3 = st.selectbox("3. What is your approximate BMI?", ["<30", "30 or higher"], help="Bodyweight can affect effectiveness of some methods.")
+q4 = st.selectbox("4. Do you experience heavy or painful periods?", ["No significant issues", "Heavy bleeding", "Painful periods", "Both heavy and painful"], help="Some methods can help manage menstrual symptoms")
+q5 = st.selectbox("5. Are you currently breastfeeding?", ["No", "Yes"], help="Some methods are safer while breastfeeding.")
+q6 = st.multiselect("6. Do you have any of these conditions?", ["None of these", "History of blood clots (VTE)", "Migraine with aura", "High blood pressure"], help="Certain conditions make some methods unsafe.")
+q7 = st.selectbox("7. What matters most to you?", ["Highest effectiveness", "Avoiding hormones", "Managing periods", "Low maintenance (set and forget)", "Quick return to fertility"], help="This helps us prioritize recommendations.")
+
+if st.button("Get Recommendations"):
+    # Simple recommendation logic (red = contraindicated, yellow = caution, green = good)
+    contraindicated = []
+    caution = []
+    recommended = []
+
+    has_smoke_heavy = q2 != "No"
+    has_clot = "History of blood clots (VTE)" in q6
+    has_migraine = "Migraine with aura" in q6
+    has_bp = "High blood pressure" in q6
+    breastfeeding = q5 == "Yes"
+    bmi_high = q3 == "30 or higher"
+    heavy_painful = q4 in ["Heavy bleeding", "Painful periods", "Both heavy and painful"]
+    priority = q7
+
+    for m in methods:
+        name = m["name"]
+        red = False
+        if "Pill" in name or "Patch" in name or "Ring" in name:
+            if has_smoke_heavy or has_clot or has_migraine:
+                red = True
+        if "Hormonal IUD" in name or "Implant" in name or "Injection" in name:
+            if has_clot:
+                red = True
+        if breastfeeding and "hormonal" in name.lower():
+            caution.append(m) if not red else contraindicated.append(m)
+            continue
+
+        if red:
+            contraindicated.append(m)
+        elif priority == "Highest effectiveness" and m["typical"] == "<1%":
+            recommended.append(m)
+        elif priority == "Avoiding hormones" and "hormone-free" in m["pros"]:
+            recommended.append(m)
+        elif priority == "Managing periods" and "Lighter periods" in m["pros"]:
+            recommended.append(m)
+        elif priority == "Low maintenance" and "years" in " ".join(m["pros"]):
+            recommended.append(m)
+        else:
+            caution.append(m) if m not in recommended else None
+
+    st.success("### Your Personalized Insights")
+    if recommended:
+        st.markdown("**🟢 Recommended for you:**")
+        for m in recommended:
+            st.markdown(f"- {m['name']} ({m['typical']} typical failure)")
+    if caution:
+        st.markdown("**🟡 Use with caution:**")
+        for m in caution:
+            st.markdown(f"- {m['name']}")
+    if contraindicated:
+        st.markdown("**🔴 Avoid (contraindicated):**")
+        for m in contraindicated:
+            st.markdown(f"- {m['name']}")
+
+# Floating Book Doctor button
 st.markdown("""
 <div class="floating-button">
-    <a href="https://nurx.com" target="_blank">
-        <button style="background:#008080; color:white; padding:15px 30px; font-size:18px; border:none; border-radius:50px;">
+    <a href="https://nurx.com" target="_blank" style="text-decoration:none;">
+        <button style="background:#006d77; color:white; padding:15px; font-size:18px; border:none; border-radius:12px; width:100%;">
             📅 Book Doctor Now
         </button>
     </a>
 </div>
 """, unsafe_allow_html=True)
 
-st.title("Contraceptive Compass")
-
-# Effectiveness tiles with full bordered tiles
-st.header("Contraceptive Methods by Effectiveness")
-cols = st.columns(4)
-for i, method in enumerate(methods):
-    with cols[i % 4]:
-        # Clickable button for the method name + effectiveness
-        if st.button(f"**{method['name']}**\n{method['effectiveness']}", key=f"method_btn_{i}", use_container_width=True):
-            st.session_state.selected = method
-        # The bordered tile (no separate tier plaque)
-        st.markdown(f'<div class="method-tile {method["tier_class"]}"></div>', unsafe_allow_html=True)
-
-# Details expander
-if "selected" in st.session_state:
-    m = st.session_state.selected
-    with st.expander(f"🔍 {m['name']} ({m['effectiveness']})", expanded=True):
-        st.write(f"**Mechanism:** {m['mechanism']}")
-        st.write("**Pros:** " + ", ".join(m['pros']))
-        st.write("**Cons:** " + ", ".join(m['cons']))
-        st.write("**Common Side Effects:** {m['side_effects']}")
-        st.write("**STI Protection:** " + ("Yes" if m['sti'] else "No"))
-        if st.button("Close details"):
-            del st.session_state.selected
-            st.rerun()
-
-# (Questionnaire, recommendations, table, etc. remain unchanged below)
-
-st.info("This is educational only • Always consult a healthcare provider • Not medical advice • No data is stored on this site.")
-
-st.caption("Contraceptive Compass • Built with ❤️ for informed choices • December 2025")
+st.caption("Contraceptive Choices • Educational tool • December 2025")
