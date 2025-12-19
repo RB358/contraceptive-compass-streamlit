@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Contraceptive Choices", page_icon="💙", layout="centered")
 
 import streamlit.components.v1 as components
-)
+
 # Modern teal color scheme (professional health style)
 st.markdown("""
 <style>
