@@ -16,16 +16,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         margin: 15px 0;
         text-align: center;
-
-        # Fixed "Book Doctor Now" button - now truly always visible
-st.markdown("""
-<div class="fixed-button-container">
-    <div class="fixed-button-inner">
-""", unsafe_allow_html=True)
-
-with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
-    for service in telehealth_options:
-        st.markdown(f"[{service['name']} →]({service['url']})")
     }
     .floating-button {
         position: fixed;
