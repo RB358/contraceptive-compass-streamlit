@@ -219,14 +219,3 @@ with st.container():
 # (The rest of the app code — methods list, images, quiz questions, recommendation logic — remains exactly as in the previous version)
 
 st.caption("Contraceptive Choices • Educational tool • December 2025")
-]
-
-# Floating Book Doctor button with expander for top 10 options
-with st.container():
-    st.markdown("<div class='floating-button'>", unsafe_allow_html=True)
-    with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
-        for service in telehealth_options:
-            st.markdown(f"[{service['name']} →]({service['url']})")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-st.caption("Contraceptive Choices • Educational tool • December 2025")
