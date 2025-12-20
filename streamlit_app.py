@@ -114,7 +114,7 @@ q5 = st.selectbox("5. Are you currently breastfeeding?", ["No", "Yes"], help="So
 q6 = st.multiselect("6. Do you have any of these conditions?", ["None of these", "History of blood clots (VTE)", "Migraine with aura", "High blood pressure"], help="Certain conditions make some methods unsafe.")
 q7 = st.selectbox("7. What matters most to you?", ["Highest effectiveness", "Avoiding hormones", "Managing periods", "Low maintenance (set and forget)", "Quick return to fertility"], help="This helps us prioritize recommendations.")
 
-if st.button("Get Personalized Recommendations"):
+if st.button("Your Personalized Recommendations"):
     contraindicated = []
     caution = []
     recommended = []
