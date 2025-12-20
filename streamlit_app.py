@@ -27,8 +27,10 @@ st.markdown("""
         padding-top: 2rem !important;
     }
     h1, h2, h3, h4, .stMarkdown, p, div {text-align: center !important;}
-        /* Center ALL buttons (including "Get Recommendations") */
-    .stButton {
+    
+    /* Center ALL buttons (including "Get Recommendations") */
+    .stButton 
+    {
         text-align: center !important;
     }
     div.stButton {
