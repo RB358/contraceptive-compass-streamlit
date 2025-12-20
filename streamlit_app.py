@@ -27,10 +27,14 @@ st.markdown("""
         padding-top: 2rem !important;
     }
     h1, h2, h3, h4, .stMarkdown, p, div {text-align: center !important;}
+        /* Center ALL buttons (including "Get Recommendations") */
+    .stButton {
+        text-align: center !important;
+    }
     .stButton > button {
-        display: block !important;
-        margin: 0 auto !important;
-        width: 100% !important;
+        display: inline-block !important;
+        margin: 20px auto !important;
+        width: 90% !important;
         max-width: 400px !important;
     }
     .stSelectbox, .stMultiselect, .stSlider {
@@ -60,15 +64,6 @@ st.markdown("""
     }
     .fixed-button-inner {pointer-events: auto;}
     
-        /* Center the "Get Recommendations" button */
-    section[data-testid="stSidebar"] + section div.row-widget.stButton {
-        text-align: center !important;
-    }
-    section[data-testid="stSidebar"] + section div.row-widget.stButton > button {
-        display: inline-block !important;
-        width: auto !important;
-        min-width: 300px !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
