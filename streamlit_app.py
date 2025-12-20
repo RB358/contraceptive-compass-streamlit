@@ -28,7 +28,7 @@ st.markdown("""
     }
     h1, h2, h3, h4, .stMarkdown, p, div {text-align: center !important;}
     
-    /* Center ALL buttons (including "Get Personalized Recommendations") */
+    /* Center ALL buttons (including "Your Personalized Recommendations") */
     .stButton 
     {
         text-align: center !important;
