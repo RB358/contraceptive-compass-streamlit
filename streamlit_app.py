@@ -30,12 +30,17 @@ st.markdown("""
         /* Center ALL buttons (including "Get Recommendations") */
     .stButton {
         text-align: center !important;
+
+            /* Center the entire button container and button */
+    div.stButton {
+        text-align: center !important;
     }
     .stButton > button {
         display: inline-block !important;
         margin: 20px auto !important;
         width: 90% !important;
         max-width: 400px !important;
+    }
     }
     .stSelectbox, .stMultiselect, .stSlider {
         margin: 0 auto !important;
