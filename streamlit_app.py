@@ -41,7 +41,6 @@ st.markdown("""
         width: 90% !important;
         max-width: 400px !important;
     }
-    }
     .stSelectbox, .stMultiselect, .stSlider {
         margin: 0 auto !important;
         max-width: 400px !important;
