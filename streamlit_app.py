@@ -105,8 +105,69 @@ q6 = st.multiselect("6. Do you have any of these conditions?", ["None of these",
 q7 = st.selectbox("7. What matters most to you?", ["Highest effectiveness", "Avoiding hormones", "Managing periods", "Low maintenance (set and forget)", "Quick return to fertility"], help="This helps us prioritize recommendations.")
 
 if st.button("Get Recommendations"):
-    # Recommendation logic (same as before)
-    # ... (your full logic here)
+    contraindicated = []
+    caution = []
+    recommended = []
+
+    has_smoke_heavy = q2 != "No"
+    has_clot = "History of blood clots (VTE)" in q6
+    has_migraine = "Migraine with aura" in q6
+    has_bp = "High blood pressure" in q6
+    breastfeeding = q5 == "Yes"
+    bmi_high = q3 == "30 or higher"
+    heavy_painful = q4 in ["Heavy bleeding", "Painful periods", "Both heavy and painful"]
+    priority = q7
+
+    for m in methods:
+        name = m["name"]
+        red = False
+
+        # Contraindications for combined hormonal (Pill, Patch, Ring)
+        if "Pill" in name or "Patch" in name or "Ring" in name:
+            if has_smoke_heavy or has_clot or has_migraine or has_bp:
+                red = True
+
+        # Contraindications for progestin-only long-acting (Implant, Hormonal IUD, Depo)
+        if "Implant" in name or "Hormonal IUD" in name or "Depo" in name:
+            if has_clot:
+                red = True
+
+        # Caution for breastfeeding + hormonal
+        if breastfeeding and ("hormonal" in name.lower() or "Pill" in name or "Patch" in name or "Ring" in name or "Implant" in name or "Hormonal IUD" in name or "Depo" in name):
+            caution.append(m)
+            if red:
+                contraindicated.append(m)
+            continue
+
+        if red:
+            contraindicated.append(m)
+        elif priority == "Highest effectiveness" and m["typical"] == "<1%":
+            recommended.append(m)
+        elif priority == "Avoiding hormones" and ("Copper IUD" in name or "Condom" in name or "Diaphragm" in name or "Fertility Awareness" in name):
+            recommended.append(m)
+        elif priority == "Managing periods" and "Lighter periods" in m["pros"]:
+            recommended.append(m)
+        elif priority == "Low maintenance (set and forget)" and ("years" in " ".join(m["pros"]) or "3 months" in " ".join(m["pros"])):
+            recommended.append(m)
+        elif priority == "Quick return to fertility" and "Condom" in name or "Diaphragm" in name or "Fertility Awareness" in name:
+            recommended.append(m)
+        else:
+            if m not in recommended and m not in contraindicated:
+                caution.append(m)
+
+    st.success("### Your Personalized Insights")
+    if recommended:
+        st.markdown("**🟢 Recommended for you:**")
+        for m in recommended:
+            st.markdown(f"- {m['name']} ({m['typical']} typical failure)")
+    if caution:
+        st.markdown("**🟡 Use with caution:**")
+        for m in caution:
+            st.markdown(f"- {m['name']}")
+    if contraindicated:
+        st.markdown("**🔴 Avoid (contraindicated):**")
+        for m in contraindicated:
+            st.markdown(f"- {m['name']}")
 
 # Telehealth options (secure)
 telehealth_options = [
