@@ -59,6 +59,16 @@ st.markdown("""
         pointer-events: none;
     }
     .fixed-button-inner {pointer-events: auto;}
+    
+        /* Center the "Get Recommendations" button */
+    section[data-testid="stSidebar"] + section div.row-widget.stButton {
+        text-align: center !important;
+    }
+    section[data-testid="stSidebar"] + section div.row-widget.stButton > button {
+        display: inline-block !important;
+        width: auto !important;
+        min-width: 300px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
