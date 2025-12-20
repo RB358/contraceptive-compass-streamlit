@@ -28,7 +28,7 @@ st.markdown("""
     }
     h1, h2, h3, h4, .stMarkdown, p, div {text-align: center !important;}
     
-    /* Center ALL buttons (including "Get Recommendations") */
+    /* Center ALL buttons (including "Get Personalized Recommendations") */
     .stButton 
     {
         text-align: center !important;
@@ -114,7 +114,7 @@ q5 = st.selectbox("5. Are you currently breastfeeding?", ["No", "Yes"], help="So
 q6 = st.multiselect("6. Do you have any of these conditions?", ["None of these", "History of blood clots (VTE)", "Migraine with aura", "High blood pressure"], help="Certain conditions make some methods unsafe.")
 q7 = st.selectbox("7. What matters most to you?", ["Highest effectiveness", "Avoiding hormones", "Managing periods", "Low maintenance (set and forget)", "Quick return to fertility"], help="This helps us prioritize recommendations.")
 
-if st.button("Get Recommendations"):
+if st.button("Get Personalized Recommendations"):
     contraindicated = []
     caution = []
     recommended = []
@@ -165,7 +165,7 @@ if st.button("Get Recommendations"):
             if m not in recommended and m not in contraindicated:
                 caution.append(m)
 
-    st.success("### Your Personalized Insights")
+    st.success("### Your Personalized Recommendations")
     if recommended:
         st.markdown("**🟢 Recommended for you:**")
         for m in recommended:
