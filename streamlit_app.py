@@ -30,8 +30,7 @@ st.markdown("""
         /* Center ALL buttons (including "Get Recommendations") */
     .stButton {
         text-align: center !important;
-
-            /* Center the entire button container and button */
+    }
     div.stButton {
         text-align: center !important;
     }
