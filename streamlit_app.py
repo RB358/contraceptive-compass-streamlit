@@ -8,7 +8,66 @@ import streamlit.components.v1 as components
 # Modern teal color scheme (professional health style)
 st.markdown("""
 <style>
-    .main {background: #f0fafa;}
+    # Add this CSS to your st.markdown("""<style>...</style>""", unsafe_allow_html=True) block
+# It centers ALL text, buttons, cards, and form elements on every screen size (mobile to desktop)
+
+st.markdown("""
+<style>
+    /* Center all main content */
+    .main .block-container {
+        max-width: 90% !important;
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+        padding-top: 2rem !important;
+        padding-bottom: 6rem !important;  /* Space for fixed button */
+    }
+
+    /* Center headings and text */
+    h1, h2, h3, h4, .stMarkdown, p, div {
+        text-align: center !important;
+    }
+
+    /* Center buttons (Streamlit default and custom) */
+    .stButton > button {
+        display: block !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+
+    /* Center form elements (selectbox, multiselect, etc.) */
+    .stSelectbox, .stMultiselect, .stSlider {
+        margin: 0 auto !important;
+        max-width: 400px !important;
+    }
+
+    /* Center images and cards */
+    img {
+        display: block !important;
+        margin: 0 auto !important;
+        border-radius: 12px;
+    }
+
+    .method-card {
+        margin: 20px auto !important;
+        max-width: 400px !important;
+    }
+
+    /* Center expander titles */
+    details summary {
+        text-align: center !important;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+        .main .block-container {
+            max-width: 700px !important;
+            padding-left: 5% !important;
+            padding-right: 5% !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True).main {background: #f0fafa;}
     h1, h2, h3 {color: #006d77; font-family: 'Helvetica Neue', sans-serif;}
     .stButton>button {background: #83c5be; color: #006d77; border-radius: 12px; font-weight: bold;}
     .method-card {
