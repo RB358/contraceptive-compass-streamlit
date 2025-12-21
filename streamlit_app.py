@@ -83,7 +83,6 @@ methods = [
     "typical_failure": 7.0,
     "pros": ["Regulates periods", "Reduces acne"],
     "cons": ["Estrogen-related risks", "Daily pill"]
-},
 {
     "name": "Progestin-only Pill",
     "hormone_type": "progestin_only",
