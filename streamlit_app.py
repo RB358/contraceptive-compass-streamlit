@@ -82,7 +82,7 @@ methods = [
     "hormone_type": "combined",
     "typical_failure": 7.0,
     "pros": ["Regulates periods", "Reduces acne"],
-    "cons": ["Estrogen-related risks", "Daily pill"]
+    "cons": ["Estrogen-related risks", "Daily pill"]}
 {
     "name": "Progestin-only Pill",
     "hormone_type": "progestin_only",
@@ -101,7 +101,7 @@ methods = [
     {"name": "Female Condom", "image": "https://www.cdc.gov/condom-use/media/images/Femalecondom5hires.png", "perfect": "5%", "typical": "21%", "typical_failure": 21.0, "pros": ["STI protection", "User control"], "cons": ["Higher failure rate"]},
     {"name": "Diaphragm", "image": "https://ixbapi.healthwise.net/Resource/14.7/en-us/media/medical/hw/aco3583_368x240.jpg", "perfect": "6%", "typical": "17%", "typical_failure": 17.0, "pros": ["Reusable", "Hormone-free"], "cons": ["Insertion each time", "Spermicide needed"]},
     {"name": "Fertility Awareness", "image": "https://images.squarespace-cdn.com/content/v1/5ce5fdaed49c8900017d5630/1604508343420-GX1XCK067VKE20TZ1FWY/Cycle+13+marked.png", "perfect": "1-9%", "typical": "24%", "typical_failure": 24.0, "pros": ["No hormones", "Free"], "cons": ["High effort", "Irregular cycles reduce reliability"]},
-]
+
 
 st.title("Contraceptive Choices")
 st.markdown("### Explore methods, learn effectiveness, and find what fits you")
