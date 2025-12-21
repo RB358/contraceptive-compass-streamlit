@@ -161,7 +161,7 @@ if st.button("Your Personalized Recommendations"):
             recommended.append(m)
         elif priority == "Low maintenance (set and forget)" and ("years" in " ".join(m["pros"]) or "3 months" in " ".join(m["pros"])):
             recommended.append(m)
-        elif priority == "Quick return to fertility" and "Condom" in name or "Diaphragm" in name or "Fertility Awareness" in name:
+        elif priority == "Quick return to fertility" and ("Condom" in name or "Diaphragm" in name or "Fertility Awareness" in name):
             recommended.append(m)
         else:
             if m not in recommended and m not in contraindicated:
