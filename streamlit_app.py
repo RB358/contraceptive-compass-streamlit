@@ -77,7 +77,6 @@ st.info("**Disclaimer:** None of your answers or data are stored by us. This is 
 
 # Methods data
 methods = [
-    
     {"name": "Combined Oral Contraceptive Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
     "hormone_type": "combined",
     "typical_failure": 7.0,
