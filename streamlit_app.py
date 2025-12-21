@@ -2,6 +2,11 @@ import streamlit as st
 
 st.set_page_config(page_title="Contraceptive Choices", layout="centered")
 
+st.image(
+    "https://images.pexels.com/photos/7089629/pexels-photo-7089629.jpeg",
+    use_container_width=True
+)
+
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
 <style>
