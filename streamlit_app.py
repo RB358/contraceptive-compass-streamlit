@@ -78,7 +78,21 @@ st.info("**Disclaimer:** None of your answers or data are stored by us. This is 
 # Methods data
 methods = [
     {"name": "Oral Contraceptive Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg", "perfect": "<1%", "typical": "7%", "typical_failure": 7.0, "pros": ["Regulates periods", "Reduces acne", "Daily control"], "cons": ["Daily pill", "No STI protection", "Side effects possible"]},
-    {"name": "Male Condom", "image": "https://post.healthline.com/wp-content/uploads/2022/02/male-condoms-1296x1000-body-1296x1004.png", "perfect": "2%", "typical": "13%", "typical_failure": 13.0, "pros": ["STI protection", "No hormones", "Widely available"], "cons": ["User-dependent", "Can break"]},
+    "name": "Combined Oral Contraceptive Pill",
+    "hormone_type": "combined",
+    "typical_failure": 7.0,
+    "pros": ["Regulates periods", "Reduces acne"],
+    "cons": ["Estrogen-related risks", "Daily pill"]
+},
+{
+    "name": "Progestin-only Pill",
+    "hormone_type": "progestin_only",
+    "typical_failure": 7.0,
+    "pros": ["No estrogen", "Safe with breastfeeding"],
+    "cons": ["Stricter timing", "Irregular bleeding"]
+}
+    {
+"name": "Male Condom", "image": "https://post.healthline.com/wp-content/uploads/2022/02/male-condoms-1296x1000-body-1296x1004.png", "perfect": "2%", "typical": "13%", "typical_failure": 13.0, "pros": ["STI protection", "No hormones", "Widely available"], "cons": ["User-dependent", "Can break"]},
     {"name": "Contraceptive Implant", "image": "https://blog.thelowdown.com/wp-content/uploads/2020/10/implant-side-effects.png", "perfect": "<1%", "typical": "<1%", "typical_failure": 0.2, "pros": ["3-5 years protection", "Highly effective", "Reversible"], "cons": ["Insertion procedure", "Irregular bleeding"]},
     {"name": "Hormonal IUD (e.g., Mirena)", "image": "https://www.plannedparenthood.org/uploads/filer_public_thumbnails/filer_public/6b/ed/6bedc931-35c4-4f5a-bc65-e3839ae6b6de/hormonal-and-copper-iud-illustration.gif__1200x1200_q65_subsampling-2.jpg", "perfect": "<1%", "typical": "<1%","typical_failure": 0.2, "pros": ["5-8 years", "Lighter periods", "Low maintenance"], "cons": ["Insertion cramping"]},
     {"name": "Copper IUD (ParaGard)", "image": "https://www.mayoclinic.org/-/media/kcms/gbs/patient-consumer/images/2013/08/26/10/19/my00997_im04275_mcdc7_paragard_photothu_jpg.jpg", "perfect": "<1%", "typical": "<1%", "typical_failure": 0.2, "pros": ["10+ years", "Hormone-free", "Emergency option"], "cons": ["Heavier periods"]},
