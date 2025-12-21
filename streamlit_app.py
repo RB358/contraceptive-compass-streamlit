@@ -81,7 +81,7 @@ methods = [
     "hormone_type": "combined",
     "typical_failure": 7.0,
     "pros": ["Regulates periods", "Reduces acne"],
-    "cons": ["Estrogen-related risks", "Daily pill"]}
+    "cons": ["Estrogen-related risks", "Daily pill"]},
     {"name": "Progestin-only Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
     "hormone_type": "progestin_only",
     "typical_failure": 7.0,
