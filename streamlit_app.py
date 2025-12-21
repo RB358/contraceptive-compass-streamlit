@@ -135,7 +135,7 @@ if st.button("Your Personalized Recommendations"):
         # Contraindications for combined hormonal (Pill, Patch, Ring)
         if "Pill" in name or "Patch" in name or "Ring" in name:
             if has_smoke_heavy or has_clot or has_migraine or has_bp:
-         red = True
+                red = True
 # Do not contraindicate progestin-only on VTE alone
 
 
