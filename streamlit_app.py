@@ -78,12 +78,12 @@ st.info("**Disclaimer:** None of your answers or data are stored by us. This is 
 # Methods data
 methods = [
     {"name": "Combined Oral Contraceptive Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
-    "hormone_type": "combined",
+    "hormone_type": "combined","perfect": "<1%", "typical": "7%",
     "typical_failure": 7.0,
     "pros": ["Regulates periods", "Reduces acne"],
     "cons": ["Estrogen-related risks", "Daily pill"]},
     {"name": "Progestin-only Pill", "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
-    "hormone_type": "progestin_only",
+    "hormone_type": "progestin_only", "perfect": "<1%", "typical": "7%",
     "typical_failure": 7.0,
     "pros": ["No estrogen", "Safe with breastfeeding"],
     "cons": ["Stricter timing", "Irregular bleeding"]},
