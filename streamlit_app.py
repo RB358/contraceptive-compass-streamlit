@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="Contraceptive Choices", layout="centered")
 
 st.image(
-    "https://images.pexels.com/photos/7089629/pexels-photo-7089629.jpeg",
+    "assets/C:\Users\lre35\Downloads\public.zip2_files\iStock-contraceptive choices.jpg",
     use_container_width=True
 )
 
