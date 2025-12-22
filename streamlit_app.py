@@ -1,11 +1,11 @@
+from pathlib import Path
 import streamlit as st
+import pandas as pd  # keep only if you actually use pandas
 
 st.set_page_config(page_title="Contraceptive Choices", layout="centered")
 
-st.image(
-    "assets/iStock-contraceptives.png",
-    use_container_width=True
-)
+IMG = Path(__file__).parent / "assets" / "iStock-contraceptives.png"
+st.image(str(IMG), use_container_width=True)
 
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
