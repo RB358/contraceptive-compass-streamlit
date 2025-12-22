@@ -1,7 +1,7 @@
 from pathlib import Path
 import streamlit as st
 
-IMG = Path(__file__).parent / "assets" / "iStock-contraceptives.png"
+IMG = Path(__file__).parent / "Assets" / "iStock-contraceptives.png"
 
 st.write("IMG path:", str(IMG))
 st.write("IMG exists:", IMG.exists())
