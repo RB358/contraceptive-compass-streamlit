@@ -75,6 +75,29 @@ st.markdown(f"""
 .hero button:hover {{
     background: white;
 }}
+/* Style + position ONLY the Start button */
+div[data-testid="stButton"] {
+    position: relative;
+    top: -180px;              /* pulls it up into the hero */
+    display: flex;
+    justify-content: center;
+    margin-bottom: -140px;    /* removes the gap created by pulling it up */
+}
+
+div[data-testid="stButton"] button {
+    background: rgba(255, 255, 255, 0.92);
+    color: #006d77;
+    border-radius: 999px;
+    padding: 14px 38px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+div[data-testid="stButton"] button:hover {
+    background: white;
+}
 </style>
 """, unsafe_allow_html=True)
 
