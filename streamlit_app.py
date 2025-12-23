@@ -59,7 +59,6 @@ st.markdown(f"""
     font-size: 2.7rem;
     font-weight: 700;
     margin-bottom: 26px;
-    color: white;
 }}
 
 .hero button {{
