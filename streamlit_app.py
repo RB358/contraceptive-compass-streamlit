@@ -18,13 +18,14 @@ st.markdown(f"""
 .hero {{
     position: relative;
     width: 100%;
-    height: 420px;
+    height: 440px;
     border-radius: 24px;
     overflow: hidden;
+    margin-bottom: 40px;
+
     background-image: url("data:image/jpeg;base64,{hero_base64}");
     background-size: cover;
-    background-position: center;
-    margin-bottom: 40px;
+    background-position: center 35%;
 }}
 
 .hero::after {{
@@ -34,11 +35,10 @@ st.markdown(f"""
     background: transparent;
 }}
 
-.hero-content {
+.hero-content {{
     position: relative;
     z-index: 2;
 
-    /* Center it nicely */
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -46,29 +46,25 @@ st.markdown(f"""
     align-items: center;
     text-align: center;
 
-    /* Light glass panel (NOT dark) */
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 20px;
     padding: 34px 36px;
 
-    /* Soft polish */
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
 
-    /* Text color switches to dark */
     color: #08343a;
-}
+}}
 
-
-.hero h1 {
+.hero h1 {{
     font-size: 2.6rem;
     font-weight: 750;
     margin-bottom: 22px;
     color: #08343a;
-}
+}}
 
-.hero button {
+.hero button {{
     background: #006d77;
     color: white;
     border-radius: 999px;
@@ -77,10 +73,11 @@ st.markdown(f"""
     font-weight: 650;
     border: none;
     cursor: pointer;
-}
-.hero button:hover {
+}}
+
+.hero button:hover {{
     filter: brightness(1.05);
-}
+}}
 </style>
 """, unsafe_allow_html=True)
 
