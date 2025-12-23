@@ -84,7 +84,7 @@ div[data-testid="stButton"] {{
     margin-bottom: -140px;    /* removes the gap created by pulling it up */
 }}
 
-div[data-testid="stButton"] button {
+div[data-testid="stButton"] button {{
     background: rgba(255, 255, 255, 0.92);
     color: #006d77;
     border-radius: 999px;
@@ -93,7 +93,7 @@ div[data-testid="stButton"] button {
     font-weight: 600;
     border: none;
     cursor: pointer;
-}
+}}
 
 div[data-testid="stButton"] button:hover {
     background: white;
