@@ -99,7 +99,7 @@ if not st.session_state.started:
 """, unsafe_allow_html=True)
 
 
-    # Use a Streamlit button to control state
+# Use a Streamlit button to control state
     if st.button("Start", key="start_button"):
         st.session_state.started = True
         st.rerun()
