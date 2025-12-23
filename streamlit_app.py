@@ -95,9 +95,9 @@ div[data-testid="stButton"] button {{
     cursor: pointer;
 }}
 
-div[data-testid="stButton"] button:hover {
+div[data-testid="stButton"] button:hover {{
     background: white;
-}
+}}
 </style>
 """, unsafe_allow_html=True)
 
