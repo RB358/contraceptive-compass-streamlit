@@ -33,8 +33,8 @@ st.markdown(f"""
 .hero::after {{
     content: "";
     position: absolute;
-    pointer-events: none;
     inset: 0;
+    pointer-events: none;
     background: linear-gradient(
         rgba(0, 0, 0, 0.20),
         rgba(0, 0, 0, 0.35)
