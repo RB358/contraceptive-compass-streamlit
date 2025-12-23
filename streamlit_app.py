@@ -34,20 +34,32 @@ st.markdown(f"""
     background: transparent;
 }}
 
-.hero-content {{
+.hero-content {
     position: relative;
     z-index: 2;
-    background: rgba(0, 0, 0, 0.22);
-    border-radius: 18px;
-    padding: 36px;
-    backdrop-filter: blur(4px);
+
+    /* Center it nicely */
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white;
-}}
+
+    /* Light glass panel (NOT dark) */
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    padding: 34px 36px;
+
+    /* Soft polish */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    /* Text color switches to dark */
+    color: #08343a;
+}
+
 
 .hero h1 {{
     font-size: 2.6rem;
