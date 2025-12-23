@@ -7,6 +7,62 @@ st.set_page_config(
     page_title="Find the contraceptive that fits you — in seven questions",
     layout="centered"
 )
+st.markdown(f"""
+<style>
+.hero {{
+    position: relative;
+    width: 100%;
+    height: 420px;
+    border-radius: 24px;
+    overflow: hidden;
+    background-image: url("data:image/jpeg;base64,{hero_base64}");
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 40px;
+}}
+
+.hero::after {{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.45)
+    );
+}}
+
+.hero-content {{
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 32px;
+}}
+
+.hero h1 {{
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+}}
+
+.hero button {{
+    background: white;
+    color: #006d77;
+    border-radius: 999px;
+    padding: 14px 36px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}}
+</style>
+""", unsafe_allow_html=True)
+
 
 # Load hero image as base64
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
