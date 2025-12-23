@@ -86,8 +86,6 @@ st.markdown(f"""
 .hero-landing + div[data-testid="stButton"] button:hover {{
     background: white;
 }}
-
-}}
 </style>
 """, unsafe_allow_html=True)
 
