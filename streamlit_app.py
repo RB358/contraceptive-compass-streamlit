@@ -71,15 +71,14 @@ st.markdown(f"""
 }}
 
 .hero-landing + div[data-testid="stButton"] button {{
-    background: rgba(255, 255, 255, 0.92);
-    color: #006d77;
-    border-radius: 999px;
-    padding: 14px 38px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;   /* prevents “Start” wrapping */
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #006d77 !important;
+    border-radius: 999px !important;
+    padding: 14px 38px !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    border: none !important;
+    white-space: nowrap;
     min-width: 160px;
 }}
 
