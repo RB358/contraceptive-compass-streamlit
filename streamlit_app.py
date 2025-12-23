@@ -78,10 +78,6 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# Load hero image as base64
-IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
-hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
-
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
 <style>
