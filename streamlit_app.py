@@ -3,7 +3,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Contraceptive Choices", layout="centered")
 
-IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
+IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives.jpg"
 st.image(str(IMG), use_container_width=True)
 
 # Single merged CSS for teal theme, centering, and fixed button
