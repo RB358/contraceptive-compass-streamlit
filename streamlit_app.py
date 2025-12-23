@@ -27,28 +27,26 @@ st.markdown(f"""
     margin-bottom: 40px;
 }}
 
-.hero::after {
-    content: none;
-}
-
-.hero-content {
-    background: rgba(0, 0, 0, 0.22);
-    border-radius: 18px;
-    padding: 36px;
-    backdrop-filter: blur(4px);
-}
+.hero::after {{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+}}
 
 .hero-content {{
     position: relative;
     z-index: 2;
-    height: 100%;
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 18px;
+    padding: 36px;
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: white;
-    padding: 32px;
 }}
 
 .hero h1 {{
