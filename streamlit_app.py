@@ -68,16 +68,19 @@ st.markdown(f"""
     color: #08343a;
 }
 
-.hero button {{
-    background: white;
-    color: #006d77;
+.hero button {
+    background: #006d77;
+    color: white;
     border-radius: 999px;
     padding: 14px 36px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 650;
     border: none;
     cursor: pointer;
-}}
+}
+.hero button:hover {
+    filter: brightness(1.05);
+}
 </style>
 """, unsafe_allow_html=True)
 
