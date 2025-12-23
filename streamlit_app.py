@@ -93,6 +93,64 @@ if not st.session_state.started:
         st.session_state.started = True
         st.rerun()
 
+# --- QUESTIONNAIRE ---
+if st.session_state.started:
+
+    # Micro-heading only (light framing)
+    st.markdown(
+        "<p style='color:#6b7280; font-size:0.95rem;'>"
+        "Answer these questions for personalised insights"
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    age_group = st.selectbox(
+        "What is your age group?",
+        ["Under 20", "20–29", "30–39", "40+"]
+    )
+
+    smoking = st.selectbox(
+        "Do you smoke?",
+        ["No", "Yes"]
+    )
+
+    bmi = st.selectbox(
+        "What is your approximate BMI?",
+        ["<30", "30+"]
+    )
+
+    periods = st.selectbox(
+        "Do you experience heavy or painful periods?",
+        ["No significant issues", "Moderate", "Severe"]
+    )
+
+    breastfeeding = st.selectbox(
+        "Are you currently breastfeeding?",
+        ["No", "Yes"]
+    )
+
+    conditions = st.multiselect(
+        "Do you have any of these conditions?",
+        [
+            "Migraine with aura",
+            "High blood pressure",
+            "History of blood clots",
+            "None of the above"
+        ]
+    )
+
+    priority = st.selectbox(
+        "What matters most to you?",
+        [
+            "Highest effectiveness",
+            "Avoiding weight gain",
+            "Clearer skin",
+            "Lowest cost",
+            "Hormone-free"
+        ]
+    )
+
+
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
 <style>
