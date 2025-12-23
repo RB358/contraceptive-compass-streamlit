@@ -7,6 +7,8 @@ st.set_page_config(
     page_title="Find the contraceptive that fits you — in seven questions",
     layout="centered"
 )
+if "started" not in st.session_state:
+    st.session_state.started = False
 
 # Load hero image as base64 (MUST come before CSS that uses hero_base64)
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
