@@ -1,7 +1,7 @@
 from pathlib import Path
 import streamlit as st
 
-st.set_page_config(page_title="Contraceptive Choices", layout="centered")
+st.set_page_config(page_title="Find you contraceptive with seven questions.", layout="centered")
 
 IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives.jpg"
 st.image(str(IMG), use_container_width=True)
