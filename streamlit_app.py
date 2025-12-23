@@ -1,10 +1,16 @@
 from pathlib import Path
+import base64
 import streamlit as st
 
-st.set_page_config(page_title="Find the contraceptive that fits you - in seven questions.", layout="centered")
+# Page config MUST come first
+st.set_page_config(
+    page_title="Find the contraceptive that fits you — in seven questions",
+    layout="centered"
+)
 
-IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives.jpg"
-st.image(str(IMG), use_container_width=True)
+# Load hero image as base64
+IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
+hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
 
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
