@@ -60,21 +60,6 @@ st.markdown(f"""
     font-weight: 700;
     margin-bottom: 26px;
 }}
-
-.hero button {{
-    background: rgba(255, 255, 255, 0.92);
-    color: #006d77;
-    border-radius: 999px;
-    padding: 14px 38px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-}}
-
-.hero button:hover {{
-    background: white;
-}}
 /* Style + position ONLY the Start button */
 .hero-landing + div[data-testid="stButton"] {{
     position: relative;
