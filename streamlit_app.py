@@ -100,7 +100,7 @@ if not st.session_state.started:
 
 
 # Use a Streamlit button to control state
-    if st.button("Start", key="start_button"):
+if st.button("Start", key="start_button"):
         st.session_state.started = True
         st.rerun()
 
