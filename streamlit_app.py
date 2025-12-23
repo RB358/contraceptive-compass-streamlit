@@ -61,11 +61,12 @@ st.markdown(f"""
 }
 
 
-.hero h1 {{
+.hero h1 {
     font-size: 2.6rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-}}
+    font-weight: 750;
+    margin-bottom: 22px;
+    color: #08343a;
+}
 
 .hero button {{
     background: white;
