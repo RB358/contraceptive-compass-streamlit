@@ -93,12 +93,14 @@ st.markdown(f"""
 
 # --- HERO + START BUTTON ---
 if not st.session_state.started:
-    st.markdown("""
-    <div class="hero hero-landing">
-            <h1>Find your contraceptive in seven questions</h1>
-        </div>
+  st.markdown("""
+<div class="hero hero-landing">
+    <div class="hero-content">
+        <h1>Find your contraceptive in seven questions</h1>
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
+
 
     # Use a Streamlit button to control state
     if st.button("Start", key="start_button"):
