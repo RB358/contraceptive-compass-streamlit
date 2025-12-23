@@ -76,15 +76,15 @@ st.markdown(f"""
     background: white;
 }}
 /* Style + position ONLY the Start button */
-div[data-testid="stButton"] {{
+.hero-landing + div[data-testid="stButton"] {{
     position: relative;
-    top: -180px;              /* pulls it up into the hero */
+    top: -180px;
     display: flex;
     justify-content: center;
-    margin-bottom: -140px;    /* removes the gap created by pulling it up */
+    margin-bottom: -140px;
 }}
 
-div[data-testid="stButton"] button {{
+.hero-landing + div[data-testid="stButton"] button {{
     background: rgba(255, 255, 255, 0.92);
     color: #006d77;
     border-radius: 999px;
@@ -93,10 +93,14 @@ div[data-testid="stButton"] button {{
     font-weight: 600;
     border: none;
     cursor: pointer;
+    white-space: nowrap;   /* prevents “Start” wrapping */
+    min-width: 160px;
 }}
 
-div[data-testid="stButton"] button:hover {{
+.hero-landing + div[data-testid="stButton"] button:hover {{
     background: white;
+}}
+
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -104,8 +108,7 @@ div[data-testid="stButton"] button:hover {{
 # --- HERO + START BUTTON ---
 if not st.session_state.started:
     st.markdown("""
-    <div class="hero">
-        <div class="hero-content">
+    <div class="hero hero-landing">
             <h1>Find your contraceptive in seven questions</h1>
         </div>
     </div>
