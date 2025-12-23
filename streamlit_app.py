@@ -76,13 +76,13 @@ st.markdown(f"""
     background: white;
 }}
 /* Style + position ONLY the Start button */
-div[data-testid="stButton"] {
+div[data-testid="stButton"] {{
     position: relative;
     top: -180px;              /* pulls it up into the hero */
     display: flex;
     justify-content: center;
     margin-bottom: -140px;    /* removes the gap created by pulling it up */
-}
+}}
 
 div[data-testid="stButton"] button {
     background: rgba(255, 255, 255, 0.92);
