@@ -88,7 +88,6 @@ if not st.session_state.started:
     </div>
     """, unsafe_allow_html=True)
 
-    if not st.session_state.started:
     if st.button("Start", key="start_button"):
         st.session_state.started = True
         st.rerun()
