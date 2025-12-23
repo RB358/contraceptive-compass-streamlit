@@ -88,6 +88,7 @@ if not st.session_state.started:
     </div>
     """, unsafe_allow_html=True)
 
+
     # Use a Streamlit button to control state
     if st.button("Start"):
         st.session_state.started = True
