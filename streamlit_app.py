@@ -78,6 +78,21 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
+# --- HERO + START BUTTON ---
+if not st.session_state.started:
+    st.markdown("""
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Find your contraceptive in seven questions</h1>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Use a Streamlit button to control state
+    if st.button("Start"):
+        st.session_state.started = True
+        st.rerun()
+
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
 <style>
