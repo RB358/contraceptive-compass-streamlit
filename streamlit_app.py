@@ -32,7 +32,10 @@ st.markdown(f"""
     content: "";
     position: absolute;
     inset: 0;
-    background: transparent;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.20),
+        rgba(0, 0, 0, 0.35)
+    );
 }}
 
 .hero-content {{
@@ -46,37 +49,30 @@ st.markdown(f"""
     align-items: center;
     text-align: center;
 
-    background: rgba(255, 255, 255, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 20px;
-    padding: 34px 36px;
-
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
-    color: #08343a;
+    padding: 32px;
+    color: white;
 }}
 
 .hero h1 {{
-    font-size: 2.6rem;
-    font-weight: 750;
-    margin-bottom: 22px;
-    color: #08343a;
+    font-size: 2.7rem;
+    font-weight: 700;
+    margin-bottom: 26px;
+    color: white;
 }}
 
 .hero button {{
-    background: #006d77;
-    color: white;
+    background: rgba(255, 255, 255, 0.92);
+    color: #006d77;
     border-radius: 999px;
-    padding: 14px 36px;
+    padding: 14px 38px;
     font-size: 1.05rem;
-    font-weight: 650;
+    font-weight: 600;
     border: none;
     cursor: pointer;
 }}
 
 .hero button:hover {{
-    filter: brightness(1.05);
+    background: white;
 }}
 </style>
 """, unsafe_allow_html=True)
