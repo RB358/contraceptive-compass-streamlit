@@ -143,6 +143,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div class="hero">
+    <div class="hero-content">
+        <h1>Find the contraceptive that fits you — in seven questions</h1>
+        <button onclick="document.getElementById('start-anchor').scrollIntoView({behavior: 'smooth'});">
+            Start
+        </button>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 # Disclaimer
 st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
 
