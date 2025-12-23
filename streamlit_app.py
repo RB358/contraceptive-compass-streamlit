@@ -1,21 +1,10 @@
 from pathlib import Path
 import streamlit as st
 
-BASE = Path(__file__).resolve().parent
-st.write("BASE:", str(BASE))
-st.write("CWD:", str(Path.cwd()))
-st.write("BASE contents:", [p.name for p in BASE.glob("*")])
+st.set_page_config(page_title="Contraceptive Choices", layout="centered")
 
-assets_dir = BASE / "Assets"   # change to "assets" once you standardise casing
-st.write("Assets dir exists:", assets_dir.exists())
-st.write("Assets contents:", [p.name for p in assets_dir.glob("*")] if assets_dir.exists() else [])
-
-IMG = assets_dir / "iStock-contraceptives.png"
-st.write("IMG:", str(IMG))
-st.write("IMG exists:", IMG.exists())
-
-if IMG.exists():
-    st.image(str(IMG), use_container_width=True)
+IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives.png"
+st.image(str(IMG), use_container_width=True)
 
 # Single merged CSS for teal theme, centering, and fixed button
 st.markdown("""
