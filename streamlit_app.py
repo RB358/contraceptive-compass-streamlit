@@ -1,7 +1,7 @@
 from pathlib import Path
 import streamlit as st
 
-st.set_page_config(page_title="Find you contraceptive in seven questions.", layout="centered")
+st.set_page_config(page_title="Find the contraceptive that fits you - in seven questions.", layout="centered")
 
 IMG = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives.jpg"
 st.image(str(IMG), use_container_width=True)
@@ -103,7 +103,7 @@ methods = [
     {"name": "Fertility Awareness", "image": "https://images.squarespace-cdn.com/content/v1/5ce5fdaed49c8900017d5630/1604508343420-GX1XCK067VKE20TZ1FWY/Cycle+13+marked.png", "perfect": "1-9%", "typical": "24%", "typical_failure": 24.0, "pros": ["No hormones", "Free"], "cons": ["High effort", "Irregular cycles reduce reliability"]},
 ]
 
-st.title("Find your contraceptive in seven questions.")
+st.title("Find the contraceptive that fits you - in seven questions.")
 st.markdown("### Explore methods, learn effectiveness, and find what fits you")
 
 # Methods cards
