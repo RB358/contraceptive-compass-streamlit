@@ -62,14 +62,16 @@ st.markdown(f"""
     margin-bottom: 26px;
 }}
 /* Style + position ONLY the Start button */
+/* Pull the Start button into the hero (container) */
 .hero-landing + div[data-testid="stButton"] {{
-    position: relative;
-    top: -180px;
-    display: flex;
-    justify-content: center;
-    margin-bottom: -140px;
+    position: relative !important;
+    top: -180px !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: -140px !important;
 }}
 
+/* Start button styling (normal state) */
 .hero-landing + div[data-testid="stButton"] button {{
     background: rgba(255, 255, 255, 0.92) !important;
     color: #006d77 !important;
@@ -78,9 +80,15 @@ st.markdown(f"""
     font-size: 1.05rem !important;
     font-weight: 600 !important;
     border: none !important;
-    white-space: nowrap;
-    min-width: 160px;
+    white-space: nowrap !important;
+    min-width: 160px !important;
 }}
+
+/* Hover */
+.hero-landing + div[data-testid="stButton"] button:hover {{
+    background: white !important;
+}}
+
 
 .hero-landing + div[data-testid="stButton"] button:hover {{
     background: white !important;
