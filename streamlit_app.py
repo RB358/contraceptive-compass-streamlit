@@ -89,14 +89,15 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- HERO + START BUTTON ---
+# --- HERO + START BUTTON ---
 if not st.session_state.started:
     st.markdown("""
-<div class="hero hero-landing">
-    <div class="hero-content">
-        <h1>Find your contraceptive in seven questions</h1>
+    <div class="hero hero-landing">
+        <div class="hero-content">
+            <h1>Find your contraceptive in seven questions</h1>
+        </div>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     if st.button("Start", key="start_button"):
         st.session_state.started = True
