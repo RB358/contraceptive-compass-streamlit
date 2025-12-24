@@ -83,12 +83,11 @@ st.markdown(f"""
 }}
 
 .hero-landing + div[data-testid="stButton"] button:hover {{
-    background: white;
+    background: white !important;
 }}
 </style>
 """, unsafe_allow_html=True)
 
-# --- HERO + START BUTTON ---
 # --- HERO + START BUTTON ---
 if not st.session_state.started:
     st.markdown("""
