@@ -102,12 +102,6 @@ if not st.session_state.started:
         st.session_state.started = True
         st.rerun()
 
-
-# Use a Streamlit button to control state
-if st.button("Start", key="start_button"):
-        st.session_state.started = True
-        st.rerun()
-
 # --- QUESTIONNAIRE ---
 if st.session_state.started:
 
