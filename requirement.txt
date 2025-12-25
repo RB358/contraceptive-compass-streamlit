@@ -1,5 +1,2 @@
 streamlit>=1.30,<2.0
 pandas
-pip install -r requirement.txt
-cd /workspace/contraceptive-compass-streamlit
-streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
