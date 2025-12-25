@@ -1,2 +1,3 @@
 streamlit>=1.30,<2.0
 pandas
+pip install -r requirement.txt
