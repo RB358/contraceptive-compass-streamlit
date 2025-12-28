@@ -268,7 +268,7 @@ st.markdown("### Explore methods, learn effectiveness, and find what fits you")
 # Methods cards
 for method in methods:
     with st.container():
-        st.image(method["image"], use_column_width=True)
+        st.image(method["image"], use_container_width=True)
         st.markdown(f"<div class='method-card'><h3>{method['name']}</h3>"
                     f"<p><strong>Perfect use:</strong> {method['perfect']} failure<br>"
                     f"<strong>Typical use:</strong> {method['typical']} failure</p>"
