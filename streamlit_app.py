@@ -18,9 +18,10 @@ hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
 st.markdown(f"""
 <style>
 .hero {{
+    --hero-height: 440px;
     position: relative;
     width: 100%;
-    height: 440px;
+    height: var(--hero-height);
     border-radius: 24px;
     overflow: hidden;
     margin-bottom: 40px;
@@ -62,18 +63,17 @@ st.markdown(f"""
     margin-bottom: 26px;
 }}
 /* Style + position ONLY the Start button */
-/* Pull the Start button into the hero (container) */
+/* Pull the Start button onto the hero image and center it */
 .hero-landing + div[data-testid="stButton"] {{
-    position: relative !important;
-    top: -180px !important;
     display: flex !important;
     justify-content: center !important;
-    margin-bottom: -140px !important;
+    margin-top: calc(-1 * (var(--hero-height) / 2)) !important;
+    margin-bottom: calc((var(--hero-height) / 2) - 40px) !important;
 }}
 
 /* Start button styling (normal state) */
 .hero-landing + div[data-testid="stButton"] button {{
-    background: rgba(255, 255, 255, 0.92) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
     color: #006d77 !important;
     border-radius: 999px !important;
     padding: 14px 38px !important;
@@ -82,14 +82,10 @@ st.markdown(f"""
     border: none !important;
     white-space: nowrap !important;
     min-width: 160px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
 }}
 
 /* Hover */
-.hero-landing + div[data-testid="stButton"] button:hover {{
-    background: white !important;
-}}
-
-
 .hero-landing + div[data-testid="stButton"] button:hover {{
     background: white !important;
 }}

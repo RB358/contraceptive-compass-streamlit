@@ -1,0 +1,126 @@
+diff a/streamlit_app.py b/streamlit_app.py	(rejected hunks)
+@@ -1,117 +1,113 @@
+ from pathlib import Path
+ import base64
+ import streamlit as st
+ 
+ # Page config MUST come first
+ st.set_page_config(
+     page_title="Find the contraceptive that fits you — in seven questions",
+     layout="centered"
+ )
+ if "started" not in st.session_state:
+     st.session_state.started = False
+ 
+ # Load hero image as base64 (MUST come before CSS that uses hero_base64)
+ IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
+ hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
+ 
+ # Hero CSS (now hero_base64 exists)
+ st.markdown(f"""
+ <style>
+ .hero {{
++    --hero-height: 440px;
+     position: relative;
+     width: 100%;
+-    height: 440px;
++    height: var(--hero-height);
+     border-radius: 24px;
+     overflow: hidden;
+     margin-bottom: 40px;
+ 
+     background-image: url("data:image/jpeg;base64,{hero_base64}");
+     background-size: cover;
+     background-position: center 35%;
+ }}
+ 
+ .hero::after {{
+     content: "";
+     position: absolute;
+     inset: 0;
+     pointer-events: none;
+     background: linear-gradient(
+         rgba(0, 0, 0, 0.20),
+         rgba(0, 0, 0, 0.35)
+     );
+ }}
+ 
+ .hero-content {{
+     position: relative;
+     z-index: 2;
+ 
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     text-align: center;
+ 
+     padding: 32px;
+     color: white;
+ }}
+ 
+ .hero h1 {{
+     font-size: 2.7rem;
+     font-weight: 700;
+     margin-bottom: 26px;
+ }}
+ /* Style + position ONLY the Start button */
+-/* Pull the Start button into the hero (container) */
++/* Pull the Start button onto the hero image and center it */
+ .hero-landing + div[data-testid="stButton"] {{
+-    position: relative !important;
+-    top: -180px !important;
+     display: flex !important;
+     justify-content: center !important;
+-    margin-bottom: -140px !important;
++    margin-top: calc(-1 * (var(--hero-height) / 2)) !important;
++    margin-bottom: calc((var(--hero-height) / 2) - 40px) !important;
+ }}
+ 
+ /* Start button styling (normal state) */
+ .hero-landing + div[data-testid="stButton"] button {{
+-    background: rgba(255, 255, 255, 0.92) !important;
++    background: rgba(255, 255, 255, 0.96) !important;
+     color: #006d77 !important;
+     border-radius: 999px !important;
+     padding: 14px 38px !important;
+     font-size: 1.05rem !important;
+     font-weight: 600 !important;
+     border: none !important;
+     white-space: nowrap !important;
+     min-width: 160px !important;
++    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
+ }}
+ 
+ /* Hover */
+-.hero-landing + div[data-testid="stButton"] button:hover {{
+-    background: white !important;
+-}}
+-
+-
+ .hero-landing + div[data-testid="stButton"] button:hover {{
+     background: white !important;
+ }}
+ </style>
+ """, unsafe_allow_html=True)
+ 
+ # --- HERO + START BUTTON ---
+ if not st.session_state.started:
+     st.markdown("""
+     <div class="hero hero-landing">
+         <div class="hero-content">
+             <h1>Find your contraceptive in seven questions</h1>
+         </div>
+     </div>
+     """, unsafe_allow_html=True)
+ 
+     if st.button("Start", key="start_button"):
+         st.session_state.started = True
+         st.rerun()
+ 
+ # --- QUESTIONNAIRE ---
+ if st.session_state.started:
+ 
+     # Micro-heading only (light framing)
+     st.markdown(
