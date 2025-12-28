@@ -62,27 +62,29 @@ st.markdown(f"""
     font-weight: 700;
     margin-bottom: 26px;
 }}
-/* Style + position ONLY the Start button */
-/* Pull the Start button onto the hero image and center it */
+/* Start button styling (FORCE white and centered) */
 .hero-landing + div[data-testid="stButton"] {{
     display: flex !important;
     justify-content: center !important;
-    margin-top: calc(-1 * (var(--hero-height) / 4)) !important;
-    margin-bottom: calc((var(--hero-height) / 4) - 40px) !important;
+    margin-top: -150px !important;
+    margin-bottom: 110px !important;
+    position: relative !important;
+    z-index: 10 !important;
 }}
 
-/* Start button styling (normal state) */
 .hero-landing + div[data-testid="stButton"] button {{
-    background: rgba(255, 255, 255, 0.96) !important;
+    background-color: white !important;
     color: #006d77 !important;
     border-radius: 999px !important;
     padding: 14px 38px !important;
-    font-size: 1.05rem !important;
-    font-weight: 600 !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
     border: none !important;
-    white-space: nowrap !important;
-    min-width: 160px !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+    width: auto !important;
+    max-width: 200px !important;
+    margin: 0 auto !important;
+    display: block !important;
 }}
 
 /* Hover */
