@@ -55,7 +55,7 @@ st.markdown(f"""
     align-items: center;
     text-align: center;
 
-    padding: 40px 32px 32px 32px;
+    padding: 35px 32px 32px 32px;
     color: white;
 }}
 
