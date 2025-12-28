@@ -83,6 +83,11 @@ if not st.session_state.started:
                     text-decoration: none !important;
                     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
                     display: inline-block !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    line-height: 1.2 !important;
+                    text-align: center !important;
+                    min-width: 160px !important;
                 ">Start</a>
             </div>
         </div>
