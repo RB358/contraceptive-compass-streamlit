@@ -53,7 +53,7 @@ st.markdown(f"""
     align-items: center;
     text-align: center;
 
-    padding: 60px 32px 32px 32px;
+    padding: 40px 32px 32px 32px;
     color: white;
 }}
 
