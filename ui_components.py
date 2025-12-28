@@ -7,7 +7,7 @@ def start_cta():
         .start-cta-wrapper {
             display: flex;
             justify-content: center;
-            margin-top: -120px;
+            margin-top: -150px;
             margin-bottom: 80px;
             position: relative;
             z-index: 10;
