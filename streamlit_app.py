@@ -74,20 +74,21 @@ if not st.session_state.started:
             <h1>Find your contraceptive in seven questions</h1>
             <div style="margin-top: 110px;">
                 <a href="?started=true" target="_self" style="
+                    background: white !important;
                     background-color: white !important;
                     color: #006d77 !important;
-                    border-radius: 999px !important;
-                    padding: 14px 38px !important;
-                    font-size: 1.1rem !important;
+                    border-radius: 50px !important;
+                    padding: 16px 48px !important;
+                    font-size: 1.15rem !important;
                     font-weight: 700 !important;
                     text-decoration: none !important;
-                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
                     display: inline-block !important;
-                    border: none !important;
+                    border: 2px solid white !important;
                     cursor: pointer !important;
-                    line-height: 1.2 !important;
+                    line-height: 1 !important;
                     text-align: center !important;
-                    min-width: 160px !important;
+                    letter-spacing: 0.5px !important;
                 ">Start</a>
             </div>
         </div>
