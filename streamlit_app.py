@@ -72,7 +72,7 @@ if not st.session_state.started:
     <div class="hero hero-landing">
         <div class="hero-content">
             <h1>Find your contraceptive in seven questions</h1>
-            <div style="margin-top: 120px;">
+            <div style="margin-top: 110px;">
                 <a href="?started=true" target="_self" style="
                     background-color: white !important;
                     color: #006d77 !important;
