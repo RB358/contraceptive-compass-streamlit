@@ -49,11 +49,11 @@ st.markdown(f"""
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start !important;
     align-items: center;
     text-align: center;
 
-    padding: 32px;
+    padding: 60px 32px 32px 32px;
     color: white;
 }}
 
