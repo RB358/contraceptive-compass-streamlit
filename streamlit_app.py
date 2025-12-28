@@ -67,8 +67,8 @@ st.markdown(f"""
 .hero-landing + div[data-testid="stButton"] {{
     display: flex !important;
     justify-content: center !important;
-    margin-top: calc(-1 * (var(--hero-height) / 2)) !important;
-    margin-bottom: calc((var(--hero-height) / 2) - 40px) !important;
+    margin-top: calc(-1 * (var(--hero-height) / 4)) !important;
+    margin-bottom: calc((var(--hero-height) / 4) - 40px) !important;
 }}
 
 /* Start button styling (normal state) */
