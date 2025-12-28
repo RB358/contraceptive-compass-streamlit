@@ -6,6 +6,7 @@ from core.methods_data import METHODS, TELEHEALTH_OPTIONS
 from core.schema import QUESTIONS, QUIZ_QUESTIONS, encode_answers
 from core.quiz_logic import get_recommendations
 from core.render_helpers import format_method_card_html, format_recommendation_text, format_telehealth_link
+from ui_components import start_cta
 
 st.set_page_config(
     page_title="Find the contraceptive that fits you — in seven questions",
@@ -72,30 +73,13 @@ if not st.session_state.started:
     <div class="hero hero-landing">
         <div class="hero-content">
             <h1>Find your contraceptive in seven questions</h1>
-            <div style="margin-top: 110px;">
-                <a href="?started=true" target="_self" style="
-                    background: white !important;
-                    background-color: white !important;
-                    color: #006d77 !important;
-                    border-radius: 50px !important;
-                    padding: 16px 48px !important;
-                    font-size: 1.15rem !important;
-                    font-weight: 700 !important;
-                    text-decoration: none !important;
-                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
-                    display: inline-block !important;
-                    border: 2px solid white !important;
-                    cursor: pointer !important;
-                    line-height: 1 !important;
-                    text-align: center !important;
-                    letter-spacing: 0.5px !important;
-                ">Start</a>
-            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    start_cta()
 
-    if st.query_params.get("started") == "true":
+    if st.query_params.get("start") == "1":
         st.session_state.started = True
         st.query_params.clear()
         st.rerun()
