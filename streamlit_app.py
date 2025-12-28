@@ -62,51 +62,40 @@ st.markdown(f"""
     font-weight: 700;
     margin-bottom: 26px;
 }}
-/* Start button styling (FORCE white and centered) */
-.hero-landing + div[data-testid="stButton"] {{
-    display: flex !important;
-    justify-content: center !important;
-    margin-top: -150px !important;
-    margin-bottom: 110px !important;
-    position: relative !important;
-    z-index: 10 !important;
-}}
-
-.hero-landing + div[data-testid="stButton"] button {{
-    background-color: white !important;
-    color: #006d77 !important;
-    border-radius: 999px !important;
-    padding: 14px 38px !important;
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    border: none !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
-    width: auto !important;
-    max-width: 200px !important;
-    margin: 0 auto !important;
-    display: block !important;
-}}
-
-/* Hover */
-.hero-landing + div[data-testid="stButton"] button:hover {{
-    background: white !important;
-}}
+/* (Start button styling removed as we are using a custom HTML link now) */
 </style>
 """, unsafe_allow_html=True)
 
-# --- HERO + START BUTTON ---
+# --- HERO ---
 if not st.session_state.started:
-    st.markdown("""
+    st.markdown(f"""
     <div class="hero hero-landing">
         <div class="hero-content">
             <h1>Find your contraceptive in seven questions</h1>
+            <div style="margin-top: 40px;">
+                <a href="?started=true" target="_self" style="
+                    background-color: white !important;
+                    color: #006d77 !important;
+                    border-radius: 999px !important;
+                    padding: 14px 38px !important;
+                    font-size: 1.1rem !important;
+                    font-weight: 700 !important;
+                    text-decoration: none !important;
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+                    display: inline-block !important;
+                ">Start</a>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("Start", key="start_button"):
+    # Check for the query param to change state
+    if st.query_params.get("started") == "true":
         st.session_state.started = True
+        st.query_params.clear()
         st.rerun()
+
+# (Removed old st.button logic)
 
 # --- QUESTIONNAIRE ---
 if st.session_state.started:
