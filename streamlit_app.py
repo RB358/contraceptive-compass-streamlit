@@ -37,6 +37,22 @@ start_btn_offset = -80 if st.session_state.started else -170
 
 st.markdown(f"""
 <style>
+:root {{
+    --teal: #0F766E;
+    --teal-600: #0B5F59;
+    --coral: #D1495B;
+    --coral-hover: #E06372;
+    --ink: #0F172A;
+    --surface: #FFFFFF;
+    --warm-bg: #FFF7F6;
+    --border: #E5E7EB;
+}}
+
+.stApp, .main {{
+    background: var(--warm-bg) !important;
+    color: var(--ink);
+}}
+
 .hero {{
     position: relative;
     width: 100%;
@@ -85,18 +101,23 @@ st.markdown(f"""
     margin-top: {start_btn_offset}px !important;
 }}
 
-.main {{
-    background: #f0fafa;
-    padding-bottom: 100px;
+h1, h2, h3 {{
+    color: var(--teal);
+    font-family: 'Helvetica Neue', sans-serif;
 }}
 
-h1, h2, h3 {{color: #006d77; font-family: 'Helvetica Neue', sans-serif;}}
-
-.stButton>button {{
-    background: #83c5be;
-    color: #006d77;
-    border-radius: 12px;
+.stButton > button {{
+    background: var(--teal) !important;
+    border: 1px solid var(--teal) !important;
+    color: white !important;
+    border-radius: 999px;
+    padding: 10px 18px;
     font-weight: bold;
+}}
+
+.stButton > button:hover {{
+    background: var(--teal-600) !important;
+    border-color: var(--teal-600) !important;
 }}
 
 .main .block-container {{
@@ -127,45 +148,51 @@ div.stButton {{text-align: center !important;}}
 }}
 
 .progress-text {{
-    color: #6b7280;
-    font-size: 0.9rem;
+    color: var(--coral);
+    font-size: 0.95rem;
+    font-weight: 600;
     margin-bottom: 16px;
 }}
 
-.quiz-container {{
-    background: white;
+.quiz-card {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
     padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     margin: 20px auto;
     max-width: 500px;
 }}
 
-.quiz-started-callout {{
-    background: linear-gradient(135deg, #006d77 0%, #00939e 100%);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
+.accent {{
+    color: var(--coral);
+}}
+
+.accent-bg {{
+    background: rgba(209, 73, 91, 0.10);
+    border: 1px solid rgba(209, 73, 91, 0.25);
+    border-radius: 14px;
+    padding: 16px 20px;
     text-align: center;
     margin: 0 auto 24px auto;
     max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,109,119,0.3);
 }}
 
-.quiz-started-callout h4 {{
-    color: white !important;
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
+.accent-bg strong {{
+    color: var(--coral);
+    font-size: 1rem;
 }}
 
-.quiz-started-callout p {{
-    margin: 0;
+.accent-bg span {{
+    color: var(--ink);
     font-size: 0.85rem;
-    opacity: 0.9;
+    opacity: 0.8;
 }}
 
-.quiz-started-callout .chevron {{
-    font-size: 1.5rem;
+.accent-bg .chevron {{
+    color: var(--coral);
+    font-size: 1.3rem;
+    display: block;
     margin-top: 8px;
     animation: bounce 1.5s infinite;
 }}
@@ -180,21 +207,6 @@ div.stButton {{text-align: center !important;}}
     justify-content: center;
     gap: 12px;
     margin-bottom: 16px;
-}}
-
-.quiz-control-btn {{
-    background: #e5e7eb;
-    color: #374151;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    text-decoration: none !important;
-}}
-
-.quiz-control-btn:hover {{
-    background: #d1d5db;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -219,28 +231,32 @@ def render_landing():
         st.rerun()
     
     if st.session_state.started:
+        st.markdown('<div id="started-note"></div>', unsafe_allow_html=True)
+        
         st.markdown("""
-        <div class="quiz-started-callout">
-            <h4>Quiz started</h4>
-            <p>7 questions • ~2 minutes • Educational only</p>
+        <div class="accent-bg">
+            <strong>Quiz started — your first question is below.</strong><br/>
+            <span>7 questions • ~2 minutes • Educational only</span>
             <div class="chevron">▼</div>
         </div>
         """, unsafe_allow_html=True)
+        
+        if st.session_state.get("scroll_to_quiz", False):
+            components.html("""
+            <script>
+                setTimeout(() => {
+                    const quiz = window.parent.document.getElementById("quiz-start");
+                    if (quiz) { quiz.scrollIntoView({behavior: "smooth", block: "start"}); }
+                }, 900);
+            </script>
+            """, height=0)
+            st.session_state.scroll_to_quiz = False
     else:
         st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
 
 
 def render_quiz():
     st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
-    
-    if st.session_state.scroll_to_quiz:
-        components.html("""
-        <script>
-            const el = window.parent.document.getElementById("quiz-start");
-            if (el) { el.scrollIntoView({behavior: "smooth", block: "start"}); }
-        </script>
-        """, height=0)
-        st.session_state.scroll_to_quiz = False
     
     col1, col2 = st.columns(2)
     with col1:
@@ -265,7 +281,7 @@ def render_quiz():
     
     st.markdown(f'<p class="progress-text">Question {q_idx + 1} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
     
-    st.markdown('<div class="quiz-container">', unsafe_allow_html=True)
+    st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
     
     st.markdown(f"### {question['label']}")
     

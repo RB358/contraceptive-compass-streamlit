@@ -1,0 +1,119 @@
+Please update my Streamlit app (streamlit_app.py) with the following changes. Do not restructure the app beyond what is necessary. Keep the landing page visible and the quiz revealed below as it is now.
+
+A) ADD ANCHORS
+1) Add an HTML anchor immediately ABOVE the “Quiz started” note (the little note shown after pressing Start):
+   st.markdown('<div id="started-note"></div>', unsafe_allow_html=True)
+
+2) Add an HTML anchor immediately ABOVE the first quiz question (top of the quiz container):
+   st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
+
+B) ONE DELAYED SCROLL (NOT TWO)
+Goal: after clicking Start, show the “quiz started” note briefly, then scroll once to the first question.
+
+1) Ensure we import components:
+   import streamlit.components.v1 as components
+
+2) Ensure session state includes a flag:
+   if "scroll_to_quiz" not in st.session_state:
+       st.session_state.scroll_to_quiz = False
+
+3) In the Start button on_click logic:
+   - set st.session_state.started = True
+   - set st.session_state.scroll_to_quiz = True
+
+4) Immediately AFTER rendering the “Quiz started” note (so the note is on screen), inject JS that waits then scrolls ONCE to quiz-start.
+   Use a delay of 900ms.
+
+   Add this block right after the note is rendered:
+
+   if st.session_state.get("scroll_to_quiz", False):
+       components.html("""
+       <script>
+         setTimeout(() => {
+           const quiz = window.parent.document.getElementById("quiz-start");
+           if (quiz) { quiz.scrollIntoView({behavior: "smooth", block: "start"}); }
+         }, 900);
+       </script>
+       """, height=0)
+       st.session_state.scroll_to_quiz = False
+
+C) IMPLEMENT THE COLOUR PALETTE (REDUCE TEAL OVERUSE)
+Goal: teal used mainly for primary buttons/progress; coral used for accents/highlights; warm blush background.
+
+1) In the main CSS st.markdown(<style>...</style>) block, add these CSS variables near the top:
+
+:root{
+  --teal: #0F766E;
+  --teal-600: #0B5F59;
+
+  --coral: #D1495B;
+  --coral-hover: #E06372;
+
+  --ink: #0F172A;
+  --surface: #FFFFFF;
+  --warm-bg: #FFF7F6;
+  --border: #E5E7EB;
+}
+
+2) Apply to base page background + text:
+.stApp, .main {
+  background: var(--warm-bg);
+  color: var(--ink);
+}
+
+3) Ensure your quiz container/card uses surface + border (create/adjust a class you already use; if none exists, create .quiz-card and wrap the quiz in it):
+.quiz-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+4) Update primary buttons to teal (restrained):
+.stButton > button{
+  background: var(--teal);
+  border: 1px solid var(--teal);
+  color: white;
+  border-radius: 999px;
+  padding: 10px 18px;
+}
+.stButton > button:hover{
+  background: var(--teal-600);
+  border-color: var(--teal-600);
+}
+
+5) Add coral accent utility classes for highlights (use these in the quiz note, progress, selected options):
+.accent{
+  color: var(--coral);
+}
+.accent-bg{
+  background: rgba(209, 73, 91, 0.10);
+  border: 1px solid rgba(209, 73, 91, 0.25);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.accent-bg a, .accent-bg strong{
+  color: var(--coral);
+}
+
+6) For the “Quiz started” note, apply the accent style:
+- render the note inside a div with class="accent-bg"
+Example:
+st.markdown('''
+<div class="accent-bg">
+  <strong>Quiz started — your first question is below.</strong><br/>
+  <span>7 questions • ~2 minutes • Educational only</span>
+</div>
+''', unsafe_allow_html=True)
+
+7) For any coral hover (if you have secondary buttons or selectable chips), use:
+.some-class:hover { background: rgba(224, 99, 114, 0.12); border-color: rgba(224, 99, 114, 0.35); }
+
+DELIVERABLES:
+- Update streamlit_app.py accordingly.
+- If you create .quiz-card, wrap the quiz rendering section in:
+  st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
+  ...quiz UI...
+  st.markdown('</div>', unsafe_allow_html=True)
+- Ensure the delayed scroll happens only once per Start click, and the “Quiz started” note remains visible briefly before the scroll.
