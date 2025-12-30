@@ -1,0 +1,204 @@
+Update streamlit_app.py to implement:
+
+1) Category titles + badge copy + iconography (precise)
+2) Microcopy under each category header
+3) Clickable recommendations that reveal image + pros/cons cleanly (one selected method detail panel)
+
+Do NOT introduce traffic light labels. Use the three tiers exactly:
+- "Best match"
+- "Worth considering"
+- "Less likely to be suitable"
+
+A) BADGES + ICONOGRAPHY (EXACT)
+1) Define a tier config dict near the recommendations section:
+
+TIER_CONFIG = {
+  "best": {
+    "title": "Best match",
+    "badge": "Best match",
+    "icon": "✓",              # check
+    "class": "badge-best"
+  },
+  "consider": {
+    "title": "Worth considering",
+    "badge": "Worth considering",
+    "icon": "◯",              # neutral circle
+    "class": "badge-consider"
+  },
+  "unlikely": {
+    "title": "Less likely to be suitable",
+    "badge": "Less likely",
+    "icon": "⟂",              # pause-style symbol; if font renders poorly, use "—"
+    "class": "badge-unlikely"
+  }
+}
+
+2) Map existing traffic-light categories to these tiers:
+- green -> "best"
+- yellow -> "consider"
+- red -> "unlikely"
+If my code already uses different keys, create a mapping function.
+
+B) MICROCOPY (EXACT)
+Under each category title, show the following one-sentence microcopy:
+
+Best match:
+"Tends to align with your answers. Review key details below."
+
+Worth considering:
+"May suit you depending on preferences and tolerability."
+
+Less likely to be suitable:
+"Based on your answers, this option is less likely to fit. Consider discussing with a clinician if interested."
+
+C) CSS FOR BADGES + CATEGORY HEADERS (USE EXISTING PALETTE)
+Use the palette already adopted:
+--teal: #0F766E
+--coral: #D1495B
+--warm-bg: #FFF7F6
+--surface: #FFFFFF
+--border: #E5E7EB
+--ink: #0F172A
+
+Add these CSS classes to the main <style> block:
+
+.category-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.category-title{
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 4px 0;
+}
+
+.category-sub{
+  margin: 0 0 12px 0;
+  color: rgba(15, 23, 42, 0.75);
+  font-size: 0.95rem;
+}
+
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.8);
+}
+
+.badge-best{
+  border-color: rgba(15, 118, 110, 0.35);
+  color: var(--teal);
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.badge-consider{
+  border-color: rgba(15, 23, 42, 0.18);
+  color: rgba(15, 23, 42, 0.80);
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.badge-unlikely{
+  border-color: rgba(209, 73, 91, 0.35);
+  color: var(--coral);
+  background: rgba(209, 73, 91, 0.08);
+}
+
+.rec-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  background: rgba(255,255,255,0.75);
+  margin: 8px 0;
+}
+
+.rec-name{
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.rec-meta{
+  font-size: 0.88rem;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.details-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  margin-top: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.section-h{
+  margin: 12px 0 6px 0;
+  font-weight: 750;
+  color: var(--ink);
+}
+
+.pros li::marker { color: var(--teal); }
+.cons li::marker { color: var(--coral); }
+
+D) CLICKABLE RECOMMENDATIONS → IMAGE + PROS/CONS (CLEAN)
+Implement a single selected-method detail panel using session state.
+
+1) Session state init near the top (or near recommendations section):
+if "selected_method_id" not in st.session_state:
+    st.session_state.selected_method_id = None
+
+2) Ensure each method has a stable id string. If methods already have "id", use it.
+If not, create an id from the name safely (lowercase, replace spaces with underscores).
+
+3) When rendering recommendations, group them into three lists by tier (best/consider/unlikely).
+Render each group inside a category card with:
+- title
+- microcopy
+- list of methods
+
+4) For each method row, show:
+- method name
+- a small badge with icon + badge text
+- a "View details" button that sets selected_method_id
+Example:
+if st.button("View details", key=f"view_{method['id']}"):
+    st.session_state.selected_method_id = method["id"]
+
+5) After all categories are rendered, show the detail panel if selected_method_id is set:
+- Find the method dict by id
+- Render a details card containing:
+  a) method name as header
+  b) st.image(method["image"], use_container_width=True) IF image exists
+  c) Pros list (bullets)
+  d) Cons list (bullets)
+  e) "Close" button that sets selected_method_id = None
+
+6) Pros/cons source:
+Use the pros/cons already coded. If they are currently in a separate data structure, map them into each method object before rendering recommendations.
+Require that each method dict ends up with:
+- "pros": list[str]
+- "cons": list[str]
+- "image": local path string OR URL string
+If any are missing, handle gracefully (show "Details coming soon" rather than crashing).
+
+E) OUTPUT REQUIRED
+- Implement the changes in streamlit_app.py.
+- Keep the page layout consistent with the existing landing+quiz flow.
+- Ensure click behavior works on mobile (buttons must be inside the method row, and the details panel appears below the recommendation section).
+- No page navigation; no multipage Streamlit.
+- Provide updated code for the recommendations section and any added CSS/session-state.
+
+If anything is ambiguous in my current code, search for where recommendations are currently built from questionnaire answers, and modify that section accordingly without changing the scoring logic.

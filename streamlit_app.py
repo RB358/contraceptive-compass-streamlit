@@ -6,7 +6,7 @@ import streamlit.components.v1 as components
 from core.methods_data import METHODS, TELEHEALTH_OPTIONS
 from core.schema import QUIZ_QUESTIONS, encode_answers
 from core.quiz_logic import get_recommendations
-from core.render_helpers import format_recommendation_text, format_telehealth_link
+from core.render_helpers import format_telehealth_link
 from ui_components import start_cta
 
 st.set_page_config(
@@ -24,9 +24,44 @@ if "answers" not in st.session_state:
     st.session_state.answers = {}
 if "show_results" not in st.session_state:
     st.session_state.show_results = False
+if "selected_method_id" not in st.session_state:
+    st.session_state.selected_method_id = None
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
+
+TIER_CONFIG = {
+    "best": {
+        "title": "Best match",
+        "badge": "Best match",
+        "icon": "✓",
+        "class": "badge-best",
+        "microcopy": "Tends to align with your answers. Review key details below."
+    },
+    "consider": {
+        "title": "Worth considering",
+        "badge": "Worth considering",
+        "icon": "◯",
+        "class": "badge-consider",
+        "microcopy": "May suit you depending on preferences and tolerability."
+    },
+    "unlikely": {
+        "title": "Less likely to be suitable",
+        "badge": "Less likely",
+        "icon": "—",
+        "class": "badge-unlikely",
+        "microcopy": "Based on your answers, this option is less likely to fit. Consider discussing with a clinician if interested."
+    }
+}
+
+CATEGORY_MAP = {
+    "recommended": "best",
+    "caution": "consider",
+    "contraindicated": "unlikely"
+}
+
+def get_method_id(method):
+    return method["name"].lower().replace(" ", "_").replace("(", "").replace(")", "").replace(",", "")
 
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
 hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
@@ -202,11 +237,126 @@ div.stButton {{text-align: center !important;}}
     50% {{ transform: translateY(6px); }}
 }}
 
-.quiz-controls {{
+.category-card {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 16px;
+    margin: 12px 0;
+}}
+
+.category-title {{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 4px 0;
+    text-align: left !important;
+}}
+
+.category-sub {{
+    margin: 0 0 12px 0;
+    color: rgba(15, 23, 42, 0.75);
+    font-size: 0.95rem;
+    text-align: left !important;
+}}
+
+.badge {{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.8);
+}}
+
+.badge-best {{
+    border-color: rgba(15, 118, 110, 0.35);
+    color: var(--teal);
+    background: rgba(15, 118, 110, 0.08);
+}}
+
+.badge-consider {{
+    border-color: rgba(15, 23, 42, 0.18);
+    color: rgba(15, 23, 42, 0.80);
+    background: rgba(15, 23, 42, 0.04);
+}}
+
+.badge-unlikely {{
+    border-color: rgba(209, 73, 91, 0.35);
+    color: var(--coral);
+    background: rgba(209, 73, 91, 0.08);
+}}
+
+.rec-row {{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(229, 231, 235, 0.9);
+    background: rgba(255,255,255,0.75);
+    margin: 8px 0;
+}}
+
+.rec-name {{
+    font-weight: 650;
+    color: var(--ink);
+    text-align: left !important;
+}}
+
+.rec-meta {{
+    font-size: 0.88rem;
+    color: rgba(15, 23, 42, 0.7);
+    text-align: left !important;
+}}
+
+.details-card {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 16px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}}
+
+.details-card h4 {{
+    color: var(--teal);
+    margin-bottom: 12px;
+}}
+
+.section-h {{
+    margin: 12px 0 6px 0;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: left !important;
+}}
+
+.pros-list, .cons-list {{
+    text-align: left !important;
+    padding-left: 20px;
+    margin: 0;
+}}
+
+.pros-list li {{
+    color: var(--ink);
+    margin: 4px 0;
+}}
+
+.pros-list li::marker {{
+    color: var(--teal);
+}}
+
+.cons-list li {{
+    color: var(--ink);
+    margin: 4px 0;
+}}
+
+.cons-list li::marker {{
+    color: var(--coral);
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -273,6 +423,7 @@ def render_quiz():
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
+            st.session_state.selected_method_id = None
             st.rerun()
     
     q_idx = st.session_state.q_idx
@@ -332,7 +483,93 @@ def render_quiz():
             if st.button("See Results", use_container_width=True):
                 st.session_state.answers[q_id] = answer
                 st.session_state.show_results = True
+                st.session_state.selected_method_id = None
                 st.rerun()
+
+
+def render_category(tier_key, methods):
+    if not methods:
+        return
+    
+    tier = TIER_CONFIG[tier_key]
+    
+    st.markdown(f"""
+    <div class="category-card">
+        <p class="category-title">{tier['icon']} {tier['title']}</p>
+        <p class="category-sub">{tier['microcopy']}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    for method in methods:
+        method_id = get_method_id(method)
+        col1, col2 = st.columns([3, 1])
+        
+        with col1:
+            st.markdown(f"""
+            <div style="text-align: left !important;">
+                <span class="rec-name">{method['name']}</span><br/>
+                <span class="badge {tier['class']}">{tier['icon']} {tier['badge']}</span>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            if st.button("View", key=f"view_{method_id}", use_container_width=True):
+                st.session_state.selected_method_id = method_id
+                st.rerun()
+
+
+def render_method_details(all_methods):
+    selected_id = st.session_state.selected_method_id
+    if not selected_id:
+        return
+    
+    method = None
+    for m in all_methods:
+        if get_method_id(m) == selected_id:
+            method = m
+            break
+    
+    if not method:
+        st.session_state.selected_method_id = None
+        return
+    
+    st.markdown('<div class="details-card">', unsafe_allow_html=True)
+    
+    st.markdown(f"#### {method['name']}")
+    
+    image_url = method.get("image")
+    if image_url:
+        try:
+            st.image(image_url, use_container_width=True)
+        except:
+            st.caption("Image unavailable")
+    
+    pros = method.get("pros", [])
+    cons = method.get("cons", [])
+    
+    if pros:
+        st.markdown('<p class="section-h">Pros</p>', unsafe_allow_html=True)
+        pros_html = "<ul class='pros-list'>" + "".join([f"<li>{p}</li>" for p in pros]) + "</ul>"
+        st.markdown(pros_html, unsafe_allow_html=True)
+    
+    if cons:
+        st.markdown('<p class="section-h">Cons</p>', unsafe_allow_html=True)
+        cons_html = "<ul class='cons-list'>" + "".join([f"<li>{c}</li>" for c in cons]) + "</ul>"
+        st.markdown(cons_html, unsafe_allow_html=True)
+    
+    if not pros and not cons:
+        st.caption("Details coming soon")
+    
+    effectiveness = method.get("typical", "")
+    if effectiveness:
+        st.markdown(f'<p class="section-h">Typical effectiveness</p>', unsafe_allow_html=True)
+        st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    if st.button("Close details", key="close_details", use_container_width=True):
+        st.session_state.selected_method_id = None
+        st.rerun()
 
 
 def render_results():
@@ -342,20 +579,13 @@ def render_results():
     encoded = encode_answers(st.session_state.answers)
     results = get_recommendations(METHODS, encoded)
     
-    if results["recommended"]:
-        st.markdown("**🟢 Recommended for you:**")
-        for m in results["recommended"]:
-            st.markdown(format_recommendation_text(m))
+    all_methods = results["recommended"] + results["caution"] + results["contraindicated"]
     
-    if results["caution"]:
-        st.markdown("**🟡 Use with caution:**")
-        for m in results["caution"]:
-            st.markdown(format_recommendation_text(m, include_failure=False))
+    render_category("best", results["recommended"])
+    render_category("consider", results["caution"])
+    render_category("unlikely", results["contraindicated"])
     
-    if results["contraindicated"]:
-        st.markdown("**🔴 Avoid (contraindicated):**")
-        for m in results["contraindicated"]:
-            st.markdown(format_recommendation_text(m, include_failure=False))
+    render_method_details(all_methods)
     
     st.markdown("---")
     
@@ -371,6 +601,7 @@ def render_results():
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
+            st.session_state.selected_method_id = None
             st.rerun()
 
 
