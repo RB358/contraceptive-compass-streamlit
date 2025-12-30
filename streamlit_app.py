@@ -14,6 +14,8 @@ st.set_page_config(
     layout="centered"
 )
 
+BOOK_URL = "https://www.plannedparenthood.org/health-center"
+
 if "started" not in st.session_state:
     st.session_state.started = False
 if "scroll_to_quiz" not in st.session_state:
@@ -358,8 +360,126 @@ div.stButton {{text-align: center !important;}}
 .cons-list li::marker {{
     color: var(--coral);
 }}
+
+.floating-cta {{
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(209, 73, 91, 0.35);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 700;
+}}
+
+.floating-cta:hover {{
+    border-color: rgba(209, 73, 91, 0.55);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}}
+
+.floating-cta .dot {{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--coral);
+    flex: 0 0 auto;
+}}
+
+.floating-cta .sub {{
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.70);
+    font-size: 0.85rem;
+    margin-left: 6px;
+}}
+
+@media (max-width: 640px) {{
+    .floating-cta {{
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        justify-content: center;
+    }}
+}}
+
+.details-cta {{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 999px;
+    background: var(--teal);
+    border: 1px solid var(--teal);
+    color: white !important;
+    text-decoration: none;
+    font-weight: 750;
+    width: 100%;
+}}
+
+.details-cta:hover {{
+    background: var(--teal-600);
+    border-color: var(--teal-600);
+}}
+
+.details-cta.unlikely {{
+    background: var(--coral);
+    border-color: var(--coral);
+}}
+
+.details-cta.unlikely:hover {{
+    background: var(--coral-hover);
+    border-color: var(--coral-hover);
+}}
+
+.inline-link {{
+    color: var(--coral) !important;
+    text-decoration: none;
+    font-weight: 700;
+}}
+
+.inline-link:hover {{
+    text-decoration: underline;
+}}
+
+.end-cta-section {{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+}}
+
+.end-cta-section h4 {{
+    color: var(--ink);
+    margin: 0 0 8px 0;
+}}
+
+.end-cta-section p {{
+    color: rgba(15, 23, 42, 0.75);
+    margin: 0 0 16px 0;
+    font-size: 0.95rem;
+}}
 </style>
 """, unsafe_allow_html=True)
+
+st.markdown(
+    f'''
+    <a class="floating-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">
+        <span class="dot"></span>
+        <span>Talk to a clinician<span class="sub">Book a telehealth visit</span></span>
+    </a>
+    ''',
+    unsafe_allow_html=True
+)
 
 
 def render_landing():
@@ -373,6 +493,10 @@ def render_landing():
     
     if not st.session_state.started:
         start_cta()
+        st.markdown(
+            f"<p style='text-align:center; margin-top:16px;'><a class='inline-link' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Prefer to talk to someone? Book a telehealth visit.</a></p>",
+            unsafe_allow_html=True
+        )
     
     if st.query_params.get("start") == "1":
         st.session_state.started = True
@@ -557,6 +681,19 @@ def render_category(tier_key, methods):
                 st.markdown("<div class='section-h'>Typical effectiveness</div>", unsafe_allow_html=True)
                 st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
             
+            cta_class = "details-cta unlikely" if tier_key == "unlikely" else "details-cta"
+            helper = (
+                "Based on your answers, this option is less likely to fit. A clinician can help you review safer alternatives."
+                if tier_key == "unlikely"
+                else "If you'd like, you can book a telehealth visit to talk through your options."
+            )
+            
+            st.markdown(f"<div class='rec-meta' style='margin-top:14px;'>{helper}</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<a class='{cta_class}' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Book a telehealth visit →</a>",
+                unsafe_allow_html=True
+            )
+            
             col_a, col_b = st.columns([1, 1])
             with col_a:
                 if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
@@ -579,9 +716,13 @@ def render_results():
     
     st.markdown("---")
     
-    with st.expander("📅 Book Doctor Now – Choose a Service", expanded=False):
-        for service in TELEHEALTH_OPTIONS:
-            st.markdown(format_telehealth_link(service))
+    st.markdown(f"""
+    <div class="end-cta-section">
+        <h4>Want personalized medical advice?</h4>
+        <p>Book a telehealth visit to discuss your options and medical eligibility.</p>
+        <a class="details-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">Book a telehealth visit →</a>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
