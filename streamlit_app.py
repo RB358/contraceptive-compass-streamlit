@@ -79,7 +79,7 @@ st.markdown(f"""
     --coral-hover: #E06372;
     --ink: #0F172A;
     --surface: #FFFFFF;
-    --warm-bg: #FFF7F6;
+    --warm-bg: #FFFBFA;
     --border: #E5E7EB;
 }}
 
@@ -265,9 +265,9 @@ div.stButton {{text-align: center !important;}}
     align-items: center;
     gap: 6px;
     border-radius: 999px;
-    padding: 4px 10px;
+    padding: 7px 12px;
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 650;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.8);
 }}
@@ -279,9 +279,9 @@ div.stButton {{text-align: center !important;}}
 }}
 
 .badge-consider {{
-    border-color: rgba(15, 23, 42, 0.18);
-    color: rgba(15, 23, 42, 0.80);
-    background: rgba(15, 23, 42, 0.04);
+    border-color: rgba(51, 65, 85, 0.35);
+    color: rgba(51, 65, 85, 0.95);
+    background: rgba(51, 65, 85, 0.08);
 }}
 
 .badge-unlikely {{
@@ -502,6 +502,8 @@ def render_category(tier_key, methods):
     
     for method in methods:
         method_id = get_method_id(method)
+        is_expanded = st.session_state.selected_method_id == method_id
+        
         col1, col2 = st.columns([3, 1])
         
         with col1:
@@ -513,63 +515,55 @@ def render_category(tier_key, methods):
             """, unsafe_allow_html=True)
         
         with col2:
-            if st.button("View", key=f"view_{method_id}", use_container_width=True):
-                st.session_state.selected_method_id = method_id
+            label = "Hide" if is_expanded else "View"
+            if st.button(label, key=f"view_{method_id}", use_container_width=True):
+                if is_expanded:
+                    st.session_state.selected_method_id = None
+                else:
+                    st.session_state.selected_method_id = method_id
                 st.rerun()
-
-
-def render_method_details(all_methods):
-    selected_id = st.session_state.selected_method_id
-    if not selected_id:
-        return
-    
-    method = None
-    for m in all_methods:
-        if get_method_id(m) == selected_id:
-            method = m
-            break
-    
-    if not method:
-        st.session_state.selected_method_id = None
-        return
-    
-    st.markdown('<div class="details-card">', unsafe_allow_html=True)
-    
-    st.markdown(f"#### {method['name']}")
-    
-    image_url = method.get("image")
-    if image_url:
-        try:
-            st.image(image_url, use_container_width=True)
-        except:
-            st.caption("Image unavailable")
-    
-    pros = method.get("pros", [])
-    cons = method.get("cons", [])
-    
-    if pros:
-        st.markdown('<p class="section-h">Pros</p>', unsafe_allow_html=True)
-        pros_html = "<ul class='pros-list'>" + "".join([f"<li>{p}</li>" for p in pros]) + "</ul>"
-        st.markdown(pros_html, unsafe_allow_html=True)
-    
-    if cons:
-        st.markdown('<p class="section-h">Cons</p>', unsafe_allow_html=True)
-        cons_html = "<ul class='cons-list'>" + "".join([f"<li>{c}</li>" for c in cons]) + "</ul>"
-        st.markdown(cons_html, unsafe_allow_html=True)
-    
-    if not pros and not cons:
-        st.caption("Details coming soon")
-    
-    effectiveness = method.get("typical", "")
-    if effectiveness:
-        st.markdown(f'<p class="section-h">Typical effectiveness</p>', unsafe_allow_html=True)
-        st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if st.button("Close details", key="close_details", use_container_width=True):
-        st.session_state.selected_method_id = None
-        st.rerun()
+        
+        if is_expanded:
+            st.markdown('<div class="details-card">', unsafe_allow_html=True)
+            
+            st.markdown(
+                f"<div style='display:flex; justify-content:space-between; align-items:center; gap:12px;'>"
+                f"<div style='font-weight:800; font-size:1.05rem; color:var(--ink); text-align:left !important;'>{method['name']}</div>"
+                f"<div class='badge {tier['class']}'>{tier['icon']} {tier['badge']}</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+            
+            if method.get("image"):
+                try:
+                    st.image(method["image"], use_container_width=True)
+                except:
+                    st.caption("Image unavailable")
+            
+            st.markdown("<div class='section-h'>Pros</div>", unsafe_allow_html=True)
+            if method.get("pros"):
+                st.markdown("<ul class='pros-list'>" + "".join([f"<li>{p}</li>" for p in method["pros"]]) + "</ul>", unsafe_allow_html=True)
+            else:
+                st.markdown("<div class='rec-meta'>Pros coming soon.</div>", unsafe_allow_html=True)
+            
+            st.markdown("<div class='section-h'>Cons</div>", unsafe_allow_html=True)
+            if method.get("cons"):
+                st.markdown("<ul class='cons-list'>" + "".join([f"<li>{c}</li>" for c in method["cons"]]) + "</ul>", unsafe_allow_html=True)
+            else:
+                st.markdown("<div class='rec-meta'>Cons coming soon.</div>", unsafe_allow_html=True)
+            
+            effectiveness = method.get("typical", "")
+            if effectiveness:
+                st.markdown("<div class='section-h'>Typical effectiveness</div>", unsafe_allow_html=True)
+                st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
+            
+            col_a, col_b = st.columns([1, 1])
+            with col_a:
+                if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
+                    st.session_state.selected_method_id = None
+                    st.rerun()
+            
+            st.markdown("</div>", unsafe_allow_html=True)
 
 
 def render_results():
@@ -579,13 +573,9 @@ def render_results():
     encoded = encode_answers(st.session_state.answers)
     results = get_recommendations(METHODS, encoded)
     
-    all_methods = results["recommended"] + results["caution"] + results["contraindicated"]
-    
     render_category("best", results["recommended"])
     render_category("consider", results["caution"])
     render_category("unlikely", results["contraindicated"])
-    
-    render_method_details(all_methods)
     
     st.markdown("---")
     

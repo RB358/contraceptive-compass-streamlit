@@ -1,0 +1,104 @@
+Please update streamlit_app.py with TWO changes:
+
+(1) COLOUR CONTRAST FIXES
+Goal: make background lighter and “Worth considering” badge more visible, without using yellow.
+
+A) Update the warm background token:
+- Change --warm-bg from #FFF7F6 to #FFFBFA (lighter blush).
+
+In the CSS variables block:
+--warm-bg: #FFFBFA;
+
+B) Strengthen “Worth considering” badge styling (cool slate tone with higher contrast).
+Replace the existing .badge-consider CSS with the following:
+
+.badge-consider{
+  border-color: rgba(51, 65, 85, 0.35);     /* slate border */
+  color: rgba(51, 65, 85, 0.95);            /* slate text */
+  background: rgba(51, 65, 85, 0.08);       /* subtle slate fill */
+}
+
+Also slightly increase badge legibility:
+In .badge, set:
+  font-weight: 650;
+  padding: 7px 12px;
+
+(Leave .badge-best and .badge-unlikely unchanged.)
+
+(2) INLINE EXPANSION FOR “VIEW DETAILS” (MOBILE-FRIENDLY)
+Goal: when user taps “View details” for a method, show the image + pros/cons IMMEDIATELY under that method row (not at the bottom of the whole list). Only one method should be expanded at a time.
+
+A) Keep this session state:
+if "selected_method_id" not in st.session_state:
+    st.session_state.selected_method_id = None
+
+B) REMOVE / DISABLE the global details panel currently rendered AFTER all categories.
+Search for the section that says something like:
+"if st.session_state.selected_method_id: ... render details-card ..."
+Delete it or comment it out. We will render details inline instead.
+
+C) Implement inline details right after each recommendation row:
+Within each category rendering loop (for best / consider / unlikely), where you render each method row and its “View details” button:
+
+1) Keep the button logic:
+if st.button("View details", key=f"view_{method_id}"):
+    if st.session_state.selected_method_id == method_id:
+        st.session_state.selected_method_id = None   # toggle close if clicking same item
+    else:
+        st.session_state.selected_method_id = method_id
+
+2) Immediately AFTER rendering that method row, add:
+
+if st.session_state.selected_method_id == method_id:
+    st.markdown('<div class="details-card">', unsafe_allow_html=True)
+
+    # Title line (method name + badge)
+    st.markdown(
+      f"<div style='display:flex; justify-content:space-between; align-items:center; gap:12px;'>"
+      f"<div style='font-weight:800; font-size:1.05rem; color:var(--ink);'>{method['name']}</div>"
+      f"<div class='badge {TIER_CONFIG[tier_key]['class']}'>{TIER_CONFIG[tier_key]['icon']} {TIER_CONFIG[tier_key]['badge']}</div>"
+      f"</div>",
+      unsafe_allow_html=True
+    )
+
+    # Image (if present)
+    if method.get("image"):
+        st.image(method["image"], use_container_width=True)
+
+    # Pros / Cons
+    st.markdown("<div class='section-h'>Pros</div>", unsafe_allow_html=True)
+    if method.get("pros"):
+        st.markdown("<ul class='pros'>" + "".join([f"<li>{p}</li>" for p in method["pros"]]) + "</ul>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='rec-meta'>Pros coming soon.</div>", unsafe_allow_html=True)
+
+    st.markdown("<div class='section-h'>Cons</div>", unsafe_allow_html=True)
+    if method.get("cons"):
+        st.markdown("<ul class='cons'>" + "".join([f"<li>{c}</li>" for c in method["cons"]]) + "</ul>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='rec-meta'>Cons coming soon.</div>", unsafe_allow_html=True)
+
+    # Close button (optional, but good on mobile)
+    colA, colB = st.columns([1,1])
+    with colA:
+        if st.button("Close details", key=f"close_{method_id}"):
+            st.session_state.selected_method_id = None
+    with colB:
+        pass
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+IMPORTANT: In the inline details block, tier_key must be available (best/consider/unlikely) and method_id must match the id used in the button key. Use the same variables already present in the loop.
+
+D) OPTIONAL: Make the “View details” button label change when expanded:
+Replace "View details" with:
+label = "Hide details" if st.session_state.selected_method_id == method_id else "View details"
+Then use st.button(label, key=f"view_{method_id}").
+
+E) Ensure this works on mobile:
+- The details panel must appear directly under the clicked item.
+- Only one expanded at a time (selected_method_id single value).
+
+DELIVERABLE:
+- Provide the updated recommendations rendering section and the updated CSS block.
+- Confirm the old bottom-of-page details panel is removed.
