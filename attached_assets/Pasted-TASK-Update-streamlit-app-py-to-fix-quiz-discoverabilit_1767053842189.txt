@@ -1,0 +1,66 @@
+TASK: Update streamlit_app.py to fix quiz discoverability after pressing Start.
+
+GOAL: When user clicks Start, the page should (1) scroll to the first question automatically, (2) reduce the landing hero image height so questions are nearer to the top, and (3) show a clear visual cue that the quiz has started.
+
+IMPLEMENTATION DETAILS (do exactly):
+
+A) Add/confirm session state
+1. Ensure these exist near the top of streamlit_app.py:
+   - st.session_state.started (bool)
+   - st.session_state.scroll_to_quiz (bool, default False)
+
+B) Change Start button behavior
+1. Where the Start button is rendered on the landing page:
+   - When clicked, set:
+     st.session_state.started = True
+     st.session_state.scroll_to_quiz = True
+   - Do NOT remove the landing page render; keep current behavior where quiz appears below.
+
+C) Add conditional CSS to collapse the hero after Start
+1. If you already have CSS for the hero (e.g. .hero { height: 440px; ... }):
+   - Replace the fixed height with a variable computed in Python:
+     hero_height = 440 if not st.session_state.started else 180
+   - Inject CSS using f-string so .hero height uses {hero_height}px
+2. Make sure the hero still looks good after collapse:
+   - Keep border-radius, overflow hidden
+   - Keep background-position center 35% (or your existing)
+   - Reduce margin-bottom after start (e.g. from 40px to 16px) so the quiz is closer.
+
+D) Add a visible cue right after Start is pressed
+1. Immediately below the Start button area, add:
+   - If st.session_state.started is True:
+     show a small “Quiz started” callout card with:
+       - "Quiz started — your first question is below."
+       - "7 questions • ~2 minutes • Educational only"
+       - A down arrow / chevron indicator (text is fine: "▼")
+   - Keep it concise and high contrast.
+
+E) Add an anchor above the first question AND auto-scroll to it
+1. Right before you render Question 1 (i.e., at the very top of the quiz container), insert:
+   st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
+
+2. Immediately after rendering that anchor (and before the question UI), add:
+   - If st.session_state.scroll_to_quiz is True:
+       inject JS to scroll to the anchor smoothly:
+       st.components.v1.html("""
+       <script>
+         const el = window.parent.document.getElementById("quiz-start");
+         if (el) { el.scrollIntoView({behavior: "smooth", block: "start"}); }
+       </script>
+       """, height=0)
+       then set st.session_state.scroll_to_quiz = False
+
+F) Add a "Back to top" and "Restart quiz" control (simple)
+1. At the top of the quiz container (above Question X of N), add two small buttons:
+   - "Restart quiz": resets started=False, scroll_to_quiz=False, and clears answers + question index
+   - "Back to top": inject JS to scroll to top (window.parent.scrollTo({top:0, behavior:"smooth"}))
+
+CONSTRAINTS:
+- Do NOT create a new Streamlit page.
+- Keep everything in streamlit_app.py.
+- Do not break existing styling; only modify hero height/margins conditionally.
+- Use st.components.v1.html for the JS scrolling. Add `import streamlit.components.v1 as components` if not already present.
+
+OUTPUT REQUIRED:
+- Provide the updated streamlit_app.py code (only the changed sections are fine, but include enough context to paste cleanly).
+- Explain exactly where in the file to insert each new block (Start button area, CSS area, quiz container top).
