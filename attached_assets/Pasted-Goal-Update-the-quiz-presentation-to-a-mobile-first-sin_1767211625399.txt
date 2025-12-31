@@ -1,0 +1,76 @@
+Goal: Update the quiz presentation to a mobile-first single-column layout with large question text and tappable option tiles (Frank Body mobile layout inspiration, but keep clinical tone). The quiz uses conditional rendering per question.
+
+Constraints:
+- Questions 1–5 and 7: single-select
+- Question 6: multi-select (toggle multiple tiles)
+- Next button disabled until selection is valid (single: one selected; multi: >=1 selected)
+- Inline navigation (no sticky footer)
+- Use consistent tile styling across the whole app
+- Do NOT change question wording, scoring, recommendation logic, or routing.
+
+IMPLEMENTATION PLAN (preferred approach: custom tile component using session_state, not st.radio styling hacks)
+
+1) Create a reusable tile selector helper
+- Add a function (e.g., in the main file or a ui_components.py) called:
+  a) render_single_select_tiles(question_key, options) -> selected_option or None
+  b) render_multi_select_tiles(question_key, options) -> list[str] selected options
+- These render each option as a clickable “tile” and store selection in st.session_state.
+
+2) Tile rendering method (single-select)
+- For each option:
+  - Render a button-like element that is visually a tile.
+  - On click: set st.session_state[question_key] = that option, then st.rerun()
+- Use a stable CSS class for tiles and a “selected” variant class when the option matches current selection.
+- Ensure large tap targets and rounded corners.
+
+3) Tile rendering method (multi-select; Question 6 only)
+- Store selection as a list (or set) in st.session_state[question_key].
+- For each option:
+  - On click: toggle membership in the list (add if missing, remove if present), then st.rerun()
+- Selected tiles should show a clear state change.
+
+4) Disable Next until selection exists
+- For single-select: valid if st.session_state[question_key] is not None
+- For multi-select: valid if len(st.session_state[question_key]) >= 1
+- Implement Next disabled using st.button(..., disabled=not valid) if supported.
+- If disabled parameter is not available in your Streamlit version, emulate:
+  - Render Next only when valid, otherwise render a visually-muted placeholder button that does nothing (or render help text “Select an option to continue.”).
+
+5) Layout styling (mobile-first column, “Frank Body mobile feel”)
+- Center the quiz content in a narrow column across all devices:
+  - max-width ~480–520px
+  - width: 100%
+  - margin: 0 auto
+- Remove any “card/white panel” above the question (no extra box backgrounds/borders/shadows).
+- Question text:
+  - Larger font size, strong line height
+  - Minimal UI above it: progress bar + subtle Restart link only
+- Spacing:
+  - Tight, consistent vertical rhythm (avoid Streamlit default giant gaps).
+- Keep everything inline (no sticky bottom bar).
+
+6) Consistent tile styling across app
+- Add CSS once (global) for:
+  - .cc-tile (base tile)
+  - .cc-tile--selected (selected state)
+  - .cc-tile--multi (optional, but keep identical visuals)
+- Tiles:
+  - full width
+  - rounded corners (e.g., 18–24px)
+  - consistent padding
+  - clear selected state (border weight + subtle background)
+  - hover/focus state (desktop accessibility)
+- Do NOT introduce per-question styling unless absolutely required.
+
+7) Progress bar and restart placement
+- Keep Option A progress logic:
+  - step = current_question + 1
+  - progress = step / 7
+- Place progress label + bar at top of quiz area.
+- Place “Restart” as a low-key text link aligned right under the progress bar (no capsule styling).
+
+8) Verify behavior
+- Q1 shows progress 1/7 and Next disabled until selection.
+- Q6 allows multiple selections; Next disabled until at least one tile selected.
+- Navigation works; scoring/recommendations unchanged.
+- Layout looks like a mobile-first guided quiz on desktop too (centered narrow column).

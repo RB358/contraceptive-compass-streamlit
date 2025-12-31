@@ -248,7 +248,78 @@ div.stButton {{text-align: center !important;}}
     color: var(--coral);
     font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 8px !important;
+}}
+
+.quiz-container {{
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+}}
+
+.quiz-question {{
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+    color: var(--ink) !important;
+    margin: 16px 0 8px 0 !important;
+    text-align: center !important;
+}}
+
+.quiz-help {{
+    font-size: 0.9rem;
+    color: rgba(15, 23, 42, 0.65);
+    margin: 0 0 20px 0 !important;
+    text-align: center !important;
+}}
+
+.cc-tile {{
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    margin: 8px 0;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: left !important;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}}
+
+.cc-tile:hover {{
+    border-color: var(--teal);
+    background: rgba(15, 118, 110, 0.04);
+}}
+
+.cc-tile--selected {{
+    border-color: var(--teal) !important;
+    border-width: 2.5px !important;
+    background: rgba(15, 118, 110, 0.08) !important;
+}}
+
+.cc-tile--selected::before {{
+    content: "✓ ";
+    color: var(--teal);
+    font-weight: 700;
+}}
+
+.restart-link {{
+    font-size: 0.85rem;
+    color: rgba(15, 23, 42, 0.5);
+    text-align: right !important;
+    margin: 4px 0 16px 0 !important;
+}}
+
+.restart-link:hover {{
+    color: var(--coral);
+}}
+
+.quiz-nav {{
+    margin-top: 24px;
 }}
 
 .quiz-card {{
