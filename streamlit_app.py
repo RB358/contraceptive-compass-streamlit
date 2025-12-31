@@ -68,9 +68,8 @@ def get_method_id(method):
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
 hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
 
-hero_height = "clamp(140px, 25vh, 180px)" if st.session_state.started else "clamp(240px, 45vh, 440px)"
-hero_margin = "12px" if st.session_state.started else "24px"
-start_btn_offset = -80 if st.session_state.started else -140
+hero_margin = "12px" if st.session_state.started else "0"
+start_btn_offset = -80 if st.session_state.started else -70
 
 st.markdown(f"""
 <style>
@@ -96,19 +95,29 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
 
 .stApp > section > .block-container {{
     padding-top: 1rem !important;
+    padding-bottom: 80px !important;
 }}
 
 .hero {{
     position: relative;
     width: 100%;
-    height: {hero_height};
-    border-radius: 24px;
+    border-radius: 20px;
     overflow: hidden;
-    margin-bottom: {hero_margin};
     background-image: url("data:image/jpeg;base64,{hero_base64}");
     background-size: cover;
     background-position: center 35%;
-    transition: height 0.3s ease, margin-bottom 0.3s ease;
+}}
+
+.hero-landing {{
+    height: calc(100vh - 200px);
+    height: calc(100dvh - 200px);
+    min-height: 260px;
+    margin-bottom: 0;
+}}
+
+.hero-started {{
+    height: clamp(120px, 20vh, 160px);
+    margin-bottom: 12px;
 }}
 
 .hero::after {{
@@ -128,18 +137,17 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center !important;
+    justify-content: center;
     align-items: center;
     text-align: center;
-    padding: {"16px 20px" if st.session_state.started else "24px 28px"};
+    padding: 24px 28px;
     color: white;
 }}
 
 .hero h1 {{
-    font-size: {"1.4rem" if st.session_state.started else "clamp(1.6rem, 5vw, 2.7rem)"};
+    font-size: clamp(1.5rem, 5vw, 2.7rem);
     font-weight: 700;
-    margin-bottom: {"8px" if st.session_state.started else "16px"};
-    transition: font-size 0.3s ease;
+    margin-bottom: 0;
     line-height: 1.2;
 }}
 
@@ -147,25 +155,13 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
     margin-top: {start_btn_offset}px !important;
 }}
 
-@media (max-height: 750px) {{
-    .hero {{
-        height: {"clamp(100px, 20vh, 140px)" if st.session_state.started else "clamp(180px, 35vh, 300px)"};
-        margin-bottom: 12px;
-        border-radius: 18px;
-    }}
-    .hero h1 {{
-        font-size: {"1.2rem" if st.session_state.started else "clamp(1.4rem, 4vw, 2rem)"};
-        margin-bottom: 8px;
-    }}
-    .hero-content {{
-        padding: 16px 20px;
-    }}
-    .start-cta-wrapper {{
-        margin-top: {-60 if st.session_state.started else -100}px !important;
-    }}
-    .main .block-container {{
-        padding-top: 1rem !important;
-    }}
+.landing-disclaimer {{
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(15,23,42,0.65);
+    padding: 8px 16px;
+    margin: 0;
+    line-height: 1.4;
 }}
 
 h1, h2, h3 {{
@@ -513,20 +509,27 @@ st.markdown(
 
 
 def render_landing():
-    st.markdown(f"""
-    <div class="hero hero-landing">
-        <div class="hero-content">
-            <h1>Find your contraceptive in seven questions</h1>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
     if not st.session_state.started:
+        st.markdown('''
+        <div class="hero hero-landing">
+            <div class="hero-content">
+                <h1>Find your contraceptive in seven questions</h1>
+            </div>
+        </div>
+        ''', unsafe_allow_html=True)
         start_cta()
         st.markdown(
-            "<p style='text-align:center; font-size:0.85rem; color:rgba(15,23,42,0.65); margin:16px 0 0 0; padding:0 16px;'>None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>",
+            '<p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>',
             unsafe_allow_html=True
         )
+    else:
+        st.markdown('''
+        <div class="hero hero-started">
+            <div class="hero-content">
+                <h1>Find your contraceptive in seven questions</h1>
+            </div>
+        </div>
+        ''', unsafe_allow_html=True)
     
     if st.query_params.get("start") == "1":
         st.session_state.started = True
