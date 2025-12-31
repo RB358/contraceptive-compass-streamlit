@@ -1,0 +1,67 @@
+1) Apply no-scroll + true viewport height (landing only)
+
+In the landing render path, inject:
+
+height: 100dvh (dynamic viewport height) with fallback to 100vh
+
+overflow: hidden
+
+Instruction for Replit:
+
+Add landing-only CSS that sets the landing wrapper to min-height: 100dvh (with min-height: 100vh fallback) and sets overflow: hidden so the page cannot scroll.
+
+Why: mobile browsers often misreport 100vh; 100dvh is the most robust modern option.
+
+2) Use a grid or flex layout that “allocates” screen real estate
+
+Your landing wrapper should allocate:
+
+a top region (hero)
+
+a bottom region (button + disclaimer)
+
+a fixed overlay CTA (telehealth)
+
+Instruction for Replit:
+
+Implement the landing container as a 2-row layout using CSS grid:
+
+Row 1: hero region with 1fr
+
+Row 2: content region sized to its content but capped so it never forces overflow
+Ensure the container is height: 100dvh and overflow: hidden.
+
+This makes the hero automatically expand/contract based on what the device can support.
+
+3) Make the hero image responsive to available height
+
+Instruction for Replit:
+
+Change the hero styling so it does not use a fixed pixel height (e.g., remove height: 440px).
+Instead, set hero height as a clamp that adapts to viewport height, e.g.:
+
+height: clamp(240px, 45vh, 440px)
+Keep background-size: cover and a stable background-position so cropping is predictable.
+
+This prevents overflow on short screens while retaining presence on larger displays.
+
+4) Add a “small-height” breakpoint to tighten spacing on short devices
+
+Instruction for Replit:
+
+Add a CSS media query for short viewports such as:
+
+@media (max-height: 750px)
+Reduce vertical margins/padding and font sizes slightly (especially above/below the hero), so everything remains visible without scrolling.
+
+This is the difference between “usually fits” and “always fits” on small laptops and some mobile screens.
+
+5) Ensure the fixed telehealth CTA does not cause overflow
+
+A fixed element should be overlay, not part of the document flow.
+
+Instruction for Replit:
+
+Ensure the “Talk to a clinician. Book a telehealth visit.” element uses position: fixed (or sticky only if it truly does not affect layout).
+It must not add height to the landing container.
+Add bottom padding inside the landing container only if needed so the CTA does not cover the primary button (e.g., padding-bottom: 72px).

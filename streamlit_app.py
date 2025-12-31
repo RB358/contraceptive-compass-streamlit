@@ -68,9 +68,9 @@ def get_method_id(method):
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
 hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
 
-hero_height = 180 if st.session_state.started else 440
-hero_margin = 16 if st.session_state.started else 40
-start_btn_offset = -80 if st.session_state.started else -170
+hero_height = "clamp(140px, 25vh, 180px)" if st.session_state.started else "clamp(240px, 45vh, 440px)"
+hero_margin = "12px" if st.session_state.started else "24px"
+start_btn_offset = -80 if st.session_state.started else -140
 
 st.markdown(f"""
 <style>
@@ -93,10 +93,10 @@ st.markdown(f"""
 .hero {{
     position: relative;
     width: 100%;
-    height: {hero_height}px;
+    height: {hero_height};
     border-radius: 24px;
     overflow: hidden;
-    margin-bottom: {hero_margin}px;
+    margin-bottom: {hero_margin};
     background-image: url("data:image/jpeg;base64,{hero_base64}");
     background-size: cover;
     background-position: center 35%;
@@ -120,22 +120,44 @@ st.markdown(f"""
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start !important;
+    justify-content: center !important;
     align-items: center;
     text-align: center;
-    padding: {"20px 24px" if st.session_state.started else "35px 32px 32px 32px"};
+    padding: {"16px 20px" if st.session_state.started else "24px 28px"};
     color: white;
 }}
 
 .hero h1 {{
-    font-size: {"1.6rem" if st.session_state.started else "2.7rem"};
+    font-size: {"1.4rem" if st.session_state.started else "clamp(1.6rem, 5vw, 2.7rem)"};
     font-weight: 700;
-    margin-bottom: {"10px" if st.session_state.started else "26px"};
+    margin-bottom: {"8px" if st.session_state.started else "16px"};
     transition: font-size 0.3s ease;
+    line-height: 1.2;
 }}
 
 .start-cta-wrapper {{
     margin-top: {start_btn_offset}px !important;
+}}
+
+@media (max-height: 750px) {{
+    .hero {{
+        height: {"clamp(100px, 20vh, 140px)" if st.session_state.started else "clamp(180px, 35vh, 300px)"};
+        margin-bottom: 12px;
+        border-radius: 18px;
+    }}
+    .hero h1 {{
+        font-size: {"1.2rem" if st.session_state.started else "clamp(1.4rem, 4vw, 2rem)"};
+        margin-bottom: 8px;
+    }}
+    .hero-content {{
+        padding: 16px 20px;
+    }}
+    .start-cta-wrapper {{
+        margin-top: {-60 if st.session_state.started else -100}px !important;
+    }}
+    .main .block-container {{
+        padding-top: 1rem !important;
+    }}
 }}
 
 h1, h2, h3 {{
@@ -494,7 +516,11 @@ def render_landing():
     if not st.session_state.started:
         start_cta()
         st.markdown(
-            f"<p style='text-align:center; margin-top:16px;'><a class='inline-link' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Prefer to talk to someone? Book a telehealth visit.</a></p>",
+            f"<p style='text-align:center; margin-top:12px; margin-bottom:8px;'><a class='inline-link' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Prefer to talk to someone? Book a telehealth visit.</a></p>",
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            "<p style='text-align:center; font-size:0.8rem; color:rgba(15,23,42,0.6); margin:0; padding:0 16px;'>Educational only • Not medical advice • Data not stored</p>",
             unsafe_allow_html=True
         )
     
@@ -525,8 +551,6 @@ def render_landing():
             </script>
             """, height=0)
             st.session_state.scroll_to_quiz = False
-    else:
-        st.info("**Disclaimer:** None of your answers or data are stored by us. This is educational only • Always consult a healthcare provider • Not medical advice.")
 
 
 def render_quiz():
