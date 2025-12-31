@@ -664,16 +664,6 @@ def render_landing():
         st.rerun()
     
     if st.session_state.started:
-        st.markdown('<div id="started-note"></div>', unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="accent-bg">
-            <strong>Quiz started — your first question is below.</strong><br/>
-            <span>7 questions • ~2 minutes • Educational only</span>
-            <div class="chevron">▼</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
         if st.session_state.get("scroll_to_quiz", False):
             components.html("""
             <script>
@@ -689,16 +679,19 @@ def render_landing():
 def render_quiz():
     st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
     
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("↑ Back to top", key="back_to_top", use_container_width=True):
-            components.html("""
-            <script>
-                window.parent.scrollTo({top: 0, behavior: "smooth"});
-            </script>
-            """, height=0)
-    with col2:
-        if st.button("🔄 Restart quiz", key="restart_quiz", use_container_width=True):
+    q_idx = st.session_state.q_idx
+    q_id = QUESTION_IDS[q_idx]
+    question = QUIZ_QUESTIONS[q_id]
+    
+    completed_questions = q_idx
+    progress_fraction = completed_questions / NUM_QUESTIONS
+    
+    st.markdown(f'<p class="progress-text">Question {q_idx + 1} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
+    st.progress(progress_fraction)
+    
+    col_spacer, col_restart = st.columns([4, 1])
+    with col_restart:
+        if st.button("Restart", key="restart_quiz"):
             st.session_state.started = False
             st.session_state.scroll_to_quiz = False
             st.session_state.q_idx = 0
@@ -706,12 +699,6 @@ def render_quiz():
             st.session_state.show_results = False
             st.session_state.selected_method_id = None
             st.rerun()
-    
-    q_idx = st.session_state.q_idx
-    q_id = QUESTION_IDS[q_idx]
-    question = QUIZ_QUESTIONS[q_id]
-    
-    st.markdown(f'<p class="progress-text">Question {q_idx + 1} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
     
     st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
     
@@ -861,6 +848,9 @@ def render_category(tier_key, methods):
 
 
 def render_results():
+    st.markdown(f'<p class="progress-text">Complete</p>', unsafe_allow_html=True)
+    st.progress(1.0)
+    
     st.markdown("---")
     st.markdown("### Your Personalized Recommendations")
     
