@@ -95,12 +95,33 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
 
 .stApp > section > .block-container {{
     padding-top: 1rem !important;
+    padding-bottom: 0 !important;
+}}
+
+div[data-testid="stVerticalBlock"]:has(.hero-landing) {{
+    display: flex !important;
+    flex-direction: column !important;
+    height: calc(100vh - 72px) !important;
+    height: calc(100dvh - 72px) !important;
+    overflow: hidden !important;
     padding-bottom: 80px !important;
+    box-sizing: border-box !important;
+}}
+
+div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child {{
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+}}
+
+div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child > div {{
+    flex: 1 !important;
 }}
 
 .hero {{
     position: relative;
     width: 100%;
+    height: 100%;
     border-radius: 20px;
     overflow: hidden;
     background-image: url("data:image/jpeg;base64,{hero_base64}");
@@ -109,9 +130,7 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
 }}
 
 .hero-landing {{
-    height: calc(100vh - 200px);
-    height: calc(100dvh - 200px);
-    min-height: 260px;
+    min-height: 200px;
     margin-bottom: 0;
 }}
 
@@ -151,15 +170,21 @@ section[data-testid="stVerticalBlock"] > div:first-child {{
     line-height: 1.2;
 }}
 
+.hero-landing .hero-content {{
+    justify-content: center;
+}}
+
 .start-cta-wrapper {{
-    margin-top: {start_btn_offset}px !important;
+    flex-shrink: 0 !important;
+    margin-top: -50px !important;
 }}
 
 .landing-disclaimer {{
+    flex-shrink: 0;
     text-align: center;
     font-size: 0.8rem;
     color: rgba(15,23,42,0.65);
-    padding: 8px 16px;
+    padding: 8px 16px 0 16px;
     margin: 0;
     line-height: 1.4;
 }}
@@ -510,18 +535,19 @@ st.markdown(
 
 def render_landing():
     if not st.session_state.started:
-        st.markdown('''
-        <div class="hero hero-landing">
-            <div class="hero-content">
-                <h1>Find your contraceptive in seven questions</h1>
+        with st.container():
+            st.markdown('''
+            <div class="hero hero-landing">
+                <div class="hero-content">
+                    <h1>Find your contraceptive in seven questions</h1>
+                </div>
             </div>
-        </div>
-        ''', unsafe_allow_html=True)
-        start_cta()
-        st.markdown(
-            '<p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>',
-            unsafe_allow_html=True
-        )
+            ''', unsafe_allow_html=True)
+            start_cta()
+            st.markdown(
+                '<p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>',
+                unsafe_allow_html=True
+            )
     else:
         st.markdown('''
         <div class="hero hero-started">
