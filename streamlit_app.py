@@ -89,39 +89,40 @@ st.markdown(f"""
     color: var(--ink);
 }}
 
-section[data-testid="stVerticalBlock"] > div:first-child {{
-    padding-top: 0;
+.cc-landing {{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-bottom: 72px;
 }}
 
-.stApp > section > .block-container {{
-    padding-top: 1rem !important;
-    padding-bottom: 0 !important;
+.cc-landing-bottom {{
+    padding: 0 16px 8px 16px;
 }}
 
-div[data-testid="stVerticalBlock"]:has(.hero-landing) {{
-    display: flex !important;
-    flex-direction: column !important;
-    height: calc(100vh - 72px) !important;
-    height: calc(100dvh - 72px) !important;
+.cc-landing-active .stApp {{
+    height: 100vh !important;
+    height: 100dvh !important;
     overflow: hidden !important;
-    padding-bottom: 80px !important;
-    box-sizing: border-box !important;
 }}
 
-div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child {{
-    flex: 1 !important;
-    min-height: 0 !important;
-    display: flex !important;
+.cc-landing-active section.main {{
+    overflow: hidden !important;
 }}
 
-div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child > div {{
-    flex: 1 !important;
+.cc-landing-active section.main > div {{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }}
 
 .hero {{
     position: relative;
     width: 100%;
     height: 100%;
+    min-height: 0;
     border-radius: 20px;
     overflow: hidden;
     background-image: url("data:image/jpeg;base64,{hero_base64}");
@@ -130,7 +131,6 @@ div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child > div {{
 }}
 
 .hero-landing {{
-    min-height: 200px;
     margin-bottom: 0;
 }}
 
@@ -175,18 +175,27 @@ div[data-testid="stVerticalBlock"]:has(.hero-landing) > div:first-child > div {{
 }}
 
 .start-cta-wrapper {{
-    flex-shrink: 0 !important;
     margin-top: -50px !important;
+    text-align: center;
 }}
 
 .landing-disclaimer {{
-    flex-shrink: 0;
     text-align: center;
     font-size: 0.8rem;
     color: rgba(15,23,42,0.65);
-    padding: 8px 16px 0 16px;
+    padding: 6px 0 0 0;
     margin: 0;
     line-height: 1.4;
+}}
+
+@media (max-height: 600px) {{
+    .landing-disclaimer {{
+        font-size: 0.7rem;
+        padding: 4px 0 0 0;
+    }}
+    .cc-landing {{
+        padding-bottom: 64px;
+    }}
 }}
 
 h1, h2, h3 {{
@@ -535,19 +544,105 @@ st.markdown(
 
 def render_landing():
     if not st.session_state.started:
-        with st.container():
-            st.markdown('''
-            <div class="hero hero-landing">
+        components.html(f'''
+        <style>
+            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+            .cc-landing {{
+                display: grid;
+                grid-template-rows: 1fr auto;
+                height: 100%;
+                max-height: 100%;
+                overflow: hidden;
+                font-family: 'Helvetica Neue', -apple-system, sans-serif;
+            }}
+            .hero {{
+                position: relative;
+                width: 100%;
+                height: 100%;
+                min-height: 0;
+                border-radius: 20px;
+                overflow: hidden;
+                background-image: url("data:image/jpeg;base64,{hero_base64}");
+                background-size: cover;
+                background-position: center 35%;
+                margin: 0 auto;
+                max-width: 90%;
+            }}
+            .hero::after {{
+                content: "";
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.35));
+            }}
+            .hero-content {{
+                position: relative;
+                z-index: 2;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 24px 28px;
+                color: white;
+            }}
+            .hero h1 {{
+                font-size: clamp(1.5rem, 5vw, 2.7rem);
+                font-weight: 700;
+                margin-bottom: 16px;
+                line-height: 1.2;
+            }}
+            .start-btn {{
+                background: white;
+                color: #0F172A;
+                border: none;
+                border-radius: 999px;
+                padding: 16px 48px;
+                font-size: 1.1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.15s, box-shadow 0.15s;
+            }}
+            .start-btn:hover {{
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }}
+            .cc-landing-bottom {{
+                padding: 12px 16px 0 16px;
+                text-align: center;
+            }}
+            .disclaimer {{
+                font-size: 0.8rem;
+                color: rgba(15,23,42,0.65);
+                line-height: 1.4;
+                margin: 0;
+            }}
+            @media (max-height: 600px) {{
+                .disclaimer {{ font-size: 0.7rem; }}
+                .cc-landing {{ height: calc(100dvh - 70px); }}
+            }}
+        </style>
+        <div class="cc-landing">
+            <div class="hero">
                 <div class="hero-content">
                     <h1>Find your contraceptive in seven questions</h1>
+                    <button class="start-btn" onclick="window.parent.location.href='?start=1'">Start</button>
                 </div>
             </div>
-            ''', unsafe_allow_html=True)
-            start_cta()
-            st.markdown(
-                '<p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>',
-                unsafe_allow_html=True
-            )
+            <div class="cc-landing-bottom">
+                <p class="disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
+            </div>
+        </div>
+        ''', height=650, scrolling=False)
+        
+        st.markdown('''
+        <style>
+        .stApp { height: 100dvh !important; overflow: hidden !important; }
+        section.main { overflow: hidden !important; }
+        section.main > div.block-container { padding: 8px 5% 0 5% !important; }
+        </style>
+        ''', unsafe_allow_html=True)
     else:
         st.markdown('''
         <div class="hero hero-started">

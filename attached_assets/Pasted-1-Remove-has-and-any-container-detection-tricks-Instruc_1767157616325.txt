@@ -1,0 +1,81 @@
+1) Remove :has() and any “container detection” tricks
+
+Instruction:
+
+Remove all CSS rules that depend on :has() and any logic that tries to style a Streamlit container based on whether it contains .hero-landing. These selectors are fragile in Streamlit and cause inconsistent overflow behavior.
+
+2) Wrap the landing page in a single explicit wrapper div
+
+Instruction:
+
+In render_landing(), wrap all landing markup in one wrapper:
+
+open: <div class="cc-landing">
+
+close: </div>
+No other pages should use this wrapper.
+
+This gives you a stable parent to target without guessing Streamlit’s internal structure.
+
+3) Apply viewport lock to the correct outer containers (landing only)
+
+Instruction:
+
+On landing render only, inject CSS that sets the app and main containers to no-scroll:
+
+.stApp { height: 100dvh; overflow: hidden; }
+
+section.main { overflow: hidden; }
+
+(If you only set overflow on the inner wrapper, Streamlit can still scroll the outer main.)
+
+4) Use CSS Grid for the landing wrapper
+
+Instruction:
+
+Style .cc-landing as a two-row grid:
+
+height: 100dvh
+
+overflow: hidden
+
+grid-template-rows: 1fr auto
+This guarantees the hero gets the maximum remaining space while the bottom content is always visible.
+
+5) Make the hero fill its grid row (and allow it to shrink)
+
+Instruction:
+
+Remove any fixed/clamped heights from .hero. Instead:
+
+.hero { height: 100%; min-height: 0; background-size: cover; }
+min-height: 0 is required so the 1fr row can shrink without forcing overflow/scroll.
+
+6) Protect the disclaimer from being clipped
+
+Instruction:
+
+Put disclaimer and Start button into the bottom row container (e.g., .cc-landing-bottom) and ensure it can wrap:
+
+no fixed heights
+
+modest font size on small screens via media query
+Do not allow the disclaimer to be inside an element with overflow: hidden unless it has enough height.
+
+7) Ensure the fixed telehealth CTA is overlay-only
+
+Instruction:
+
+Confirm the telehealth CTA uses position: fixed and is not inside the grid flow. Add bottom padding to .cc-landing only if the CTA overlaps content visually.
+
+The single most common reason you still get scrolling
+
+Even with the above, scrolling returns if Streamlit’s default padding adds extra height.
+
+So tell Replit:
+
+“On landing only, remove Streamlit main padding (top and bottom) because it adds height and causes overflow.”
+
+Concretely, override:
+
+section.main > div { padding-top: 0; padding-bottom: 0; } (landing only, ideally scoped)
