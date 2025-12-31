@@ -90,6 +90,14 @@ st.markdown(f"""
     color: var(--ink);
 }}
 
+section[data-testid="stVerticalBlock"] > div:first-child {{
+    padding-top: 0;
+}}
+
+.stApp > section > .block-container {{
+    padding-top: 1rem !important;
+}}
+
 .hero {{
     position: relative;
     width: 100%;
@@ -516,11 +524,7 @@ def render_landing():
     if not st.session_state.started:
         start_cta()
         st.markdown(
-            f"<p style='text-align:center; margin-top:12px; margin-bottom:8px;'><a class='inline-link' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Prefer to talk to someone? Book a telehealth visit.</a></p>",
-            unsafe_allow_html=True
-        )
-        st.markdown(
-            "<p style='text-align:center; font-size:0.8rem; color:rgba(15,23,42,0.6); margin:0; padding:0 16px;'>Educational only • Not medical advice • Data not stored</p>",
+            "<p style='text-align:center; font-size:0.85rem; color:rgba(15,23,42,0.65); margin:16px 0 0 0; padding:0 16px;'>This tool is educational only and does not replace medical advice.</p>",
             unsafe_allow_html=True
         )
     
@@ -768,4 +772,3 @@ if st.session_state.started:
     else:
         render_quiz()
 
-st.caption("Contraceptive Choices • Educational tool • December 2025")

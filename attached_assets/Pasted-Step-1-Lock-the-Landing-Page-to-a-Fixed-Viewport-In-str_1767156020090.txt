@@ -1,0 +1,118 @@
+Step 1 — Lock the Landing Page to a Fixed Viewport
+
+In streamlit_app.py, inside the landing page render block only:
+
+Wrap the landing page content in a container with a fixed height:
+
+st.markdown("""
+<style>
+.landing-container {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+Wrap all landing page elements in:
+
+st.markdown('<div class="landing-container">', unsafe_allow_html=True)
+# existing landing page content here
+st.markdown('</div>', unsafe_allow_html=True)
+
+
+Do not apply this CSS globally—scope it to the landing page only.
+
+Step 2 — Reduce White Space Above the Hero Image
+
+Modify the hero image CSS:
+
+Reduce top margin and padding to zero:
+
+.hero {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+If a Streamlit container is adding spacing above the image, override it:
+
+section[data-testid="stVerticalBlock"] > div:first-child {
+    padding-top: 0;
+}
+
+
+Confirm the image visually anchors to the top of the viewport without cropping key content.
+
+Step 3 — Remove Redundant Telehealth Text (Landing Page Only)
+Remove this text entirely:
+
+“Prefer to talk to someone? Book a telehealth visit.”
+
+Action:
+
+Delete the st.markdown() or st.write() block that renders this copy.
+
+Do not replace it with any alternative inline CTA.
+
+Step 4 — Remove Footer Metadata Text
+Remove this text entirely:
+
+“Contraceptive choices. Educational tool. December 2025.”
+
+Action:
+
+Remove the rendering line completely.
+
+Do not substitute with a smaller or muted version.
+
+Step 5 — Update the Disclaimer Copy
+Current:
+
+Disclaimer: This tool is educational only…
+
+Required change:
+
+Remove the word “Disclaimer:”
+
+Leave the remaining sentence intact and grammatically unchanged.
+
+Example result:
+
+This tool is educational only and does not replace medical advice.
+
+Implementation:
+
+Edit only the string literal.
+
+Do not change styling, font size, or placement.
+
+Step 6 — Confirm the Telehealth Booking Pattern
+Final, approved telehealth CTA:
+
+Only one CTA should exist:
+
+“Talk to a clinician. Book a telehealth visit.”
+
+Rules:
+
+This CTA must be:
+
+Fixed (sticky)
+
+Visible at all times on the landing page
+
+Positioned consistently (e.g. bottom-right or bottom bar)
+
+Remove all other telehealth references from the landing page.
+
+Do not:
+
+Duplicate the CTA inline
+
+Add explanatory copy
+
+Add hover tooltips or secondary labels
