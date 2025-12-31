@@ -524,7 +524,7 @@ def render_landing():
     if not st.session_state.started:
         start_cta()
         st.markdown(
-            "<p style='text-align:center; font-size:0.85rem; color:rgba(15,23,42,0.65); margin:16px 0 0 0; padding:0 16px;'>This tool is educational only and does not replace medical advice.</p>",
+            "<p style='text-align:center; font-size:0.85rem; color:rgba(15,23,42,0.65); margin:16px 0 0 0; padding:0 16px;'>None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>",
             unsafe_allow_html=True
         )
     
