@@ -1,0 +1,91 @@
+Update the contraceptive-compass-streamlit quiz UI to replace the current “Quiz started…” box, “Back to top”, and existing “Restart quiz” controls with a progress bar based on COMPLETED questions.
+
+Context:
+- The quiz uses conditional rendering (one question shown at a time).
+- There are exactly 7 questions.
+- The quiz advances only when the user clicks Next / Submit.
+
+DO NOT change:
+- Question text
+- Answer logic
+- Scoring or recommendation logic
+- The working Start button on the landing page
+
+--------------------------------
+1) Remove existing UI elements
+--------------------------------
+Delete entirely from the quiz flow:
+- The “Quiz started…” status/info box
+- “Back to top”
+- The current “Restart quiz” button or link
+
+Ensure none of these render on any quiz question screen.
+
+--------------------------------
+2) Add a progress indicator (completed-question model)
+--------------------------------
+Add a progress indicator at the top of the quiz area that appears on every question screen (but NOT on the landing page).
+
+The progress indicator must consist of:
+- A text label: “Question X of 7”
+- A Streamlit native progress bar: st.progress(...)
+
+IMPORTANT: Progress must be calculated from COMPLETED questions, not the current question being answered.
+
+Assume:
+- `current_question` is 0-based
+- `current_question` is incremented only AFTER the user submits a question
+
+Then define:
+- completed_questions = st.session_state.current_question
+- X (displayed question number) = completed_questions + 1
+- progress_fraction = completed_questions / 7
+
+Render:
+- Label text: “Question X of 7”
+- Progress bar value: progress_fraction
+
+This ensures:
+- Question 1 shows 0% progress
+- Clicking Next immediately advances the bar to 1/7
+- Question 7 starts at 6/7 and reaches 100% on completion
+
+--------------------------------
+3) Placement and layout
+--------------------------------
+- Render the label and progress bar immediately before the question content.
+- Keep spacing compact (no large margins or cards).
+- The progress bar should not scroll independently or jump the layout.
+
+--------------------------------
+4) Results page behavior
+--------------------------------
+On the results page:
+- Set progress to 1.0 (100%)
+- Either:
+  a) Keep the progress bar visible at 100%, OR
+  b) Hide it entirely
+Choose one and apply consistently.
+
+--------------------------------
+5) Restart behavior (optional, minimal UI)
+--------------------------------
+If restart functionality is required:
+- Add a small “Restart” text link BELOW the progress bar, aligned right.
+- Do NOT reintroduce a large button or banner.
+- Clicking Restart should reset:
+  - current_question
+  - stored answers
+  - any quiz-started flags
+- Then return the user to Question 1 or the landing page.
+
+--------------------------------
+6) Verification checklist
+--------------------------------
+Confirm:
+- “Quiz started…”, “Back to top”, and old Restart controls are fully removed
+- Progress shows 0% on Question 1
+- Progress advances immediately after each Next click
+- Label always matches the visible question number
+- Progress reaches 100% at completion
+- Quiz logic and navigation remain unchanged
