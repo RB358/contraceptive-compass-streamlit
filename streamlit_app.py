@@ -548,20 +548,27 @@ def render_landing():
         <style>
         .stApp {{ height: 100dvh !important; overflow: hidden !important; }}
         section.main {{ overflow: hidden !important; height: 100dvh !important; }}
-        section.main > div.block-container {{ 
-            padding: 8px 5% 0 5% !important; 
-            height: calc(100dvh - 8px) !important;
-            display: flex !important;
-            flex-direction: column !important;
+        div[data-testid="stMainBlockContainer"] {{ 
+            padding: 0 !important;
+            height: 100dvh !important;
             overflow: hidden !important;
         }}
-        .landing-hero-wrapper {{
-            width: 100% !important;
+        .landing-grid {{
+            display: grid;
+            grid-template-rows: 1fr auto;
+            height: 100dvh;
+            width: 100%;
+            padding: 12px 5% 0 5%;
+            box-sizing: border-box;
+            gap: 16px;
+            overflow: hidden;
+        }}
+        .landing-hero-cell {{
+            min-height: 0;
+            overflow: hidden;
         }}
         .landing-hero {{
-            height: calc(100vh - 260px);
-            height: calc(100dvh - 260px);
-            min-height: 250px;
+            height: 100%;
             width: 100%;
             border-radius: 20px;
             overflow: hidden;
@@ -592,52 +599,55 @@ def render_landing():
             padding: 0 24px;
             margin: 0;
         }}
-        button[data-testid="stBaseButton-secondary"][kind="secondary"] {{
-            background: white !important;
-            color: #0F172A !important;
-            border: none !important;
-            border-radius: 999px !important;
-            padding: 14px 48px !important;
-            font-size: 1.1rem !important;
-            font-weight: 600 !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        .landing-footer {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 80px;
         }}
-        button[data-testid="stBaseButton-secondary"][kind="secondary"]:hover {{
+        .landing-start-btn {{
+            background: white;
+            color: #0F172A;
+            border: none;
+            border-radius: 999px;
+            padding: 14px 48px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+        .landing-start-btn:hover {{
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
-            background: white !important;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
         }}
         .landing-disclaimer {{
-            flex-shrink: 0 !important;
             text-align: center;
             font-size: 0.8rem;
             color: rgba(15,23,42,0.65);
-            padding: 10px 16px 80px 16px;
             margin: 0;
             line-height: 1.4;
         }}
         @media (max-height: 600px) {{
-            .landing-disclaimer {{ font-size: 0.7rem; padding-bottom: 70px; }}
+            .landing-disclaimer {{ font-size: 0.7rem; }}
+            .landing-footer {{ padding-bottom: 70px; }}
         }}
         </style>
-        <div class="landing-hero-wrapper">
-            <div class="landing-hero">
-                <h1>Find your contraceptive in seven questions</h1>
+        <div class="landing-grid">
+            <div class="landing-hero-cell">
+                <div class="landing-hero">
+                    <h1>Find your contraceptive in seven questions</h1>
+                </div>
+            </div>
+            <div class="landing-footer">
+                <a href="?start=1" style="text-decoration: none;">
+                    <button class="landing-start-btn">Start</button>
+                </a>
+                <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
             </div>
         </div>
         ''', unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            if st.button("Start", key="start_landing", use_container_width=True):
-                st.session_state.started = True
-                st.session_state.scroll_to_quiz = True
-                st.rerun()
-        
-        st.markdown(
-            '<p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>',
-            unsafe_allow_html=True
-        )
     else:
         st.markdown('''
         <div class="hero hero-started">
