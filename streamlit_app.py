@@ -217,6 +217,24 @@ h1, h2, h3 {{
     border-color: var(--teal-600) !important;
 }}
 
+.quiz-tiles .stButton > button,
+div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
+    background: var(--surface) !important;
+    border: 2px solid var(--border) !important;
+    color: var(--ink) !important;
+    border-radius: 16px !important;
+    padding: 16px 20px !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    transition: all 0.15s ease !important;
+}}
+
+.quiz-tiles .stButton > button:hover,
+div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {{
+    border-color: var(--teal) !important;
+    background: rgba(15, 118, 110, 0.04) !important;
+}}
+
 .main .block-container {{
     max-width: 90% !important;
     padding-left: 5% !important;
@@ -747,6 +765,76 @@ def render_landing():
             st.session_state.scroll_to_quiz = False
 
 
+def render_single_select_tiles(question_key, options):
+    """Render single-select tiles. Returns selected option or None."""
+    state_key = f"tile_{question_key}"
+    if state_key not in st.session_state:
+        current = st.session_state.answers.get(question_key)
+        st.session_state[state_key] = current
+    
+    selected = st.session_state[state_key]
+    
+    for i, option in enumerate(options):
+        is_selected = (selected == option)
+        btn_key = f"tile_{question_key}_{i}"
+        
+        prefix = "✓ " if is_selected else ""
+        display_text = f"{prefix}{option}"
+        
+        if is_selected:
+            st.markdown(f"""
+            <style>
+            button[data-testid="stBaseButton-secondary"][key="{btn_key}"],
+            div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
+                border: 2.5px solid var(--teal) !important;
+                background: rgba(15, 118, 110, 0.08) !important;
+            }}
+            </style>
+            """, unsafe_allow_html=True)
+        
+        if st.button(display_text, key=btn_key, use_container_width=True):
+            st.session_state[state_key] = option
+            st.rerun()
+    
+    return selected
+
+
+def render_multi_select_tiles(question_key, options):
+    """Render multi-select tiles. Returns list of selected options."""
+    state_key = f"tile_{question_key}"
+    if state_key not in st.session_state:
+        current = st.session_state.answers.get(question_key, [])
+        st.session_state[state_key] = list(current) if current else []
+    
+    selected_list = st.session_state[state_key]
+    
+    for i, option in enumerate(options):
+        is_selected = option in selected_list
+        btn_key = f"tile_{question_key}_{i}"
+        
+        prefix = "✓ " if is_selected else ""
+        display_text = f"{prefix}{option}"
+        
+        if is_selected:
+            st.markdown(f"""
+            <style>
+            div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
+                border: 2.5px solid var(--teal) !important;
+                background: rgba(15, 118, 110, 0.08) !important;
+            }}
+            </style>
+            """, unsafe_allow_html=True)
+        
+        if st.button(display_text, key=btn_key, use_container_width=True):
+            if is_selected:
+                st.session_state[state_key] = [o for o in selected_list if o != option]
+            else:
+                st.session_state[state_key] = selected_list + [option]
+            st.rerun()
+    
+    return st.session_state[state_key]
+
+
 def render_quiz():
     st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
     
@@ -754,15 +842,18 @@ def render_quiz():
     q_id = QUESTION_IDS[q_idx]
     question = QUIZ_QUESTIONS[q_id]
     
-    completed_questions = q_idx
-    progress_fraction = completed_questions / NUM_QUESTIONS
+    step = q_idx + 1
+    progress_fraction = step / NUM_QUESTIONS
     
-    st.markdown(f'<p class="progress-text">Question {q_idx + 1} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="progress-text">Question {step} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
     st.progress(progress_fraction)
     
     col_spacer, col_restart = st.columns([4, 1])
     with col_restart:
         if st.button("Restart", key="restart_quiz"):
+            for key in list(st.session_state.keys()):
+                if isinstance(key, str) and key.startswith("tile_"):
+                    del st.session_state[key]
             st.session_state.started = False
             st.session_state.scroll_to_quiz = False
             st.session_state.q_idx = 0
@@ -771,37 +862,19 @@ def render_quiz():
             st.session_state.selected_method_id = None
             st.rerun()
     
-    st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
-    
-    st.markdown(f"### {question['label']}")
+    st.markdown(f'<p class="quiz-question">{question["label"]}</p>', unsafe_allow_html=True)
     
     if question.get("help"):
-        st.caption(question["help"])
+        st.markdown(f'<p class="quiz-help">{question["help"]}</p>', unsafe_allow_html=True)
     
-    current_answer = st.session_state.answers.get(q_id)
+    is_multi = question.get("multi", False)
     
-    if question.get("multi"):
-        default_val = current_answer if current_answer else []
-        answer = st.multiselect(
-            "Select all that apply:",
-            question["options"],
-            default=default_val,
-            key=f"q_{q_id}",
-            label_visibility="collapsed"
-        )
+    if is_multi:
+        answer = render_multi_select_tiles(q_id, question["options"])
+        is_valid = len(answer) >= 1
     else:
-        default_idx = 0
-        if current_answer and current_answer in question["options"]:
-            default_idx = question["options"].index(current_answer)
-        answer = st.selectbox(
-            "Choose one:",
-            question["options"],
-            index=default_idx,
-            key=f"q_{q_id}",
-            label_visibility="collapsed"
-        )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+        answer = render_single_select_tiles(q_id, question["options"])
+        is_valid = answer is not None
     
     col1, col2, col3 = st.columns([1, 1, 1])
     
@@ -809,21 +882,27 @@ def render_quiz():
         if q_idx > 0:
             if st.button("← Back", use_container_width=True):
                 st.session_state.answers[q_id] = answer
+                prev_q_id = QUESTION_IDS[q_idx - 1]
+                tile_key = f"tile_{prev_q_id}"
+                if tile_key in st.session_state:
+                    del st.session_state[tile_key]
                 st.session_state.q_idx -= 1
                 st.rerun()
     
     with col3:
         if q_idx < NUM_QUESTIONS - 1:
-            if st.button("Next →", use_container_width=True):
-                st.session_state.answers[q_id] = answer
-                st.session_state.q_idx += 1
-                st.rerun()
+            if st.button("Next →", use_container_width=True, disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.q_idx += 1
+                    st.rerun()
         else:
-            if st.button("See Results", use_container_width=True):
-                st.session_state.answers[q_id] = answer
-                st.session_state.show_results = True
-                st.session_state.selected_method_id = None
-                st.rerun()
+            if st.button("See Results", use_container_width=True, disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.show_results = True
+                    st.session_state.selected_method_id = None
+                    st.rerun()
 
 
 def render_category(tier_key, methods):
