@@ -819,6 +819,14 @@ def render_multi_select_tiles(question_key, options):
 
 
 def render_quiz():
+    st.markdown("""
+    <style>
+    div[data-testid="stMainBlockContainer"] {
+        padding-top: 8px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     q_idx = st.session_state.q_idx
     q_id = QUESTION_IDS[q_idx]
     question = QUIZ_QUESTIONS[q_id]
