@@ -822,7 +822,10 @@ def render_quiz():
     st.markdown("""
     <style>
     div[data-testid="stMainBlockContainer"] {
-        padding-top: 8px !important;
+        padding-top: 0 !important;
+    }
+    .progress-text {
+        margin-top: 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
