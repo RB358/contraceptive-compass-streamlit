@@ -831,7 +831,6 @@ def render_quiz():
             for key in list(st.session_state.keys()):
                 if isinstance(key, str) and key.startswith("tile_"):
                     del st.session_state[key]
-            st.session_state.started = False
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
