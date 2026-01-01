@@ -1027,8 +1027,8 @@ def render_quiz():
     </style>
     <div class="cc-nav-bar">
         <div class="cc-nav-inner">
-            <button class="cc-nav-btn cc-nav-back" {back_disabled} onclick="window.parent.location.href = window.parent.location.pathname + '?nav=back'">← Back</button>
-            <button class="cc-nav-btn cc-nav-next" {next_disabled} onclick="window.parent.location.href = window.parent.location.pathname + '?nav=next'">{next_label}</button>
+            <button class="cc-nav-btn cc-nav-back" {back_disabled} onclick="window.top.location.search = '?nav=back'">← Back</button>
+            <button class="cc-nav-btn cc-nav-next" {next_disabled} onclick="window.top.location.search = '?nav=next'">{next_label}</button>
         </div>
     </div>
     """
