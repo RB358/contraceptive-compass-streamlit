@@ -870,17 +870,23 @@ def render_quiz():
         height: 0 !important;
     }
     [data-testid="stAppViewContainer"] {
-        padding-top: 8px !important;
+        padding-top: 0 !important;
     }
     div[data-testid="stMainBlockContainer"] {
         padding-top: 0 !important;
+        padding-bottom: 0 !important;
     }
     .block-container {
         padding-top: 0 !important;
         margin-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    section[data-testid="stMain"] {
+        padding-top: 0 !important;
     }
     .cc-quiz .cc-quiz-header {
-        padding-top: 2px;
+        padding-top: 0;
+        margin-top: 0;
     }
     .cc-quiz .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
