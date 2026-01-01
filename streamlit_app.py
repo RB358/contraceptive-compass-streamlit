@@ -833,7 +833,7 @@ def render_quiz():
         padding-top: 8px !important;
     }
     .cc-quiz-header {
-        padding-top: 6px;
+        padding-top: 2px;
     }
     .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
