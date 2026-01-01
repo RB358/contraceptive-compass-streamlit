@@ -862,41 +862,55 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* Nav row styling - sentinel + adjacent sibling approach */
-    #cc-nav-sentinel {
-        margin-top: 16px !important;
+    /* Fixed-position nav buttons */
+    .cc-quiz {
+        padding-bottom: 110px !important;
     }
-    #cc-nav-sentinel + div div[data-testid="stHorizontalBlock"] {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 12px !important;
-        align-items: center !important;
+    .cc-nav-back, .cc-nav-next {
+        position: fixed !important;
+        bottom: 18px !important;
+        z-index: 9999 !important;
     }
-    #cc-nav-sentinel + div div[data-testid="stColumn"] {
-        flex: 1 1 0 !important;
-        min-width: 0 !important;
+    .cc-nav-back {
+        left: 16px !important;
     }
-    /* Fallback if data-testid differs */
-    #cc-nav-sentinel + div > div {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 12px !important;
+    .cc-nav-next {
+        right: 16px !important;
     }
-    #cc-nav-sentinel + div .stButton > button {
-        padding: 10px 16px !important;
+    .cc-nav-back button, .cc-nav-next button {
+        width: auto !important;
+        min-width: 120px !important;
+        padding: 12px 20px !important;
         min-height: 44px !important;
-        width: 100% !important;
+        border-radius: 999px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    }
+    .cc-nav-next button {
+        background: var(--teal) !important;
+        color: white !important;
+        border: none !important;
+    }
+    .cc-nav-next button:hover {
+        background: #0d9488 !important;
+    }
+    .cc-nav-back button {
+        background: white !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+    }
+    .cc-nav-back button:hover {
+        background: #f8fafc !important;
     }
     
-    /* Disabled button styling - keep legible */
-    #cc-nav-sentinel + div .stButton > button:disabled {
-        opacity: 0.6 !important;
+    /* Disabled button styling */
+    .cc-nav-back button:disabled, .cc-nav-next button:disabled {
+        opacity: 0.5 !important;
         cursor: not-allowed !important;
-        background: var(--border) !important;
-        color: rgba(15, 23, 42, 0.6) !important;
-        border-color: var(--border) !important;
+    }
+    .cc-nav-next button:disabled {
+        background: #cbd5e1 !important;
+        color: #64748b !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -924,35 +938,39 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    st.markdown('<div id="cc-nav-sentinel"></div>', unsafe_allow_html=True)
+    # Fixed-position nav buttons
+    back_clicked = False
+    next_clicked = False
     
-    col_back, col_spacer, col_next = st.columns([1, 2, 1])
+    if q_idx > 0:
+        st.markdown('<div class="cc-nav-back">', unsafe_allow_html=True)
+        back_clicked = st.button("← Back", key="nav_back")
+        st.markdown('</div>', unsafe_allow_html=True)
     
-    with col_back:
-        if q_idx > 0:
-            if st.button("← Back", key="nav_back"):
-                st.session_state.answers[q_id] = answer
-                prev_q_id = QUESTION_IDS[q_idx - 1]
-                tile_key = f"tile_{prev_q_id}"
-                if tile_key in st.session_state:
-                    del st.session_state[tile_key]
-                st.session_state.q_idx -= 1
-                st.rerun()
+    st.markdown('<div class="cc-nav-next">', unsafe_allow_html=True)
+    if q_idx < NUM_QUESTIONS - 1:
+        next_clicked = st.button("Next →", key="nav_next", disabled=not is_valid)
+    else:
+        next_clicked = st.button("See Results", key="nav_results", disabled=not is_valid)
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    with col_next:
+    if back_clicked:
+        st.session_state.answers[q_id] = answer
+        prev_q_id = QUESTION_IDS[q_idx - 1]
+        tile_key = f"tile_{prev_q_id}"
+        if tile_key in st.session_state:
+            del st.session_state[tile_key]
+        st.session_state.q_idx -= 1
+        st.rerun()
+    
+    if next_clicked and is_valid:
+        st.session_state.answers[q_id] = answer
         if q_idx < NUM_QUESTIONS - 1:
-            if st.button("Next →", key="nav_next", disabled=not is_valid):
-                if is_valid:
-                    st.session_state.answers[q_id] = answer
-                    st.session_state.q_idx += 1
-                    st.rerun()
+            st.session_state.q_idx += 1
         else:
-            if st.button("See Results", key="nav_results", disabled=not is_valid):
-                if is_valid:
-                    st.session_state.answers[q_id] = answer
-                    st.session_state.show_results = True
-                    st.session_state.selected_method_id = None
-                    st.rerun()
+            st.session_state.show_results = True
+            st.session_state.selected_method_id = None
+        st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
 
