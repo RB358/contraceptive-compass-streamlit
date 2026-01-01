@@ -337,7 +337,117 @@ div.stButton {{text-align: center !important;}}
 }}
 
 .quiz-nav {{
-    margin-top: 24px;
+    margin-top: 16px;
+}}
+
+.quiz-screen {{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100dvh;
+    overflow: hidden;
+    padding: 12px 16px 16px 16px;
+    box-sizing: border-box;
+}}
+
+.quiz-screen-active .stApp {{
+    height: 100dvh !important;
+    overflow: hidden !important;
+}}
+
+.quiz-screen-active section.main {{
+    overflow: hidden !important;
+    height: 100dvh !important;
+}}
+
+.quiz-screen-active div[data-testid="stMainBlockContainer"] {{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+}}
+
+.quiz-top {{
+    flex-shrink: 0;
+}}
+
+.quiz-middle {{
+    min-height: 0;
+    overflow-y: auto;
+    padding: 8px 0;
+}}
+
+.quiz-bottom {{
+    flex-shrink: 0;
+    padding-top: 12px;
+}}
+
+.cc-nav {{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}}
+
+.cc-nav-left, .cc-nav-right {{
+    flex: 1;
+}}
+
+.cc-nav-mid {{
+    flex: 0 0 auto;
+}}
+
+.cc-nav-left .stButton > button {{
+    background: transparent !important;
+    border: 1.5px solid var(--border) !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+}}
+
+.cc-nav-left .stButton > button:hover {{
+    border-color: var(--teal) !important;
+    background: rgba(15, 118, 110, 0.04) !important;
+}}
+
+.cc-nav-mid .stButton > button {{
+    background: transparent !important;
+    border: none !important;
+    color: rgba(15, 23, 42, 0.5) !important;
+    font-size: 0.85rem !important;
+    padding: 8px 12px !important;
+    box-shadow: none !important;
+}}
+
+.cc-nav-mid .stButton > button:hover {{
+    color: var(--coral) !important;
+    background: transparent !important;
+}}
+
+.cc-nav-right .stButton > button {{
+    background: white !important;
+    border: none !important;
+    color: var(--ink) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}}
+
+.cc-nav-right .stButton > button:hover {{
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+}}
+
+.cc-nav-right .stButton > button:disabled {{
+    opacity: 0.4 !important;
+    box-shadow: none !important;
+}}
+
+@media (max-height: 700px) {{
+    .quiz-question {{
+        font-size: clamp(1.1rem, 4vw, 1.25rem) !important;
+        margin: 8px 0 4px 0 !important;
+    }}
+    .quiz-tiles .stButton > button,
+    div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
+        padding: 12px 16px !important;
+    }}
 }}
 
 .quiz-card {{
@@ -737,14 +847,6 @@ def render_landing():
             </div>
         </div>
         ''', unsafe_allow_html=True)
-    else:
-        st.markdown('''
-        <div class="hero hero-started">
-            <div class="hero-content">
-                <h1>Find your contraceptive in seven questions</h1>
-            </div>
-        </div>
-        ''', unsafe_allow_html=True)
     
     if st.query_params.get("start") == "1":
         st.session_state.started = True
@@ -836,7 +938,80 @@ def render_multi_select_tiles(question_key, options):
 
 
 def render_quiz():
-    st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
+    st.markdown('''
+    <style>
+    .stApp { height: 100dvh !important; overflow: hidden !important; }
+    section.main { overflow: hidden !important; height: 100dvh !important; }
+    div[data-testid="stMainBlockContainer"] { 
+        padding: 0 !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .quiz-screen {
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+        overflow: hidden;
+        padding: 12px 16px 0 16px;
+        box-sizing: border-box;
+    }
+    .quiz-top {
+        flex-shrink: 0;
+    }
+    .quiz-middle {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding-bottom: 8px;
+    }
+    .quiz-bottom {
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        background: var(--warm-bg);
+        padding: 12px 0 16px 0;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+    }
+    .quiz-bottom .cc-nav-left .stButton > button {
+        background: transparent !important;
+        border: 1.5px solid var(--border) !important;
+        color: var(--ink) !important;
+        box-shadow: none !important;
+    }
+    .quiz-bottom .cc-nav-left .stButton > button:hover {
+        border-color: var(--teal) !important;
+        background: rgba(15, 118, 110, 0.04) !important;
+    }
+    .quiz-bottom .cc-nav-mid .stButton > button {
+        background: transparent !important;
+        border: none !important;
+        color: rgba(15, 23, 42, 0.5) !important;
+        font-size: 0.85rem !important;
+        box-shadow: none !important;
+    }
+    .quiz-bottom .cc-nav-mid .stButton > button:hover {
+        color: var(--coral) !important;
+        background: transparent !important;
+    }
+    .quiz-bottom .cc-nav-right .stButton > button {
+        background: white !important;
+        border: none !important;
+        color: var(--ink) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+    .quiz-bottom .cc-nav-right .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+    }
+    .quiz-bottom .cc-nav-right .stButton > button:disabled {
+        opacity: 0.4 !important;
+        box-shadow: none !important;
+    }
+    </style>
+    <div class="quiz-screen">
+    <div class="quiz-top">
+    ''', unsafe_allow_html=True)
     
     q_idx = st.session_state.q_idx
     q_id = QUESTION_IDS[q_idx]
@@ -848,19 +1023,7 @@ def render_quiz():
     st.markdown(f'<p class="progress-text">Question {step} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
     st.progress(progress_fraction)
     
-    col_spacer, col_restart = st.columns([4, 1])
-    with col_restart:
-        if st.button("Restart", key="restart_quiz"):
-            for key in list(st.session_state.keys()):
-                if isinstance(key, str) and key.startswith("tile_"):
-                    del st.session_state[key]
-            st.session_state.started = False
-            st.session_state.scroll_to_quiz = False
-            st.session_state.q_idx = 0
-            st.session_state.answers = {}
-            st.session_state.show_results = False
-            st.session_state.selected_method_id = None
-            st.rerun()
+    st.markdown('</div><div class="quiz-middle">', unsafe_allow_html=True)
     
     st.markdown(f'<p class="quiz-question">{question["label"]}</p>', unsafe_allow_html=True)
     
@@ -876,11 +1039,14 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
+    st.markdown('</div><div class="quiz-bottom">', unsafe_allow_html=True)
+    
     col1, col2, col3 = st.columns([1, 1, 1])
     
     with col1:
+        st.markdown('<div class="cc-nav-left">', unsafe_allow_html=True)
         if q_idx > 0:
-            if st.button("← Back", use_container_width=True):
+            if st.button("Back", key="nav_back", use_container_width=True):
                 st.session_state.answers[q_id] = answer
                 prev_q_id = QUESTION_IDS[q_idx - 1]
                 tile_key = f"tile_{prev_q_id}"
@@ -888,21 +1054,41 @@ def render_quiz():
                     del st.session_state[tile_key]
                 st.session_state.q_idx -= 1
                 st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div class="cc-nav-mid">', unsafe_allow_html=True)
+        if st.button("Restart", key="restart_quiz"):
+            for key in list(st.session_state.keys()):
+                if isinstance(key, str) and key.startswith("tile_"):
+                    del st.session_state[key]
+            st.session_state.started = False
+            st.session_state.scroll_to_quiz = False
+            st.session_state.q_idx = 0
+            st.session_state.answers = {}
+            st.session_state.show_results = False
+            st.session_state.selected_method_id = None
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
+        st.markdown('<div class="cc-nav-right">', unsafe_allow_html=True)
         if q_idx < NUM_QUESTIONS - 1:
-            if st.button("Next →", use_container_width=True, disabled=not is_valid):
+            if st.button("Next", key="nav_next", use_container_width=True, disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.q_idx += 1
                     st.rerun()
         else:
-            if st.button("See Results", use_container_width=True, disabled=not is_valid):
+            if st.button("See Results", key="nav_results", use_container_width=True, disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 
 def render_category(tier_key, methods):
@@ -998,6 +1184,18 @@ def render_category(tier_key, methods):
 
 
 def render_results():
+    st.markdown('''
+    <style>
+    .stApp { height: auto !important; overflow: auto !important; }
+    section.main { overflow: auto !important; height: auto !important; }
+    div[data-testid="stMainBlockContainer"] { 
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+    }
+    </style>
+    ''', unsafe_allow_html=True)
+    
     st.markdown(f'<p class="progress-text">Complete</p>', unsafe_allow_html=True)
     st.progress(1.0)
     
