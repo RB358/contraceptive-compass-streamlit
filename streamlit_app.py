@@ -632,137 +632,118 @@ st.markdown(
 
 
 def render_landing():
-    if not st.session_state.started:
-        st.markdown(f'''
-        <style>
-        .stApp {{ height: 100dvh !important; overflow: hidden !important; }}
-        section.main {{ overflow: hidden !important; height: 100dvh !important; }}
-        div[data-testid="stMainBlockContainer"] {{ 
-            padding: 0 !important;
-            height: 100dvh !important;
-            overflow: hidden !important;
-        }}
-        .landing-grid {{
-            display: grid;
-            grid-template-rows: 1fr auto;
-            height: 100dvh;
-            width: 100%;
-            padding: 12px 5% 0 5%;
-            box-sizing: border-box;
-            gap: 16px;
-            overflow: hidden;
-        }}
-        .landing-hero-cell {{
-            min-height: 0;
-            overflow: hidden;
-        }}
-        .landing-hero {{
-            height: 100%;
-            width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            background-image: url("data:image/jpeg;base64,{hero_base64}");
-            background-size: cover;
-            background-position: center 35%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-        .landing-hero::after {{
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.35));
-            border-radius: 20px;
-        }}
-        .landing-hero h1 {{
-            position: relative;
-            z-index: 2;
-            color: white;
-            font-size: clamp(1.5rem, 5vw, 2.7rem);
-            font-weight: 700;
-            line-height: 1.2;
-            text-align: center;
-            padding: 0 24px;
-            margin: 0;
-        }}
-        .landing-footer {{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 80px;
-        }}
-        .landing-start-btn {{
-            background: white;
-            color: #0F172A;
-            border: none;
-            border-radius: 999px;
-            padding: 14px 48px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }}
-        .landing-start-btn:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }}
-        .landing-disclaimer {{
-            text-align: center;
-            font-size: 0.8rem;
-            color: rgba(15,23,42,0.65);
-            margin: 0;
-            line-height: 1.4;
-        }}
-        @media (max-height: 600px) {{
-            .landing-disclaimer {{ font-size: 0.7rem; }}
-            .landing-footer {{ padding-bottom: 70px; }}
-        }}
-        </style>
-        <div class="landing-grid">
-            <div class="landing-hero-cell">
-                <div class="landing-hero">
-                    <h1>Find your contraceptive in seven questions</h1>
-                </div>
-            </div>
-            <div class="landing-footer">
-                <a href="?start=1" style="text-decoration: none;">
-                    <button class="landing-start-btn">Start</button>
-                </a>
-                <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
-            </div>
-        </div>
-        ''', unsafe_allow_html=True)
-    else:
-        st.markdown('''
-        <div class="hero hero-started">
-            <div class="hero-content">
+    """Render landing page with hero and Start button."""
+    st.markdown(f'''
+    <style>
+    .stApp {{ height: 100dvh !important; overflow: hidden !important; }}
+    section.main {{ overflow: hidden !important; height: 100dvh !important; }}
+    div[data-testid="stMainBlockContainer"] {{ 
+        padding: 0 !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+    }}
+    .landing-grid {{
+        display: grid;
+        grid-template-rows: 1fr auto;
+        height: 100dvh;
+        width: 100%;
+        padding: 12px 5% 0 5%;
+        box-sizing: border-box;
+        gap: 16px;
+        overflow: hidden;
+    }}
+    .landing-hero-cell {{
+        min-height: 0;
+        overflow: hidden;
+    }}
+    .landing-hero {{
+        height: 100%;
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        background-image: url("data:image/jpeg;base64,{hero_base64}");
+        background-size: cover;
+        background-position: center 35%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }}
+    .landing-hero::after {{
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.35));
+        border-radius: 20px;
+    }}
+    .landing-hero h1 {{
+        position: relative;
+        z-index: 2;
+        color: white;
+        font-size: clamp(1.5rem, 5vw, 2.7rem);
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+        padding: 0 24px;
+        margin: 0;
+    }}
+    .landing-footer {{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 80px;
+    }}
+    .landing-start-btn {{
+        background: white;
+        color: #0F172A;
+        border: none;
+        border-radius: 999px;
+        padding: 14px 48px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }}
+    .landing-start-btn:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }}
+    .landing-disclaimer {{
+        text-align: center;
+        font-size: 0.8rem;
+        color: rgba(15,23,42,0.65);
+        margin: 0;
+        line-height: 1.4;
+    }}
+    @media (max-height: 600px) {{
+        .landing-disclaimer {{ font-size: 0.7rem; }}
+        .landing-footer {{ padding-bottom: 70px; }}
+    }}
+    </style>
+    <div class="landing-grid">
+        <div class="landing-hero-cell">
+            <div class="landing-hero">
                 <h1>Find your contraceptive in seven questions</h1>
             </div>
         </div>
-        ''', unsafe_allow_html=True)
+        <div class="landing-footer">
+            <a href="?start=1" style="text-decoration: none;">
+                <button class="landing-start-btn">Start</button>
+            </a>
+            <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
     
     if st.query_params.get("start") == "1":
         st.session_state.started = True
+        st.session_state.q_idx = 0
         st.session_state.scroll_to_quiz = True
         st.query_params.clear()
         st.rerun()
-    
-    if st.session_state.started:
-        if st.session_state.get("scroll_to_quiz", False):
-            components.html("""
-            <script>
-                setTimeout(() => {
-                    const quiz = window.parent.document.getElementById("quiz-start");
-                    if (quiz) { quiz.scrollIntoView({behavior: "smooth", block: "start"}); }
-                }, 900);
-            </script>
-            """, height=0)
-            st.session_state.scroll_to_quiz = False
 
 
 def render_single_select_tiles(question_key, options):
@@ -837,6 +818,17 @@ def render_multi_select_tiles(question_key, options):
 
 def render_quiz():
     st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
+    
+    if st.session_state.get("scroll_to_quiz", False):
+        components.html("""
+        <script>
+            setTimeout(() => {
+                const quiz = window.parent.document.getElementById("quiz-start");
+                if (quiz) { quiz.scrollIntoView({behavior: "smooth", block: "start"}); }
+            }, 300);
+        </script>
+        """, height=0)
+        st.session_state.scroll_to_quiz = False
     
     q_idx = st.session_state.q_idx
     q_id = QUESTION_IDS[q_idx]
@@ -1033,11 +1025,10 @@ def render_results():
             st.rerun()
 
 
-render_landing()
-
-if st.session_state.started:
-    if st.session_state.show_results:
-        render_results()
-    else:
-        render_quiz()
+if not st.session_state.started:
+    render_landing()
+elif st.session_state.show_results:
+    render_results()
+else:
+    render_quiz()
 
