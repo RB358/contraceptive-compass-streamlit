@@ -862,55 +862,10 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* Fixed-position nav buttons */
-    .cc-quiz {
-        padding-bottom: 110px !important;
-    }
-    .cc-nav-back, .cc-nav-next {
-        position: fixed !important;
-        bottom: 18px !important;
-        z-index: 9999 !important;
-    }
-    .cc-nav-back {
-        left: 16px !important;
-    }
-    .cc-nav-next {
-        right: 16px !important;
-    }
-    .cc-nav-back button, .cc-nav-next button {
-        width: auto !important;
-        min-width: 120px !important;
-        padding: 12px 20px !important;
+    /* Nav buttons */
+    .cc-quiz .stButton > button {
+        padding: 10px 20px !important;
         min-height: 44px !important;
-        border-radius: 999px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
-    }
-    .cc-nav-next button {
-        background: var(--teal) !important;
-        color: white !important;
-        border: none !important;
-    }
-    .cc-nav-next button:hover {
-        background: #0d9488 !important;
-    }
-    .cc-nav-back button {
-        background: white !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border) !important;
-    }
-    .cc-nav-back button:hover {
-        background: #f8fafc !important;
-    }
-    
-    /* Disabled button styling */
-    .cc-nav-back button:disabled, .cc-nav-next button:disabled {
-        opacity: 0.5 !important;
-        cursor: not-allowed !important;
-    }
-    .cc-nav-next button:disabled {
-        background: #cbd5e1 !important;
-        color: #64748b !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -938,39 +893,33 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    # Fixed-position nav buttons
-    back_clicked = False
-    next_clicked = False
+    col_back, col_spacer, col_next = st.columns([1, 2, 1])
     
-    if q_idx > 0:
-        st.markdown('<div class="cc-nav-back">', unsafe_allow_html=True)
-        back_clicked = st.button("← Back", key="nav_back")
-        st.markdown('</div>', unsafe_allow_html=True)
+    with col_back:
+        if q_idx > 0:
+            if st.button("← Back", key="nav_back"):
+                st.session_state.answers[q_id] = answer
+                prev_q_id = QUESTION_IDS[q_idx - 1]
+                tile_key = f"tile_{prev_q_id}"
+                if tile_key in st.session_state:
+                    del st.session_state[tile_key]
+                st.session_state.q_idx -= 1
+                st.rerun()
     
-    st.markdown('<div class="cc-nav-next">', unsafe_allow_html=True)
-    if q_idx < NUM_QUESTIONS - 1:
-        next_clicked = st.button("Next →", key="nav_next", disabled=not is_valid)
-    else:
-        next_clicked = st.button("See Results", key="nav_results", disabled=not is_valid)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if back_clicked:
-        st.session_state.answers[q_id] = answer
-        prev_q_id = QUESTION_IDS[q_idx - 1]
-        tile_key = f"tile_{prev_q_id}"
-        if tile_key in st.session_state:
-            del st.session_state[tile_key]
-        st.session_state.q_idx -= 1
-        st.rerun()
-    
-    if next_clicked and is_valid:
-        st.session_state.answers[q_id] = answer
+    with col_next:
         if q_idx < NUM_QUESTIONS - 1:
-            st.session_state.q_idx += 1
+            if st.button("Next →", key="nav_next", disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.q_idx += 1
+                    st.rerun()
         else:
-            st.session_state.show_results = True
-            st.session_state.selected_method_id = None
-        st.rerun()
+            if st.button("See Results", key="nav_results", disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.show_results = True
+                    st.session_state.selected_method_id = None
+                    st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
 
