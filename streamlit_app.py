@@ -868,13 +868,20 @@ def render_quiz():
     [data-testid="stHeader"], header {
         display: none !important;
         height: 0 !important;
+        min-height: 0 !important;
     }
     [data-testid="stAppViewContainer"] {
         padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    [data-testid="stAppViewContainer"] > div:first-child {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     div[data-testid="stMainBlockContainer"] {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
+        margin-top: 0 !important;
     }
     .block-container {
         padding-top: 0 !important;
@@ -883,6 +890,22 @@ def render_quiz():
     }
     section[data-testid="stMain"] {
         padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    section[data-testid="stMain"] > div {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    [data-testid="stVerticalBlock"] {
+        gap: 0 !important;
+    }
+    [data-testid="stVerticalBlock"] > div:first-child {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    .cc-quiz {
+        padding-top: 4px !important;
+        margin-top: -1rem !important;
     }
     .cc-quiz .cc-quiz-header {
         padding-top: 0;
