@@ -18,8 +18,6 @@ BOOK_URL = "https://www.plannedparenthood.org/health-center"
 
 if "started" not in st.session_state:
     st.session_state.started = False
-if "scroll_to_quiz" not in st.session_state:
-    st.session_state.scroll_to_quiz = False
 if "q_idx" not in st.session_state:
     st.session_state.q_idx = 0
 if "answers" not in st.session_state:
@@ -743,7 +741,6 @@ def render_landing():
         if not st.session_state.started:
             st.session_state.started = True
             st.session_state.q_idx = 0
-            st.session_state.scroll_to_quiz = True
             st.rerun()
 
 
@@ -818,19 +815,6 @@ def render_multi_select_tiles(question_key, options):
 
 
 def render_quiz():
-    st.markdown('<div id="quiz-start"></div>', unsafe_allow_html=True)
-    
-    if st.session_state.get("scroll_to_quiz", False):
-        components.html("""
-        <script>
-            setTimeout(() => {
-                const quiz = window.parent.document.getElementById("quiz-start");
-                if (quiz) { quiz.scrollIntoView({behavior: "smooth", block: "start"}); }
-            }, 300);
-        </script>
-        """, height=0)
-        st.session_state.scroll_to_quiz = False
-    
     q_idx = st.session_state.q_idx
     q_id = QUESTION_IDS[q_idx]
     question = QUIZ_QUESTIONS[q_id]
@@ -848,7 +832,6 @@ def render_quiz():
                 if isinstance(key, str) and key.startswith("tile_"):
                     del st.session_state[key]
             st.session_state.started = False
-            st.session_state.scroll_to_quiz = False
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
@@ -1018,7 +1001,6 @@ def render_results():
     with col2:
         if st.button("Start Over", use_container_width=True):
             st.session_state.started = False
-            st.session_state.scroll_to_quiz = False
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
