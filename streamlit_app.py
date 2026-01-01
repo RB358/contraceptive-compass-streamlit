@@ -622,15 +622,16 @@ div[data-testid="stProgress"] {{
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown(
-    f'''
-    <a class="floating-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">
-        <span class="dot"></span>
-        <span>Talk to a clinician<span class="sub">Book a telehealth visit</span></span>
-    </a>
-    ''',
-    unsafe_allow_html=True
-)
+if not st.session_state.started or st.session_state.show_results:
+    st.markdown(
+        f'''
+        <a class="floating-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">
+            <span class="dot"></span>
+            <span>Talk to a clinician<span class="sub">Book a telehealth visit</span></span>
+        </a>
+        ''',
+        unsafe_allow_html=True
+    )
 
 
 def render_landing():
