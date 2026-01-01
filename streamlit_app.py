@@ -826,15 +826,19 @@ def render_multi_select_tiles(question_key, options):
 def render_quiz():
     st.markdown("""
     <style>
-    header {
+    [data-testid="stHeader"] {
         display: none !important;
         height: 0 !important;
+    }
+    [data-testid="stAppViewContainer"] {
+        padding-top: 0 !important;
     }
     div[data-testid="stMainBlockContainer"] {
         padding-top: 6px !important;
     }
     .block-container {
         padding-top: 6px !important;
+        margin-top: 0 !important;
     }
     .cc-quiz .cc-quiz-header {
         padding-top: 2px;
