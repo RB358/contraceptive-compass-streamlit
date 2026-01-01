@@ -828,6 +828,38 @@ def render_quiz():
     q_id = QUESTION_IDS[q_idx]
     question = QUIZ_QUESTIONS[q_id]
     
+    can_go_back = q_idx > 0
+    
+    is_multi = question.get("multi", False)
+    state_key = f"tile_{q_id}"
+    if is_multi:
+        current_answer = st.session_state.get(state_key, st.session_state.answers.get(q_id, []))
+        can_go_next = len(current_answer) >= 1
+    else:
+        current_answer = st.session_state.get(state_key, st.session_state.answers.get(q_id))
+        can_go_next = current_answer is not None
+    
+    nav = st.query_params.get("nav")
+    if nav:
+        st.query_params.clear()
+        if nav == "back" and can_go_back:
+            if current_answer is not None:
+                st.session_state.answers[q_id] = current_answer
+            prev_q_id = QUESTION_IDS[q_idx - 1]
+            tile_key = f"tile_{prev_q_id}"
+            if tile_key in st.session_state:
+                del st.session_state[tile_key]
+            st.session_state.q_idx -= 1
+            st.rerun()
+        elif nav == "next" and can_go_next:
+            st.session_state.answers[q_id] = current_answer
+            if q_idx < NUM_QUESTIONS - 1:
+                st.session_state.q_idx += 1
+            else:
+                st.session_state.show_results = True
+                st.session_state.selected_method_id = None
+            st.rerun()
+    
     num_options = len(question["options"])
     dense_mode = num_options >= 4 or q_id in {"q4", "q6"}
     
@@ -862,10 +894,9 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* Nav buttons */
-    .cc-quiz .stButton > button {
-        padding: 10px 20px !important;
-        min-height: 44px !important;
+    /* Padding for fixed nav */
+    .cc-quiz {
+        padding-bottom: 120px !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -893,35 +924,87 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    col_back, col_spacer, col_next = st.columns([1, 2, 1])
-    
-    with col_back:
-        if q_idx > 0:
-            if st.button("← Back", key="nav_back"):
-                st.session_state.answers[q_id] = answer
-                prev_q_id = QUESTION_IDS[q_idx - 1]
-                tile_key = f"tile_{prev_q_id}"
-                if tile_key in st.session_state:
-                    del st.session_state[tile_key]
-                st.session_state.q_idx -= 1
-                st.rerun()
-    
-    with col_next:
-        if q_idx < NUM_QUESTIONS - 1:
-            if st.button("Next →", key="nav_next", disabled=not is_valid):
-                if is_valid:
-                    st.session_state.answers[q_id] = answer
-                    st.session_state.q_idx += 1
-                    st.rerun()
-        else:
-            if st.button("See Results", key="nav_results", disabled=not is_valid):
-                if is_valid:
-                    st.session_state.answers[q_id] = answer
-                    st.session_state.show_results = True
-                    st.session_state.selected_method_id = None
-                    st.rerun()
-    
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    back_disabled = "disabled" if not can_go_back else ""
+    next_disabled = "disabled" if not is_valid else ""
+    next_label = "See Results" if q_idx == NUM_QUESTIONS - 1 else "Next →"
+    
+    nav_html = f"""
+    <style>
+        .cc-nav-bar {{
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 14px 16px;
+            z-index: 9999;
+        }}
+        .cc-nav-inner {{
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        .cc-nav-btn {{
+            border-radius: 999px;
+            min-height: 48px;
+            min-width: 130px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .cc-nav-back {{
+            background: white;
+            color: #0f172a;
+            border: 1.5px solid #cbd5e1;
+        }}
+        .cc-nav-back:hover:not([disabled]) {{
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }}
+        .cc-nav-next {{
+            background: #0f766e;
+            color: white;
+            border: none;
+        }}
+        .cc-nav-next:hover:not([disabled]) {{
+            background: #0d9488;
+        }}
+        .cc-nav-btn[disabled] {{
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }}
+        .cc-nav-back[disabled] {{
+            background: #f1f5f9;
+            color: #94a3b8;
+            border-color: #e2e8f0;
+        }}
+        .cc-nav-next[disabled] {{
+            background: #cbd5e1;
+            color: #64748b;
+        }}
+    </style>
+    <div class="cc-nav-bar">
+        <div class="cc-nav-inner">
+            <button class="cc-nav-btn cc-nav-back" {back_disabled} onclick="window.parent.location.href = window.parent.location.pathname + '?nav=back'">← Back</button>
+            <button class="cc-nav-btn cc-nav-next" {next_disabled} onclick="window.parent.location.href = window.parent.location.pathname + '?nav=next'">{next_label}</button>
+        </div>
+    </div>
+    """
+    
+    components.html(nav_html, height=80, scrolling=False)
 
 
 def render_category(tier_key, methods):

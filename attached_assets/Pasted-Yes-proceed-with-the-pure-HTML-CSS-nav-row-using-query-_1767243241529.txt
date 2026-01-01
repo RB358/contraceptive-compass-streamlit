@@ -1,0 +1,52 @@
+Yes—proceed with the pure HTML/CSS nav row using query params (remove Streamlit columns for nav).
+
+Goal:
+- Back + Next always appear on ONE horizontal row on mobile.
+- Disabled states legible.
+- No scrolling introduced.
+- Keep existing quiz logic (q_idx, answers, validation) unchanged.
+
+Implementation steps:
+
+A) Remove the st.columns nav entirely
+- Delete the st.columns([1,2,1]) nav row and its Back/Next Streamlit buttons.
+- Keep all logic variables, but do not render nav as Streamlit buttons.
+
+B) Add a “nav action handler” at the TOP of render_quiz() (before rendering UI)
+1) Compute:
+   can_go_back = (st.session_state.q_idx > 0)
+   can_go_next = validation for the current question (same rule you already use to enable Next)
+2) Read query param:
+   nav = st.query_params.get("nav")
+3) If nav exists:
+   - clear params immediately (st.query_params.clear())
+   - if nav == "back" and can_go_back: st.session_state.q_idx -= 1; st.rerun()
+   - if nav == "next" and can_go_next:
+        if q_idx < NUM_QUESTIONS - 1: st.session_state.q_idx += 1
+        else: st.session_state.show_results = True
+        st.rerun()
+
+C) Render the nav bar using components.html at the BOTTOM of the quiz screen
+- Use components.html with a fixed bottom bar:
+  - Back (left) outline button
+  - Next (right) filled button
+  - Both in one flex row; never stack.
+- Back disabled when !can_go_back
+- Next disabled when !can_go_next
+- On click: update URL query param to ?nav=back or ?nav=next (preserve existing URL origin/path)
+
+Example components.html (adjust styling to match current palette):
+- container: position: fixed; left:0; right:0; bottom:0; padding: 14px 16px;
+- inner: max-width: 720px; margin: 0 auto; display:flex; gap:12px; justify-content:space-between;
+- buttons: border-radius: 999px; min-height: 52px; min-width: 140px;
+- disabled: keep readable (outline + medium text); do not fade to near-invisible.
+
+D) Prevent overlap
+- Add padding-bottom to the quiz content area so the last option never hides behind the fixed nav bar (e.g. 110–130px).
+
+Acceptance tests:
+- On mobile (≤640px width), Back and Next are on one horizontal row and always visible.
+- Q1: Back is hidden/disabled; Next disabled until selection.
+- Q2+: Back enabled; Next enabled only with valid selection.
+- Q4/Q6: still no scrolling; dense mode still applies.
+- Landing and results unaffected.
