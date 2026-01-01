@@ -264,6 +264,10 @@ div.stButton {{text-align: center !important;}}
     color: var(--coral);
     font-size: 0.95rem;
     font-weight: 600;
+    margin: 0 0 4px 0 !important;
+}}
+
+div[data-testid="stProgress"] {{
     margin-bottom: 8px !important;
 }}
 
@@ -824,18 +828,6 @@ def render_quiz():
     
     st.markdown(f'<p class="progress-text">Question {step} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
     st.progress(progress_fraction)
-    
-    col_spacer, col_restart = st.columns([4, 1])
-    with col_restart:
-        if st.button("Restart", key="restart_quiz"):
-            for key in list(st.session_state.keys()):
-                if isinstance(key, str) and key.startswith("tile_"):
-                    del st.session_state[key]
-            st.session_state.q_idx = 0
-            st.session_state.answers = {}
-            st.session_state.show_results = False
-            st.session_state.selected_method_id = None
-            st.rerun()
     
     st.markdown(f'<p class="quiz-question">{question["label"]}</p>', unsafe_allow_html=True)
     
