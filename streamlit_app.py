@@ -87,6 +87,10 @@ st.markdown(f"""
     color: var(--ink);
 }}
 
+header[data-testid="stHeader"] {{
+    display: none !important;
+}}
+
 .cc-landing {{
     display: grid;
     grid-template-rows: 1fr auto;
@@ -822,11 +826,11 @@ def render_multi_select_tiles(question_key, options):
 def render_quiz():
     st.markdown("""
     <style>
-    div[data-testid="stMainBlockContainer"] {
-        padding-top: 12px !important;
+    .cc-quiz-header {
+        padding-top: 14px;
     }
-    .progress-text {
-        margin-top: 0 !important;
+    .cc-quiz-header .progress-text {
+        margin: 0 0 4px 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -838,7 +842,7 @@ def render_quiz():
     step = q_idx + 1
     progress_fraction = step / NUM_QUESTIONS
     
-    st.markdown(f'<p class="progress-text">Question {step} of {NUM_QUESTIONS}</p>', unsafe_allow_html=True)
+    st.markdown(f'<div class="cc-quiz-header"><p class="progress-text">Question {step} of {NUM_QUESTIONS}</p></div>', unsafe_allow_html=True)
     st.progress(progress_fraction)
     
     st.markdown(f'<p class="quiz-question">{question["label"]}</p>', unsafe_allow_html=True)
