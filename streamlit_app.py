@@ -854,15 +854,7 @@ def render_quiz():
         margin: 0 0 4px 0 !important;
     }
     
-    /* Dense mode tile styles */
-    .cc-dense .stButton > button {
-        padding: 10px 16px !important;
-        min-height: 44px !important;
-        font-size: 0.95rem !important;
-    }
-    .cc-dense div[data-testid="stVerticalBlock"] > div {
-        margin-bottom: 6px !important;
-    }
+    /* Dense mode tile styles - scoped to tile group only */
     .cc-dense .quiz-question {
         margin-bottom: 10px !important;
     }
@@ -870,18 +862,30 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* 2-column layout for short screens with 4+ options */
-    @media (max-height: 720px) {
-        .cc-dense .cc-tile-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 8px !important;
-        }
-        .cc-dense .cc-tile-grid .stButton > button {
-            padding: 8px 12px !important;
-            min-height: 44px !important;
-            font-size: 0.9rem !important;
-        }
+    /* Nav row styling */
+    .cc-nav-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin-top: 16px !important;
+    }
+    .cc-nav-row .stButton {
+        flex: 0 0 auto !important;
+        min-width: 100px !important;
+    }
+    .cc-nav-row .stButton > button {
+        padding: 10px 20px !important;
+        min-height: 44px !important;
+    }
+    
+    /* Disabled button styling - keep legible */
+    .cc-nav-row .stButton > button:disabled {
+        opacity: 0.6 !important;
+        cursor: not-allowed !important;
+        background: var(--border) !important;
+        color: rgba(15, 23, 42, 0.6) !important;
+        border-color: var(--border) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -909,11 +913,13 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    col1, col2, col3 = st.columns([1, 1, 1])
+    st.markdown('<div class="cc-nav-row">', unsafe_allow_html=True)
     
-    with col1:
+    col_back, col_spacer, col_next = st.columns([1, 2, 1])
+    
+    with col_back:
         if q_idx > 0:
-            if st.button("← Back", use_container_width=True):
+            if st.button("← Back", key="nav_back"):
                 st.session_state.answers[q_id] = answer
                 prev_q_id = QUESTION_IDS[q_idx - 1]
                 tile_key = f"tile_{prev_q_id}"
@@ -922,20 +928,22 @@ def render_quiz():
                 st.session_state.q_idx -= 1
                 st.rerun()
     
-    with col3:
+    with col_next:
         if q_idx < NUM_QUESTIONS - 1:
-            if st.button("Next →", use_container_width=True, disabled=not is_valid):
+            if st.button("Next →", key="nav_next", disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.q_idx += 1
                     st.rerun()
         else:
-            if st.button("See Results", use_container_width=True, disabled=not is_valid):
+            if st.button("See Results", key="nav_results", disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
