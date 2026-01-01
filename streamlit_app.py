@@ -824,6 +824,13 @@ def render_multi_select_tiles(question_key, options):
 
 
 def render_quiz():
+    q_idx = st.session_state.q_idx
+    q_id = QUESTION_IDS[q_idx]
+    question = QUIZ_QUESTIONS[q_id]
+    
+    num_options = len(question["options"])
+    dense_mode = num_options >= 4 or q_id in {"q4", "q6"}
+    
     st.markdown("""
     <style>
     [data-testid="stHeader"], header {
@@ -846,14 +853,41 @@ def render_quiz():
     .cc-quiz .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
     }
+    
+    /* Dense mode tile styles */
+    .cc-dense .stButton > button {
+        padding: 10px 16px !important;
+        min-height: 44px !important;
+        font-size: 0.95rem !important;
+    }
+    .cc-dense div[data-testid="stVerticalBlock"] > div {
+        margin-bottom: 6px !important;
+    }
+    .cc-dense .quiz-question {
+        margin-bottom: 10px !important;
+    }
+    .cc-dense .quiz-help {
+        margin-bottom: 8px !important;
+    }
+    
+    /* 2-column layout for short screens with 4+ options */
+    @media (max-height: 720px) {
+        .cc-dense .cc-tile-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+        }
+        .cc-dense .cc-tile-grid .stButton > button {
+            padding: 8px 12px !important;
+            min-height: 44px !important;
+            font-size: 0.9rem !important;
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
     
-    st.markdown('<div class="cc-quiz">', unsafe_allow_html=True)
-    
-    q_idx = st.session_state.q_idx
-    q_id = QUESTION_IDS[q_idx]
-    question = QUIZ_QUESTIONS[q_id]
+    wrapper_class = "cc-quiz cc-dense" if dense_mode else "cc-quiz"
+    st.markdown(f'<div class="{wrapper_class}">', unsafe_allow_html=True)
     
     step = q_idx + 1
     progress_fraction = step / NUM_QUESTIONS
