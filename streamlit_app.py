@@ -862,25 +862,29 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* Nav row styling */
-    .cc-nav-row {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 12px !important;
+    /* Nav row styling - target Streamlit's actual DOM */
+    .cc-nav-scope {
         margin-top: 16px !important;
     }
-    .cc-nav-row .stButton {
-        flex: 0 0 auto !important;
-        min-width: 100px !important;
+    .cc-nav-scope div[data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        align-items: center !important;
     }
-    .cc-nav-row .stButton > button {
-        padding: 10px 20px !important;
+    .cc-nav-scope div[data-testid="stColumn"] {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+    .cc-nav-scope .stButton > button {
+        padding: 10px 16px !important;
         min-height: 44px !important;
+        width: 100% !important;
     }
     
     /* Disabled button styling - keep legible */
-    .cc-nav-row .stButton > button:disabled {
+    .cc-nav-scope .stButton > button:disabled {
         opacity: 0.6 !important;
         cursor: not-allowed !important;
         background: var(--border) !important;
@@ -913,7 +917,7 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    st.markdown('<div class="cc-nav-row">', unsafe_allow_html=True)
+    st.markdown('<div class="cc-nav-scope">', unsafe_allow_html=True)
     
     col_back, col_spacer, col_next = st.columns([1, 2, 1])
     
