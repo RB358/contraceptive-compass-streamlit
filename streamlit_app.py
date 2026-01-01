@@ -826,20 +826,22 @@ def render_multi_select_tiles(question_key, options):
 def render_quiz():
     st.markdown("""
     <style>
-    div[data-testid="stMainBlockContainer"] {
-        padding-top: 4px !important;
+    div[data-testid="stMainBlockContainer"]:has(.cc-quiz) {
+        padding-top: 6px !important;
     }
-    .block-container {
-        padding-top: 4px !important;
+    .block-container:has(.cc-quiz) {
+        padding-top: 6px !important;
     }
-    .cc-quiz-header {
+    .cc-quiz .cc-quiz-header {
         padding-top: 2px;
     }
-    .cc-quiz-header .progress-text {
+    .cc-quiz .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="cc-quiz">', unsafe_allow_html=True)
     
     q_idx = st.session_state.q_idx
     q_id = QUESTION_IDS[q_idx]
@@ -892,6 +894,8 @@ def render_quiz():
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_category(tier_key, methods):
