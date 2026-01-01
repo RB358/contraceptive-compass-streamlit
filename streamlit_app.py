@@ -827,10 +827,10 @@ def render_quiz():
     st.markdown("""
     <style>
     div[data-testid="stMainBlockContainer"] {
-        padding-top: 8px !important;
+        padding-top: 4px !important;
     }
     .block-container {
-        padding-top: 8px !important;
+        padding-top: 4px !important;
     }
     .cc-quiz-header {
         padding-top: 2px;
