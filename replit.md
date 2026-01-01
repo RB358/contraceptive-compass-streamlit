@@ -41,14 +41,8 @@ Contraceptive methods are stored as dictionaries with:
 
 ### Frontend Architecture
 - Single-page Streamlit application (`streamlit_app.py`)
-- Mobile-first design with tile-based quiz interface
-- Three-zone quiz layout:
-  - `.quiz-top`: Progress bar (fixed)
-  - `.quiz-middle`: Question + selectable tiles (scrollable)
-  - `.quiz-bottom`: Navigation buttons with sticky positioning
-- Navigation hierarchy: Back (secondary), Restart (text-link), Next (primary with shadow)
-- Hero image with CSS overlay on landing page only
-- Session state management for quiz flow and tile selections
+- Hero image with CSS overlay styling
+- Session state management for quiz flow
 - Base64-encoded local images for reliable asset loading
 
 ## External Dependencies
