@@ -862,29 +862,36 @@ def render_quiz():
         margin-bottom: 8px !important;
     }
     
-    /* Nav row styling - target Streamlit's actual DOM */
-    .cc-nav-scope {
+    /* Nav row styling - sentinel + adjacent sibling approach */
+    #cc-nav-sentinel {
         margin-top: 16px !important;
     }
-    .cc-nav-scope div[data-testid="stHorizontalBlock"] {
+    #cc-nav-sentinel + div div[data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         gap: 12px !important;
         align-items: center !important;
     }
-    .cc-nav-scope div[data-testid="stColumn"] {
+    #cc-nav-sentinel + div div[data-testid="stColumn"] {
         flex: 1 1 0 !important;
         min-width: 0 !important;
     }
-    .cc-nav-scope .stButton > button {
+    /* Fallback if data-testid differs */
+    #cc-nav-sentinel + div > div {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+    }
+    #cc-nav-sentinel + div .stButton > button {
         padding: 10px 16px !important;
         min-height: 44px !important;
         width: 100% !important;
     }
     
     /* Disabled button styling - keep legible */
-    .cc-nav-scope .stButton > button:disabled {
+    #cc-nav-sentinel + div .stButton > button:disabled {
         opacity: 0.6 !important;
         cursor: not-allowed !important;
         background: var(--border) !important;
@@ -917,7 +924,7 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    st.markdown('<div class="cc-nav-scope">', unsafe_allow_html=True)
+    st.markdown('<div id="cc-nav-sentinel"></div>', unsafe_allow_html=True)
     
     col_back, col_spacer, col_next = st.columns([1, 2, 1])
     
@@ -946,8 +953,6 @@ def render_quiz():
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
-    
-    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
