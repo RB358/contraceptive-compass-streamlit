@@ -739,11 +739,12 @@ def render_landing():
     ''', unsafe_allow_html=True)
     
     if st.query_params.get("start") == "1":
-        st.session_state.started = True
-        st.session_state.q_idx = 0
-        st.session_state.scroll_to_quiz = True
         st.query_params.clear()
-        st.rerun()
+        if not st.session_state.started:
+            st.session_state.started = True
+            st.session_state.q_idx = 0
+            st.session_state.scroll_to_quiz = True
+            st.rerun()
 
 
 def render_single_select_tiles(question_key, options):
