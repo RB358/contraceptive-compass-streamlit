@@ -80,10 +80,15 @@ st.markdown(f"""
     --teal-600: #0B5F59;
     --coral: #D1495B;
     --coral-hover: #E06372;
-    --ink: #0F172A;
+    --ink: #211816;
     --surface: #FFFFFF;
     --warm-bg: #FFFBFA;
     --border: #E5E7EB;
+    --mint: #74B89A;
+    --mint-bg: rgba(116,184,154,0.10);
+    --mint-bg-hover: rgba(116,184,154,0.14);
+    --mint-border: rgba(116,184,154,0.55);
+    --mint-border-strong: rgba(116,184,154,0.95);
 }}
 
 .stApp, .main {{
@@ -225,11 +230,11 @@ h1, h2, h3 {{
 
 .quiz-tiles .stButton > button,
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
-    background: var(--surface) !important;
-    border: 2px solid var(--border) !important;
+    background: var(--mint-bg) !important;
+    border: 1px solid var(--mint-border) !important;
     color: var(--ink) !important;
-    border-radius: 16px !important;
-    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
     font-weight: 500 !important;
     text-align: left !important;
     transition: all 0.15s ease !important;
@@ -237,8 +242,8 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
 
 .quiz-tiles .stButton > button:hover,
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {{
-    border-color: var(--teal) !important;
-    background: rgba(15, 118, 110, 0.04) !important;
+    border-color: var(--mint-border-strong) !important;
+    background: var(--mint-bg-hover) !important;
 }}
 
 .main .block-container {{
@@ -778,8 +783,8 @@ def render_single_select_tiles(question_key, options):
             <style>
             button[data-testid="stBaseButton-secondary"][key="{btn_key}"],
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal) !important;
-                background: rgba(15, 118, 110, 0.08) !important;
+                border: 2.5px solid var(--mint-border-strong) !important;
+                background: var(--mint-bg) !important;
             }}
             </style>
             """, unsafe_allow_html=True)
@@ -811,8 +816,8 @@ def render_multi_select_tiles(question_key, options):
             st.markdown(f"""
             <style>
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal) !important;
-                background: rgba(15, 118, 110, 0.08) !important;
+                border: 2.5px solid var(--mint-border-strong) !important;
+                background: var(--mint-bg) !important;
             }}
             </style>
             """, unsafe_allow_html=True)
