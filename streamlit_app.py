@@ -701,7 +701,7 @@ def render_landing():
         font-weight: 700;
         line-height: 1.2;
         text-align: center;
-        padding: 240px 24px 0 24px;
+        padding: 250px 24px 0 24px;
         margin: 0;
     }}
     .landing-footer {{
