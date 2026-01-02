@@ -194,9 +194,14 @@ header[data-testid="stHeader"] {{
     text-align: center;
     font-size: 0.8rem;
     color: rgba(15,23,42,0.65);
-    padding: 6px 0 0 0;
+    padding: 6px 0 80px 0;
     margin: 0;
     line-height: 1.4;
+}}
+@media (min-width: 768px) {{
+    .landing-disclaimer {{
+        padding-bottom: 0;
+    }}
 }}
 
 @media (max-height: 600px) {{
