@@ -925,7 +925,11 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    col1, col2, col3 = st.columns([1, 1, 1])
+    is_last_question = q_idx == NUM_QUESTIONS - 1
+    if is_last_question:
+        col1, col2, col3 = st.columns([1, 0.5, 1.5])
+    else:
+        col1, col2, col3 = st.columns([1, 1, 1])
     
     with col1:
         if q_idx > 0:
