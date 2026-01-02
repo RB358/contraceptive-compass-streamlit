@@ -742,7 +742,7 @@ def render_landing():
     <div class="landing-grid">
         <div class="landing-hero-cell">
             <div class="landing-hero">
-                <h1>Find your contraceptive in seven questions</h1>
+                <h1>Find your contraceptive<br>in seven questions</h1>
             </div>
         </div>
         <div class="landing-footer">
