@@ -727,12 +727,13 @@ def render_landing():
         color: #0F172A;
         border: none;
         border-radius: 999px;
-        padding: 14px 48px;
+        padding: 14px 36px;
         font-size: 1.1rem;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s;
+        white-space: nowrap;
     }}
     .landing-start-btn:hover {{
         transform: translateY(-2px);
@@ -758,7 +759,7 @@ def render_landing():
         </div>
         <div class="landing-footer">
             <a href="?start=1" style="text-decoration: none;">
-                <button class="landing-start-btn">Start</button>
+                <button class="landing-start-btn">Start quiz</button>
             </a>
             <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
         </div>
