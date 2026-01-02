@@ -228,8 +228,8 @@ h1, h2, h3 {{
     border-color: var(--teal-600) !important;
 }}
 
-.quiz-tiles .stButton > button,
-div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
+.cc-quiz button[data-testid="baseButton-secondary"],
+.cc-quiz .stButton > button {{
     background: var(--mint-bg) !important;
     border: 1px solid var(--mint-border) !important;
     color: var(--ink) !important;
@@ -240,8 +240,8 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {{
     transition: all 0.15s ease !important;
 }}
 
-.quiz-tiles .stButton > button:hover,
-div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {{
+.cc-quiz button[data-testid="baseButton-secondary"]:hover,
+.cc-quiz .stButton > button:hover {{
     border-color: var(--mint-border-strong) !important;
     background: var(--mint-bg-hover) !important;
 }}
@@ -849,11 +849,28 @@ def render_quiz():
         padding-top: 0 !important;
         margin-top: 0 !important;
     }
-    .cc-quiz .cc-quiz-header {
+    .cc-quiz-header {
         padding-top: 2px;
     }
-    .cc-quiz .cc-quiz-header .progress-text {
+    .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
+    }
+    /* Mint tile styles for quiz answer buttons */
+    button[data-testid="baseButton-secondary"],
+    .stButton > button {
+        background: rgba(116,184,154,0.10) !important;
+        border: 1px solid rgba(116,184,154,0.55) !important;
+        color: #211816 !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        transition: all 0.15s ease !important;
+    }
+    button[data-testid="baseButton-secondary"]:hover,
+    .stButton > button:hover {
+        border-color: rgba(116,184,154,0.95) !important;
+        background: rgba(116,184,154,0.14) !important;
     }
     </style>
     """, unsafe_allow_html=True)
