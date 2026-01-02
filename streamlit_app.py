@@ -824,13 +824,6 @@ def render_multi_select_tiles(question_key, options):
 
 
 def render_quiz():
-    q_idx = st.session_state.q_idx
-    q_id = QUESTION_IDS[q_idx]
-    question = QUIZ_QUESTIONS[q_id]
-    
-    num_options = len(question["options"])
-    dense_mode = num_options >= 4 or q_id in {"q4", "q6"}
-    
     st.markdown("""
     <style>
     [data-testid="stHeader"], header {
@@ -853,70 +846,14 @@ def render_quiz():
     .cc-quiz .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
     }
-    
-    /* Dense mode tile styles - scoped to tile group only */
-    .cc-dense .quiz-question {
-        margin-bottom: 10px !important;
-    }
-    .cc-dense .quiz-help {
-        margin-bottom: 8px !important;
-    }
-    
-    /* Fixed-position nav buttons */
-    .cc-quiz {
-        padding-bottom: 110px !important;
-    }
-    .cc-nav-back, .cc-nav-next {
-        position: fixed !important;
-        bottom: 18px !important;
-        z-index: 9999 !important;
-    }
-    .cc-nav-back {
-        left: 16px !important;
-    }
-    .cc-nav-next {
-        right: 16px !important;
-    }
-    .cc-nav-back button, .cc-nav-next button {
-        width: auto !important;
-        min-width: 120px !important;
-        padding: 12px 20px !important;
-        min-height: 44px !important;
-        border-radius: 999px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
-    }
-    .cc-nav-next button {
-        background: var(--teal) !important;
-        color: white !important;
-        border: none !important;
-    }
-    .cc-nav-next button:hover {
-        background: #0d9488 !important;
-    }
-    .cc-nav-back button {
-        background: white !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border) !important;
-    }
-    .cc-nav-back button:hover {
-        background: #f8fafc !important;
-    }
-    
-    /* Disabled button styling */
-    .cc-nav-back button:disabled, .cc-nav-next button:disabled {
-        opacity: 0.5 !important;
-        cursor: not-allowed !important;
-    }
-    .cc-nav-next button:disabled {
-        background: #cbd5e1 !important;
-        color: #64748b !important;
-    }
     </style>
     """, unsafe_allow_html=True)
     
-    wrapper_class = "cc-quiz cc-dense" if dense_mode else "cc-quiz"
-    st.markdown(f'<div class="{wrapper_class}">', unsafe_allow_html=True)
+    st.markdown('<div class="cc-quiz">', unsafe_allow_html=True)
+    
+    q_idx = st.session_state.q_idx
+    q_id = QUESTION_IDS[q_idx]
+    question = QUIZ_QUESTIONS[q_id]
     
     step = q_idx + 1
     progress_fraction = step / NUM_QUESTIONS
@@ -938,39 +875,33 @@ def render_quiz():
         answer = render_single_select_tiles(q_id, question["options"])
         is_valid = answer is not None
     
-    # Fixed-position nav buttons
-    back_clicked = False
-    next_clicked = False
+    col1, col2, col3 = st.columns([1, 1, 1])
     
-    if q_idx > 0:
-        st.markdown('<div class="cc-nav-back">', unsafe_allow_html=True)
-        back_clicked = st.button("← Back", key="nav_back")
-        st.markdown('</div>', unsafe_allow_html=True)
+    with col1:
+        if q_idx > 0:
+            if st.button("← Back", use_container_width=True):
+                st.session_state.answers[q_id] = answer
+                prev_q_id = QUESTION_IDS[q_idx - 1]
+                tile_key = f"tile_{prev_q_id}"
+                if tile_key in st.session_state:
+                    del st.session_state[tile_key]
+                st.session_state.q_idx -= 1
+                st.rerun()
     
-    st.markdown('<div class="cc-nav-next">', unsafe_allow_html=True)
-    if q_idx < NUM_QUESTIONS - 1:
-        next_clicked = st.button("Next →", key="nav_next", disabled=not is_valid)
-    else:
-        next_clicked = st.button("See Results", key="nav_results", disabled=not is_valid)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if back_clicked:
-        st.session_state.answers[q_id] = answer
-        prev_q_id = QUESTION_IDS[q_idx - 1]
-        tile_key = f"tile_{prev_q_id}"
-        if tile_key in st.session_state:
-            del st.session_state[tile_key]
-        st.session_state.q_idx -= 1
-        st.rerun()
-    
-    if next_clicked and is_valid:
-        st.session_state.answers[q_id] = answer
+    with col3:
         if q_idx < NUM_QUESTIONS - 1:
-            st.session_state.q_idx += 1
+            if st.button("Next →", use_container_width=True, disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.q_idx += 1
+                    st.rerun()
         else:
-            st.session_state.show_results = True
-            st.session_state.selected_method_id = None
-        st.rerun()
+            if st.button("See Results", use_container_width=True, disabled=not is_valid):
+                if is_valid:
+                    st.session_state.answers[q_id] = answer
+                    st.session_state.show_results = True
+                    st.session_state.selected_method_id = None
+                    st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
 
