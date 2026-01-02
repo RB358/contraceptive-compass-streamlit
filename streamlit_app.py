@@ -14,6 +14,10 @@ st.set_page_config(
     layout="centered"
 )
 
+CSS_PATH = Path(__file__).resolve().parent / "styles.css"
+if CSS_PATH.exists():
+    st.markdown(f"<style>{CSS_PATH.read_text()}</style>", unsafe_allow_html=True)
+
 BOOK_URL = "https://www.plannedparenthood.org/health-center"
 
 if "started" not in st.session_state:
