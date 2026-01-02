@@ -196,7 +196,7 @@ header[data-testid="stHeader"] {{
     color: rgba(15,23,42,0.65);
     padding: 6px 0 27px 0;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.2;
 }}
 @media (min-width: 768px) {{
     .landing-disclaimer {{
@@ -743,7 +743,7 @@ def render_landing():
         font-size: 0.52rem;
         color: rgba(15,23,42,0.65);
         margin: 0;
-        line-height: 1.4;
+        line-height: 1.2;
     }}
     @media (max-height: 600px) {{
         .landing-disclaimer {{ font-size: 0.47rem; }}
