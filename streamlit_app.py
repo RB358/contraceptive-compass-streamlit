@@ -192,7 +192,7 @@ header[data-testid="stHeader"] {{
 
 .landing-disclaimer {{
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: rgba(15,23,42,0.65);
     padding: 6px 0 23px 0;
     margin: 0;
