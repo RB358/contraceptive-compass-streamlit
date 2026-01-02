@@ -734,13 +734,13 @@ def render_landing():
     }}
     .landing-disclaimer {{
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.58rem;
         color: rgba(15,23,42,0.65);
         margin: 0;
         line-height: 1.4;
     }}
     @media (max-height: 600px) {{
-        .landing-disclaimer {{ font-size: 0.7rem; }}
+        .landing-disclaimer {{ font-size: 0.52rem; }}
         .landing-footer {{ padding-bottom: 70px; }}
     }}
     </style>
