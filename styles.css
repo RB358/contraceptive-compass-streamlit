@@ -1,0 +1,44 @@
+:root{
+  /* Your chosen palette */
+  --ink: #211816;                 /* dark grey-brown text */
+  --mint: #74B89A;                /* mint text/border */
+  --mint-bg: rgba(116,184,154,0.10);      /* very pale mint background */
+  --mint-bg-hover: rgba(116,184,154,0.14);
+  --mint-border: rgba(116,184,154,0.55);
+  --mint-border-strong: rgba(116,184,154,0.95);
+}
+
+/* Keep scope tight: set base text only (safe) */
+html, body, [class*="stApp"]{
+  color: var(--ink);
+}
+
+/* RADIO OPTIONS ONLY: pale mint tiles with mint text */
+div[role="radiogroup"] > label{
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+
+  background-color: var(--mint-bg) !important;
+  border: 1px solid var(--mint-border) !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  margin: 10px 0 !important;
+
+  color: var(--mint) !important;
+}
+
+/* Hover */
+div[role="radiogroup"] > label:hover{
+  background-color: var(--mint-bg-hover) !important;
+}
+
+/* Selected */
+div[role="radiogroup"] > label:has(input:checked){
+  border: 2px solid var(--mint-border-strong) !important;
+}
+
+/* Hide default radio circle (optional; remove if you want it visible) */
+div[role="radiogroup"] > label input{
+  display: none !important;
+}
