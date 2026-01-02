@@ -690,6 +690,12 @@ def render_landing():
         align-items: center;
         justify-content: center;
     }}
+    @media (max-width: 480px) {{
+        .landing-hero {{
+            background-size: auto 100%;
+            background-position: center 0;
+        }}
+    }}
     .landing-hero::after {{
         content: "";
         position: absolute;
