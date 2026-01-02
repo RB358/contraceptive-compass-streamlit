@@ -892,6 +892,10 @@ def render_quiz():
         min-width: 0 !important;
         flex: 1 !important;
     }
+    /* Reduce spacing between quiz option tiles by 25% */
+    [data-testid="stVerticalBlock"] > div:has(.stButton) {
+        margin-bottom: -6px !important;
+    }
     </style>
     """, unsafe_allow_html=True)
     
