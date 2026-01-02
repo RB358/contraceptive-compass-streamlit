@@ -702,7 +702,7 @@ def render_landing():
         position: relative;
         z-index: 2;
         color: white;
-        font-size: clamp(1.5rem, 5vw, 2.7rem);
+        font-size: clamp(1.7rem, 6vw, 3rem);
         font-weight: 700;
         line-height: 1.2;
         text-align: center;
