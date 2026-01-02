@@ -883,6 +883,15 @@ def render_quiz():
         border-color: rgba(116,184,154,0.95) !important;
         background: rgba(116,184,154,0.14) !important;
     }
+    /* Force navigation buttons to stay horizontal on mobile */
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }
+    [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        min-width: 0 !important;
+        flex: 1 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
     
