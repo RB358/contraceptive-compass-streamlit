@@ -713,7 +713,7 @@ def render_landing():
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 6px;
         padding-bottom: 80px;
     }}
     .landing-start-btn {{
