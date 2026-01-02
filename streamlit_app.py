@@ -194,7 +194,7 @@ header[data-testid="stHeader"] {{
     text-align: center;
     font-size: 0.8rem;
     color: rgba(15,23,42,0.65);
-    padding: 6px 0 80px 0;
+    padding: 6px 0 20px 0;
     margin: 0;
     line-height: 1.4;
 }}
