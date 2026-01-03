@@ -1035,10 +1035,7 @@ def render_quiz():
         is_valid = answer is not None
     
     is_last_question = q_idx == NUM_QUESTIONS - 1
-    if is_last_question:
-        col1, col2, col3 = st.columns([1, 0.3, 1.3])
-    else:
-        col1, col2, col3 = st.columns([1, 0.3, 1])
+    col1, col2, col3 = st.columns([1, 0.2, 1])
     
     with col1:
         if q_idx > 0:
