@@ -32,6 +32,8 @@ if "selected_method_id" not in st.session_state:
     st.session_state.selected_method_id = None
 if "view_other_options" not in st.session_state:
     st.session_state.view_other_options = False
+if "show_why" not in st.session_state:
+    st.session_state.show_why = False
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
@@ -68,6 +70,111 @@ CATEGORY_MAP = {
 
 def get_method_id(method):
     return method["name"].lower().replace(" ", "_").replace("(", "").replace(")", "").replace(",", "")
+
+
+def get_recommendation_reasons(answers):
+    """Generate explanation text based on user's quiz answers."""
+    reasons = []
+    
+    # Age-related reasoning
+    age = answers.get("q1", "")
+    if age == "Under 20":
+        reasons.append("You're under 20, so long-acting reversible contraception (like IUDs or implants) is often recommended as it's highly effective without requiring daily action.")
+    elif age == "35-44" or age == "45+":
+        reasons.append("At 35+, some combined hormonal methods (pill, patch, ring) carry increased risks, especially if combined with smoking.")
+    
+    # Smoking
+    smoking = answers.get("q2", "No")
+    if smoking == ">15 cigarettes/day":
+        reasons.append("Heavy smoking significantly increases the risk of blood clots with combined hormonal methods, so we've prioritized hormone-free or progestin-only options.")
+    elif smoking == "<15 cigarettes/day":
+        reasons.append("Smoking increases cardiovascular risks with some hormonal methods, which has influenced your recommendations.")
+    
+    # BMI
+    bmi = answers.get("q3", "<30")
+    if bmi == "30 or higher":
+        reasons.append("With a BMI of 30+, some methods may have reduced effectiveness. Long-acting methods like IUDs remain highly effective regardless of weight.")
+    
+    # Period issues
+    periods = answers.get("q4", "No significant issues")
+    if periods in ["Heavy bleeding", "Painful periods", "Both heavy and painful"]:
+        reasons.append("You mentioned difficult periods, so we've highlighted methods that can help reduce bleeding and pain, like hormonal IUDs or the pill.")
+    
+    # Breastfeeding
+    breastfeeding = answers.get("q5", "No")
+    if breastfeeding == "Yes":
+        reasons.append("Since you're breastfeeding, we've flagged combined hormonal methods (which contain estrogen) with caution, as progestin-only options are generally preferred.")
+    
+    # Health conditions
+    conditions = answers.get("q6", [])
+    if isinstance(conditions, list):
+        if "History of blood clots (VTE)" in conditions:
+            reasons.append("Your history of blood clots means estrogen-containing methods are contraindicated. We've recommended hormone-free or progestin-only options.")
+        if "Migraine with aura" in conditions:
+            reasons.append("Migraines with aura increase stroke risk with combined hormonal methods, so these have been marked as less suitable.")
+        if "High blood pressure" in conditions:
+            reasons.append("High blood pressure can be worsened by estrogen-containing methods, so we've prioritized other options.")
+    
+    # Priority
+    priority = answers.get("q7", "")
+    if priority == "Highest effectiveness":
+        reasons.append("You prioritized highest effectiveness, so we've recommended methods with <1% failure rate like IUDs and implants.")
+    elif priority == "Avoiding hormones":
+        reasons.append("You want to avoid hormones, so we've highlighted copper IUD, condoms, diaphragm, and fertility awareness methods.")
+    elif priority == "Managing periods":
+        reasons.append("You want help managing periods, so we've recommended methods that can reduce bleeding and pain.")
+    elif priority == "Low maintenance (set and forget)":
+        reasons.append("You prefer low maintenance, so we've prioritized long-acting methods that last months or years.")
+    elif priority == "Quick return to fertility":
+        reasons.append("You want quick fertility return, so we've highlighted methods where fertility returns immediately after stopping.")
+    
+    if not reasons:
+        reasons.append("Based on your answers, we've matched you with methods that align with your health profile and preferences.")
+    
+    return reasons
+
+
+def render_why_recommendation():
+    """Render the explanation modal for why these recommendations were made."""
+    st.markdown("""
+    <style>
+    .why-modal {
+        background: #fff;
+        border: 1px solid rgba(116,184,154,0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 16px 0;
+    }
+    .why-header {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #211816;
+        margin-bottom: 16px;
+    }
+    .why-reason {
+        background: rgba(116,184,154,0.08);
+        border-left: 3px solid #74B89A;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        border-radius: 0 8px 8px 0;
+        font-size: 0.95rem;
+        color: #211816;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="why-modal">', unsafe_allow_html=True)
+    st.markdown('<p class="why-header">Why these recommendations?</p>', unsafe_allow_html=True)
+    
+    reasons = get_recommendation_reasons(st.session_state.answers)
+    for reason in reasons:
+        st.markdown(f'<div class="why-reason">{reason}</div>', unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    if st.button("Close explanation", use_container_width=True):
+        st.session_state.show_why = False
+        st.rerun()
 
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
 hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
@@ -1150,7 +1257,11 @@ def render_results():
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Why this recommendation?", use_container_width=True):
+            st.session_state.show_why = True
+            st.rerun()
     with col2:
         if st.button("Start Over", use_container_width=True):
             st.session_state.started = False
@@ -1159,7 +1270,12 @@ def render_results():
             st.session_state.show_results = False
             st.session_state.view_other_options = False
             st.session_state.selected_method_id = None
+            st.session_state.show_why = False
             st.rerun()
+    
+    # Show explanation modal if requested
+    if st.session_state.get("show_why", False):
+        render_why_recommendation()
 
 
 def render_other_options():
