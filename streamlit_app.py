@@ -1249,14 +1249,21 @@ def render_other_options():
     caution_methods = results["caution"]
     contraindicated_methods = results["contraindicated"]
     
-    for method in other_recommended:
-        render_other_option_card(method, "best")
+    # Group by tier with section headers
+    if other_recommended:
+        st.markdown("<p style='font-size:1rem; font-weight:600; color:#74B89A; margin:16px 0 8px 0;'>Also Recommended</p>", unsafe_allow_html=True)
+        for method in other_recommended:
+            render_other_option_card(method, "best")
     
-    for method in caution_methods:
-        render_other_option_card(method, "consider")
+    if caution_methods:
+        st.markdown("<p style='font-size:1rem; font-weight:600; color:#64748B; margin:16px 0 8px 0;'>Worth Considering</p>", unsafe_allow_html=True)
+        for method in caution_methods:
+            render_other_option_card(method, "consider")
     
-    for method in contraindicated_methods:
-        render_other_option_card(method, "unlikely")
+    if contraindicated_methods:
+        st.markdown("<p style='font-size:1rem; font-weight:600; color:#D1495B; margin:16px 0 8px 0;'>Less Likely Options</p>", unsafe_allow_html=True)
+        for method in contraindicated_methods:
+            render_other_option_card(method, "unlikely")
     
     st.markdown("---")
     
@@ -1274,18 +1281,24 @@ def render_other_option_card(method, tier_key):
     
     css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "best")
     
+    # Define tier-specific colors
+    if css_class == "best":
+        thumb_color = "rgba(116,184,154,0.30)"
+    elif css_class == "caution":
+        thumb_color = "rgba(100,116,139,0.25)"
+    else:  # unlikely
+        thumb_color = "rgba(209,73,91,0.25)"
+    
     col_thumb, col_btn = st.columns([0.16, 0.84], gap="small")
     with col_thumb:
-        st.markdown(f'<div class="other-thumb {css_class}"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="width:100%; height:100%; min-height:64px; background:{thumb_color}; border-radius:0;"></div>', unsafe_allow_html=True)
     with col_btn:
-        st.markdown(f'<div class="other-btn-wrap {css_class}">', unsafe_allow_html=True)
         if st.button(f"{method['name']}\n{tier['icon']} {tier['badge']}", key=f"other_{method_id}", use_container_width=True):
             if is_expanded:
                 st.session_state.selected_method_id = None
             else:
                 st.session_state.selected_method_id = method_id
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
     
     if is_expanded:
         render_method_details(method, tier_key)
