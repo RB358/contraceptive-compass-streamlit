@@ -1046,7 +1046,7 @@ def render_best_match_card(method, index):
 
 def render_results():
     """Render main results page with best matches and view other options button."""
-    st.markdown(f"""
+    results_css = """
     <style>
     .results-header {
         font-size: 1.3rem;
@@ -1109,7 +1109,7 @@ def render_results():
         width: 100%;
         height: 100%;
         min-height: 70px;
-        background-image: url("data:image/jpeg;base64,{hero_base64}");
+        background-image: url("data:image/jpeg;base64,HERO_BASE64_PLACEHOLDER");
         background-size: cover;
         background-position: center;
         border-radius: 10px 0 0 10px;
@@ -1129,7 +1129,9 @@ def render_results():
         background: rgba(116,184,154,0.08) !important;
     }
     </style>
-    """, unsafe_allow_html=True)
+    """
+    results_css = results_css.replace("HERO_BASE64_PLACEHOLDER", hero_base64)
+    st.markdown(results_css, unsafe_allow_html=True)
     
     st.markdown(f'<p class="progress-text">Complete</p>', unsafe_allow_html=True)
     st.progress(1.0)
