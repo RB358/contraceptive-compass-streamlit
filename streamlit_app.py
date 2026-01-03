@@ -1190,20 +1190,21 @@ def render_other_options():
         width: 100%;
         height: 100%;
         min-height: 64px;
-        background: rgba(116,184,154,0.25);
         border-radius: 0;
     }
+    .other-thumb.best {
+        background: rgba(116,184,154,0.30);
+    }
     .other-thumb.caution {
-        background: rgba(100,116,139,0.20);
+        background: rgba(100,116,139,0.25);
     }
     .other-thumb.unlikely {
-        background: rgba(209,73,91,0.20);
+        background: rgba(209,73,91,0.25);
     }
-    .other-card-row .stButton > button {
-        background: rgba(116,184,154,0.15) !important;
+    .other-btn-wrap .stButton > button {
         border: none !important;
         color: var(--ink) !important;
-        border-radius: 0 12px 12px 0 !important;
+        border-radius: 12px !important;
         padding: 12px 14px !important;
         font-weight: 500 !important;
         text-align: left !important;
@@ -1215,20 +1216,26 @@ def render_other_options():
         white-space: pre-line !important;
         margin: 0 !important;
     }
-    .other-card-row .stButton > button:hover {
+    .other-btn-wrap.best .stButton > button {
         background: rgba(116,184,154,0.25) !important;
+        border: 1px solid rgba(116,184,154,0.4) !important;
     }
-    .other-card-row.caution .stButton > button {
-        background: rgba(100,116,139,0.15) !important;
+    .other-btn-wrap.best .stButton > button:hover {
+        background: rgba(116,184,154,0.35) !important;
     }
-    .other-card-row.caution .stButton > button:hover {
-        background: rgba(100,116,139,0.25) !important;
+    .other-btn-wrap.caution .stButton > button {
+        background: rgba(100,116,139,0.20) !important;
+        border: 1px solid rgba(100,116,139,0.35) !important;
     }
-    .other-card-row.unlikely .stButton > button {
-        background: rgba(209,73,91,0.15) !important;
+    .other-btn-wrap.caution .stButton > button:hover {
+        background: rgba(100,116,139,0.30) !important;
     }
-    .other-card-row.unlikely .stButton > button:hover {
-        background: rgba(209,73,91,0.25) !important;
+    .other-btn-wrap.unlikely .stButton > button {
+        background: rgba(209,73,91,0.20) !important;
+        border: 1px solid rgba(209,73,91,0.35) !important;
+    }
+    .other-btn-wrap.unlikely .stButton > button:hover {
+        background: rgba(209,73,91,0.30) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1265,20 +1272,20 @@ def render_other_option_card(method, tier_key):
     tier = TIER_CONFIG[tier_key]
     is_expanded = st.session_state.selected_method_id == method_id
     
-    css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "")
+    css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "best")
     
-    st.markdown(f'<div class="other-card-row {css_class}">', unsafe_allow_html=True)
     col_thumb, col_btn = st.columns([0.16, 0.84], gap="small")
     with col_thumb:
         st.markdown(f'<div class="other-thumb {css_class}"></div>', unsafe_allow_html=True)
     with col_btn:
+        st.markdown(f'<div class="other-btn-wrap {css_class}">', unsafe_allow_html=True)
         if st.button(f"{method['name']}\n{tier['icon']} {tier['badge']}", key=f"other_{method_id}", use_container_width=True):
             if is_expanded:
                 st.session_state.selected_method_id = None
             else:
                 st.session_state.selected_method_id = method_id
             st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
     if is_expanded:
         render_method_details(method, tier_key)
