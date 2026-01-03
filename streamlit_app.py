@@ -1093,19 +1093,38 @@ def render_results():
     .best-card-row .stButton > button:hover {
         background: rgba(116,184,154,0.08) !important;
     }
-    .other-options-btn .stButton > button {
-        background: rgba(116,184,154,0.05) !important;
-        border: 1px solid var(--mint-border) !important;
+    .view-other-row {
+        display: flex;
+        align-items: stretch;
+        background: rgba(116,184,154,0.05);
+        border: 1px solid var(--mint-border);
+        border-radius: 12px;
+        margin-top: 16px;
+        overflow: hidden;
+    }
+    .view-other-row [data-testid="column"] {
+        padding: 0 !important;
+    }
+    .view-other-thumb {
+        width: 100%;
+        height: 100%;
+        min-height: 70px;
+        background: rgba(116,184,154,0.25);
+        border-radius: 10px 0 0 10px;
+    }
+    .view-other-row .stButton > button {
+        background: transparent !important;
+        border: none !important;
         color: var(--ink) !important;
-        border-radius: 12px !important;
+        border-radius: 0 12px 12px 0 !important;
         padding: 16px 20px !important;
         font-weight: 600 !important;
         text-align: left !important;
-        margin-top: 16px !important;
+        min-height: 70px !important;
+        margin: 0 !important;
     }
-    .other-options-btn .stButton > button:hover {
-        background: var(--mint-bg) !important;
-        border-color: var(--mint-border-strong) !important;
+    .view-other-row .stButton > button:hover {
+        background: rgba(116,184,154,0.08) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1128,11 +1147,15 @@ def render_results():
         st.markdown("<p style='color:#211816;'>No perfect matches found, but check out other options below.</p>", unsafe_allow_html=True)
     
     if other_options:
-        st.markdown('<div class="other-options-btn">', unsafe_allow_html=True)
-        if st.button(f"View other options ({len(other_options)} more) →", use_container_width=True, key="view_other_options_btn"):
-            st.session_state.view_other_options = True
-            st.session_state.selected_method_id = None
-            st.rerun()
+        st.markdown('<div class="view-other-row">', unsafe_allow_html=True)
+        col_thumb, col_btn = st.columns([0.18, 0.82], gap="small")
+        with col_thumb:
+            st.markdown('<div class="view-other-thumb"></div>', unsafe_allow_html=True)
+        with col_btn:
+            if st.button(f"View other options ({len(other_options)} more) →", use_container_width=True, key="view_other_options_btn"):
+                st.session_state.view_other_options = True
+                st.session_state.selected_method_id = None
+                st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown("---")
