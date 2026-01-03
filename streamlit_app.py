@@ -1063,7 +1063,7 @@ def render_results():
         border-radius: 0;
     }
     .best-card-row .stButton > button {
-        background: transparent !important;
+        background: rgba(116,184,154,0.15) !important;
         border: none !important;
         color: var(--ink) !important;
         border-radius: 0 12px 12px 0 !important;
@@ -1079,7 +1079,7 @@ def render_results():
         margin: 0 !important;
     }
     .best-card-row .stButton > button:hover {
-        background: rgba(116,184,154,0.08) !important;
+        background: rgba(116,184,154,0.25) !important;
     }
     .view-other-row {
         display: flex;
@@ -1200,7 +1200,7 @@ def render_other_options():
         background: rgba(209,73,91,0.20);
     }
     .other-card-row .stButton > button {
-        background: transparent !important;
+        background: rgba(116,184,154,0.15) !important;
         border: none !important;
         color: var(--ink) !important;
         border-radius: 0 12px 12px 0 !important;
@@ -1216,13 +1216,19 @@ def render_other_options():
         margin: 0 !important;
     }
     .other-card-row .stButton > button:hover {
-        background: rgba(116,184,154,0.08) !important;
+        background: rgba(116,184,154,0.25) !important;
+    }
+    .other-card-row.caution .stButton > button {
+        background: rgba(100,116,139,0.15) !important;
     }
     .other-card-row.caution .stButton > button:hover {
-        background: rgba(100,116,139,0.08) !important;
+        background: rgba(100,116,139,0.25) !important;
+    }
+    .other-card-row.unlikely .stButton > button {
+        background: rgba(209,73,91,0.15) !important;
     }
     .other-card-row.unlikely .stButton > button:hover {
-        background: rgba(209,73,91,0.08) !important;
+        background: rgba(209,73,91,0.25) !important;
     }
     </style>
     """, unsafe_allow_html=True)
