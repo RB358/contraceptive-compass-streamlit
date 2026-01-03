@@ -1162,16 +1162,6 @@ def render_results():
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown("---")
-    
-    st.markdown(f"""
-    <div class="end-cta-section">
-        <h4>Want personalized medical advice?</h4>
-        <p>Book a telehealth visit to discuss your options and medical eligibility.</p>
-        <a class="details-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">Book a telehealth visit →</a>
-    </div>
-    """, unsafe_allow_html=True)
-    
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("Start Over", use_container_width=True):
