@@ -61,6 +61,27 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
   }
 }
 
+/* Prevent thumbnail columns from stacking on mobile */
+div[data-testid="stHorizontalBlock"] {
+  flex-wrap: nowrap !important;
+}
+
+/* Ensure columns stay side by side on mobile for card layouts */
+@media (max-width: 640px) {
+  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+    flex: none !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:first-child {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child {
+    flex: 1 !important;
+    width: auto !important;
+  }
+}
+
 /* Hover */
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {
   background-color: var(--mint-bg-hover) !important;
