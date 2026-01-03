@@ -1046,7 +1046,7 @@ def render_best_match_card(method, index):
 
 def render_results():
     """Render main results page with best matches and view other options button."""
-    st.markdown("""
+    st.markdown(f"""
     <style>
     .results-header {
         font-size: 1.3rem;
@@ -1109,7 +1109,9 @@ def render_results():
         width: 100%;
         height: 100%;
         min-height: 70px;
-        background: rgba(116,184,154,0.25);
+        background-image: url("data:image/jpeg;base64,{hero_base64}");
+        background-size: cover;
+        background-position: center;
         border-radius: 10px 0 0 10px;
     }
     .view-other-row .stButton > button {
