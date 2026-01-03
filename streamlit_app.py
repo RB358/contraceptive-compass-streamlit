@@ -1000,18 +1000,6 @@ def render_method_details(method, tier_key):
         st.markdown("<div class='section-h'>Typical effectiveness</div>", unsafe_allow_html=True)
         st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
     
-    cta_class = "details-cta unlikely" if tier_key == "unlikely" else "details-cta"
-    helper = (
-        "Based on your answers, this option is less likely to fit. A clinician can help you review safer alternatives."
-        if tier_key == "unlikely"
-        else "If you'd like, you can book a telehealth visit to talk through your options."
-    )
-    
-    st.markdown(f"<div class='rec-meta' style='margin-top:14px;'>{helper}</div>", unsafe_allow_html=True)
-    st.markdown(
-        f"<a class='{cta_class}' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Book a telehealth visit →</a>",
-        unsafe_allow_html=True
-    )
     
     col_a, col_b = st.columns([1, 1])
     with col_a:
@@ -1072,7 +1060,7 @@ def render_results():
         height: 100%;
         min-height: 70px;
         background: rgba(116,184,154,0.30);
-        border-radius: 10px 0 0 10px;
+        border-radius: 0;
     }
     .best-card-row .stButton > button {
         background: transparent !important;
@@ -1112,7 +1100,7 @@ def render_results():
         background-image: url("data:image/jpeg;base64,HERO_BASE64_PLACEHOLDER");
         background-size: cover;
         background-position: center;
-        border-radius: 10px 0 0 10px;
+        border-radius: 0;
     }
     .view-other-row .stButton > button {
         background: transparent !important;
@@ -1203,7 +1191,7 @@ def render_other_options():
         height: 100%;
         min-height: 64px;
         background: rgba(116,184,154,0.25);
-        border-radius: 10px 0 0 10px;
+        border-radius: 0;
     }
     .other-thumb.caution {
         background: rgba(100,116,139,0.20);
