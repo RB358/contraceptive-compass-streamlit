@@ -1036,13 +1036,13 @@ def render_quiz():
     
     is_last_question = q_idx == NUM_QUESTIONS - 1
     if is_last_question:
-        col1, col2, col3 = st.columns([1, 0.5, 1.5])
+        col1, col2, col3 = st.columns([1, 0.3, 1.3])
     else:
-        col1, col2, col3 = st.columns([1, 1, 1])
+        col1, col2, col3 = st.columns([1, 0.3, 1])
     
     with col1:
         if q_idx > 0:
-            if st.button("← Back", use_container_width=True):
+            if st.button("Back", use_container_width=True):
                 st.session_state.answers[q_id] = answer
                 prev_q_id = QUESTION_IDS[q_idx - 1]
                 tile_key = f"tile_{prev_q_id}"
