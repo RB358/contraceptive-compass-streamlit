@@ -50,6 +50,15 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
   border-radius: 12px !important;
   padding: 14px 16px !important;
   color: var(--ink) !important;
+  white-space: nowrap !important;
+}
+
+/* Mobile: smaller button text to prevent overflow */
+@media (max-width: 480px) {
+  div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
+    font-size: 0.9rem !important;
+    padding: 12px 14px !important;
+  }
 }
 
 /* Hover */
