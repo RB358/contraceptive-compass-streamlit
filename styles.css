@@ -21,6 +21,28 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
   box-sizing: border-box !important;
 }
 
+/* Force all containers to respect viewport width */
+.block-container, [data-testid="stVerticalBlock"], [data-testid="stHorizontalBlock"] {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Card rows must not overflow */
+.best-card-row, .other-card-row, .view-other-row {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Buttons inside cards can wrap text if needed on very small screens */
+@media (max-width: 400px) {
+  .best-card-row .stButton > button,
+  .other-card-row .stButton > button,
+  .view-other-row .stButton > button {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+  }
+}
+
 /* Keep scope tight: set base text only (safe) */
 html, body, [class*="stApp"]{
   color: var(--ink);
