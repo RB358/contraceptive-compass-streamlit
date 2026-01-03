@@ -1056,7 +1056,7 @@ def render_quiz():
                     st.session_state.q_idx += 1
                     st.rerun()
         else:
-            if st.button("See Results", use_container_width=True, disabled=not is_valid):
+            if st.button("Results", use_container_width=True, disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.show_results = True
