@@ -76,19 +76,25 @@ div[data-testid="stHorizontalBlock"] {
   flex-wrap: nowrap !important;
 }
 
-/* Ensure columns stay side by side on mobile for card layouts */
+/* Card thumbnail layouts only (2 columns): fix thumbnail width on mobile */
 @media (max-width: 640px) {
-  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
-    flex: none !important;
-  }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:first-child {
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:first-child {
     width: 60px !important;
     min-width: 60px !important;
     max-width: 60px !important;
+    flex: none !important;
   }
-  div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:last-child {
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:last-child {
     flex: 1 !important;
     width: auto !important;
+  }
+}
+
+/* Navigation buttons (3 columns): keep equal sizing on mobile */
+@media (max-width: 640px) {
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) > div[data-testid="stColumn"] {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
   }
 }
 
