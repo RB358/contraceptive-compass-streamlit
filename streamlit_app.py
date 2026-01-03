@@ -78,8 +78,6 @@ start_btn_offset = -80 if st.session_state.started else -70
 st.markdown(f"""
 <style>
 :root {{
-    --teal: #0F766E;
-    --teal-600: #0B5F59;
     --coral: #D1495B;
     --coral-hover: #E06372;
     --ink: #211816;
@@ -87,6 +85,7 @@ st.markdown(f"""
     --warm-bg: #FFFBFA;
     --border: #E5E7EB;
     --mint: #74B89A;
+    --mint-dark: #5A9A7D;
     --mint-bg: rgba(116,184,154,0.10);
     --mint-bg-hover: rgba(116,184,154,0.14);
     --mint-border: rgba(116,184,154,0.55);
@@ -217,13 +216,13 @@ header[data-testid="stHeader"] {{
 }}
 
 h1, h2, h3 {{
-    color: var(--teal);
+    color: var(--mint);
     font-family: 'Helvetica Neue', sans-serif;
 }}
 
 .stButton > button {{
-    background: var(--teal) !important;
-    border: 1px solid var(--teal) !important;
+    background: var(--mint) !important;
+    border: 1px solid var(--mint) !important;
     color: white !important;
     border-radius: 999px;
     padding: 10px 18px;
@@ -231,8 +230,8 @@ h1, h2, h3 {{
 }}
 
 .stButton > button:hover {{
-    background: var(--teal-600) !important;
-    border-color: var(--teal-600) !important;
+    background: var(--mint-dark) !important;
+    border-color: var(--mint-dark) !important;
 }}
 
 .cc-quiz button[data-testid="baseButton-secondary"],
@@ -331,19 +330,19 @@ div[data-testid="stProgress"] {{
 }}
 
 .cc-tile:hover {{
-    border-color: var(--teal);
-    background: rgba(15, 118, 110, 0.04);
+    border-color: var(--mint);
+    background: var(--mint-bg);
 }}
 
 .cc-tile--selected {{
-    border-color: var(--teal) !important;
+    border-color: var(--mint) !important;
     border-width: 2.5px !important;
-    background: rgba(15, 118, 110, 0.08) !important;
+    background: var(--mint-bg) !important;
 }}
 
 .cc-tile--selected::before {{
     content: "✓ ";
-    color: var(--teal);
+    color: var(--mint);
     font-weight: 700;
 }}
 
@@ -446,9 +445,9 @@ div[data-testid="stProgress"] {{
 }}
 
 .badge-best {{
-    border-color: rgba(15, 118, 110, 0.35);
-    color: var(--teal);
-    background: rgba(15, 118, 110, 0.08);
+    border-color: var(--mint-border);
+    color: var(--mint);
+    background: var(--mint-bg);
 }}
 
 .badge-consider {{
@@ -497,7 +496,7 @@ div[data-testid="stProgress"] {{
 }}
 
 .details-card h4 {{
-    color: var(--teal);
+    color: var(--mint);
     margin-bottom: 12px;
 }}
 
@@ -520,7 +519,7 @@ div[data-testid="stProgress"] {{
 }}
 
 .pros-list li::marker {{
-    color: var(--teal);
+    color: var(--mint);
 }}
 
 .cons-list li {{
@@ -587,8 +586,8 @@ div[data-testid="stProgress"] {{
     margin-top: 10px;
     padding: 12px 14px;
     border-radius: 999px;
-    background: var(--teal);
-    border: 1px solid var(--teal);
+    background: var(--mint);
+    border: 1px solid var(--mint);
     color: white !important;
     text-decoration: none;
     font-weight: 750;
@@ -596,8 +595,8 @@ div[data-testid="stProgress"] {{
 }}
 
 .details-cta:hover {{
-    background: var(--teal-600);
-    border-color: var(--teal-600);
+    background: var(--mint-dark);
+    border-color: var(--mint-dark);
 }}
 
 .details-cta.unlikely {{
@@ -1024,26 +1023,18 @@ def render_method_details(method, tier_key):
 
 
 def render_best_match_card(method, index):
-    """Render a best match card with placeholder image and method name."""
+    """Render a clickable best match card with placeholder image and method name."""
     method_id = get_method_id(method)
     is_expanded = st.session_state.selected_method_id == method_id
     
-    st.markdown(f"""
-    <div class="best-match-card">
-        <div class="best-match-image-placeholder"></div>
-        <div class="best-match-info">
-            <span class="best-match-name">{method['name']}</span>
-            <span class="best-match-badge">✓ Best match</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("View details", key=f"best_{method_id}", use_container_width=True):
+    st.markdown('<div class="best-match-btn">', unsafe_allow_html=True)
+    if st.button(f"✓ {method['name']} — Best match", key=f"best_{method_id}", use_container_width=True):
         if is_expanded:
             st.session_state.selected_method_id = None
         else:
             st.session_state.selected_method_id = method_id
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     
     if is_expanded:
         render_method_details(method, "best")
@@ -1053,68 +1044,43 @@ def render_results():
     """Render main results page with best matches and view other options button."""
     st.markdown("""
     <style>
-    .best-match-card {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        background: rgba(116,184,154,0.10);
-        border: 1px solid rgba(116,184,154,0.55);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 8px;
-    }
-    .best-match-image-placeholder {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-        background: rgba(116,184,154,0.25);
-        border-radius: 8px;
-    }
-    .best-match-info {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        text-align: left;
-    }
-    .best-match-name {
-        font-weight: 600;
-        font-size: 1rem;
-        color: #211816;
-    }
-    .best-match-badge {
-        font-size: 0.75rem;
-        color: #74B89A;
-        font-weight: 500;
-    }
-    .other-options-card {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        background: rgba(116,184,154,0.05);
-        border: 1px solid rgba(116,184,154,0.35);
-        border-radius: 12px;
-        padding: 16px;
-        margin-top: 24px;
-        cursor: pointer;
-    }
-    .other-options-thumbnail {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        border-radius: 8px;
-        object-fit: cover;
-    }
-    .other-options-text {
-        font-weight: 600;
-        font-size: 1rem;
-        color: #211816;
-    }
     .results-header {
         font-size: 1.3rem;
         font-weight: 700;
         color: #211816;
         margin-bottom: 16px;
         text-align: left;
+    }
+    .best-match-btn .stButton > button {
+        background: var(--mint-bg) !important;
+        border: 1px solid var(--mint-border) !important;
+        color: var(--ink) !important;
+        border-radius: 12px !important;
+        padding: 16px 20px !important;
+        font-weight: 600 !important;
+        text-align: left !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin-bottom: 8px !important;
+    }
+    .best-match-btn .stButton > button:hover {
+        background: var(--mint-bg-hover) !important;
+        border-color: var(--mint-border-strong) !important;
+    }
+    .other-options-btn .stButton > button {
+        background: rgba(116,184,154,0.05) !important;
+        border: 1px solid var(--mint-border) !important;
+        color: var(--ink) !important;
+        border-radius: 12px !important;
+        padding: 16px 20px !important;
+        font-weight: 600 !important;
+        text-align: left !important;
+        margin-top: 16px !important;
+    }
+    .other-options-btn .stButton > button:hover {
+        background: var(--mint-bg) !important;
+        border-color: var(--mint-border-strong) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1137,17 +1103,12 @@ def render_results():
         st.markdown("<p style='color:#211816;'>No perfect matches found, but check out other options below.</p>", unsafe_allow_html=True)
     
     if other_options:
-        st.markdown(f"""
-        <div class="other-options-card" style="pointer-events: none;">
-            <img class="other-options-thumbnail" src="data:image/jpeg;base64,{hero_base64}" alt="Options">
-            <span class="other-options-text">View other options ({len(other_options)} more)</span>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("View other options", use_container_width=True):
+        st.markdown('<div class="other-options-btn">', unsafe_allow_html=True)
+        if st.button(f"View other options ({len(other_options)} more) →", use_container_width=True, key="view_other_options_btn"):
             st.session_state.view_other_options = True
             st.session_state.selected_method_id = None
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown("---")
     
@@ -1175,44 +1136,35 @@ def render_other_options():
     """Render the other options page with all remaining methods."""
     st.markdown("""
     <style>
-    .other-option-card {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        background: rgba(116,184,154,0.05);
-        border: 1px solid rgba(116,184,154,0.35);
-        border-radius: 12px;
-        padding: 14px;
-        margin-bottom: 8px;
+    .other-option-btn .stButton > button {
+        background: rgba(116,184,154,0.05) !important;
+        border: 1px solid var(--mint-border) !important;
+        color: var(--ink) !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        margin-bottom: 6px !important;
     }
-    .other-option-image-placeholder {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        background: rgba(116,184,154,0.20);
-        border-radius: 8px;
+    .other-option-btn .stButton > button:hover {
+        background: var(--mint-bg) !important;
+        border-color: var(--mint-border-strong) !important;
     }
-    .other-option-info {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        text-align: left;
-        flex: 1;
+    .other-option-btn.caution .stButton > button {
+        border-color: rgba(100,116,139,0.35) !important;
+        background: rgba(100,116,139,0.05) !important;
     }
-    .other-option-name {
-        font-weight: 600;
-        font-size: 0.95rem;
-        color: #211816;
+    .other-option-btn.caution .stButton > button:hover {
+        background: rgba(100,116,139,0.10) !important;
+        border-color: rgba(100,116,139,0.55) !important;
     }
-    .other-option-badge {
-        font-size: 0.7rem;
-        font-weight: 500;
+    .other-option-btn.unlikely .stButton > button {
+        border-color: rgba(209,73,91,0.35) !important;
+        background: rgba(209,73,91,0.05) !important;
     }
-    .other-option-badge.consider {
-        color: #64748b;
-    }
-    .other-option-badge.unlikely {
-        color: #D1495B;
+    .other-option-btn.unlikely .stButton > button:hover {
+        background: rgba(209,73,91,0.10) !important;
+        border-color: rgba(209,73,91,0.55) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1244,29 +1196,22 @@ def render_other_options():
 
 
 def render_other_option_card(method, tier_key):
-    """Render a card for other options page."""
+    """Render a clickable card for other options page."""
     method_id = get_method_id(method)
     tier = TIER_CONFIG[tier_key]
     is_expanded = st.session_state.selected_method_id == method_id
     
-    badge_class = "consider" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "")
+    button_label = f"{tier['icon']} {method['name']} — {tier['badge']}"
+    css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "")
     
-    st.markdown(f"""
-    <div class="other-option-card">
-        <div class="other-option-image-placeholder"></div>
-        <div class="other-option-info">
-            <span class="other-option-name">{method['name']}</span>
-            <span class="other-option-badge {badge_class}">{tier['icon']} {tier['badge']}</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("View details", key=f"other_{method_id}", use_container_width=True):
+    st.markdown(f'<div class="other-option-btn {css_class}">', unsafe_allow_html=True)
+    if st.button(button_label, key=f"other_{method_id}", use_container_width=True):
         if is_expanded:
             st.session_state.selected_method_id = None
         else:
             st.session_state.selected_method_id = method_id
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     
     if is_expanded:
         render_method_details(method, tier_key)
