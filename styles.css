@@ -85,17 +85,13 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
   border-radius: 12px !important;
   padding: 14px 16px !important;
   color: var(--ink) !important;
-  white-space: nowrap !important;
 }
 
-/* Mobile: smaller button text to prevent overflow */
+/* Mobile: smaller button text */
 @media (max-width: 480px) {
   div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
     font-size: 0.85rem !important;
     padding: 10px 12px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
 }
 
@@ -106,23 +102,12 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
   }
 }
 
-/* Prevent thumbnail columns from stacking on mobile */
-div[data-testid="stHorizontalBlock"] {
+/* Quiz navigation buttons (3 columns) - keep side by side with nowrap */
+div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) {
   flex-wrap: nowrap !important;
 }
-
-/* Card thumbnail layouts only (2 columns): fix thumbnail width on mobile */
-@media (max-width: 640px) {
-  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:first-child {
-    width: 60px !important;
-    min-width: 60px !important;
-    max-width: 60px !important;
-    flex: none !important;
-  }
-  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:last-child {
-    flex: 1 !important;
-    width: auto !important;
-  }
+div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) .stButton > button {
+  white-space: nowrap !important;
 }
 
 /* Navigation buttons (3 columns): keep equal sizing on mobile */
@@ -130,6 +115,30 @@ div[data-testid="stHorizontalBlock"] {
   div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) > div[data-testid="stColumn"] {
     flex: 1 1 0 !important;
     min-width: 0 !important;
+  }
+}
+
+/* Card layouts (2 columns) - allow responsive behavior */
+@media (max-width: 640px) {
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) {
+    flex-wrap: nowrap !important;
+  }
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:first-child {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+    flex: none !important;
+  }
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) > div[data-testid="stColumn"]:last-child {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  /* Allow card button text to wrap */
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(2):last-child) .stButton > button {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
 }
 
