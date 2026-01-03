@@ -1028,7 +1028,7 @@ def render_best_match_card(method, index):
     is_expanded = st.session_state.selected_method_id == method_id
     
     st.markdown('<div class="best-match-btn">', unsafe_allow_html=True)
-    if st.button(f"✓ {method['name']} — Best match", key=f"best_{method_id}", use_container_width=True):
+    if st.button(f"{method['name']}\n✓ Best match", key=f"best_{method_id}", use_container_width=True):
         if is_expanded:
             st.session_state.selected_method_id = None
         else:
@@ -1056,13 +1056,28 @@ def render_results():
         border: 1px solid var(--mint-border) !important;
         color: var(--ink) !important;
         border-radius: 12px !important;
-        padding: 16px 20px !important;
+        padding: 16px 16px 16px 80px !important;
         font-weight: 600 !important;
+        margin-bottom: 12px !important;
         text-align: left !important;
+        position: relative !important;
+        min-height: 76px !important;
         display: flex !important;
-        align-items: center !important;
-        gap: 12px !important;
-        margin-bottom: 8px !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        white-space: pre-line !important;
+    }
+    .best-match-btn .stButton > button::before {
+        content: "";
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 52px;
+        height: 52px;
+        background: rgba(116,184,154,0.30);
+        border-radius: 8px;
     }
     .best-match-btn .stButton > button:hover {
         background: var(--mint-bg-hover) !important;
@@ -1141,10 +1156,28 @@ def render_other_options():
         border: 1px solid var(--mint-border) !important;
         color: var(--ink) !important;
         border-radius: 12px !important;
-        padding: 14px 18px !important;
+        padding: 14px 14px 14px 72px !important;
         font-weight: 500 !important;
+        margin-bottom: 10px !important;
         text-align: left !important;
-        margin-bottom: 6px !important;
+        position: relative !important;
+        min-height: 68px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        white-space: pre-line !important;
+    }
+    .other-option-btn .stButton > button::before {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 46px;
+        height: 46px;
+        background: rgba(116,184,154,0.25);
+        border-radius: 8px;
     }
     .other-option-btn .stButton > button:hover {
         background: var(--mint-bg) !important;
@@ -1154,6 +1187,9 @@ def render_other_options():
         border-color: rgba(100,116,139,0.35) !important;
         background: rgba(100,116,139,0.05) !important;
     }
+    .other-option-btn.caution .stButton > button::before {
+        background: rgba(100,116,139,0.20) !important;
+    }
     .other-option-btn.caution .stButton > button:hover {
         background: rgba(100,116,139,0.10) !important;
         border-color: rgba(100,116,139,0.55) !important;
@@ -1161,6 +1197,9 @@ def render_other_options():
     .other-option-btn.unlikely .stButton > button {
         border-color: rgba(209,73,91,0.35) !important;
         background: rgba(209,73,91,0.05) !important;
+    }
+    .other-option-btn.unlikely .stButton > button::before {
+        background: rgba(209,73,91,0.20) !important;
     }
     .other-option-btn.unlikely .stButton > button:hover {
         background: rgba(209,73,91,0.10) !important;
@@ -1201,11 +1240,10 @@ def render_other_option_card(method, tier_key):
     tier = TIER_CONFIG[tier_key]
     is_expanded = st.session_state.selected_method_id == method_id
     
-    button_label = f"{tier['icon']} {method['name']} — {tier['badge']}"
     css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "")
     
     st.markdown(f'<div class="other-option-btn {css_class}">', unsafe_allow_html=True)
-    if st.button(button_label, key=f"other_{method_id}", use_container_width=True):
+    if st.button(f"{method['name']}\n{tier['icon']} {tier['badge']}", key=f"other_{method_id}", use_container_width=True):
         if is_expanded:
             st.session_state.selected_method_id = None
         else:
