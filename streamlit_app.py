@@ -1254,21 +1254,18 @@ def render_results():
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        if st.button("Why this recommendation?", use_container_width=True):
-            st.session_state.show_why = True
-            st.rerun()
-    with col2:
-        if st.button("Start Over", use_container_width=True):
-            st.session_state.started = False
-            st.session_state.q_idx = 0
-            st.session_state.answers = {}
-            st.session_state.show_results = False
-            st.session_state.view_other_options = False
-            st.session_state.selected_method_id = None
-            st.session_state.show_why = False
-            st.rerun()
+    if st.button("Why this recommendation?", use_container_width=True):
+        st.session_state.show_why = True
+        st.rerun()
+    if st.button("Start Over", use_container_width=True):
+        st.session_state.started = False
+        st.session_state.q_idx = 0
+        st.session_state.answers = {}
+        st.session_state.show_results = False
+        st.session_state.view_other_options = False
+        st.session_state.selected_method_id = None
+        st.session_state.show_why = False
+        st.rerun()
     
     # Show explanation modal if requested
     if st.session_state.get("show_why", False):
