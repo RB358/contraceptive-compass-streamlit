@@ -45,6 +45,16 @@ Contraceptive methods are stored as dictionaries with:
 - Session state management for quiz flow
 - Base64-encoded local images for reliable asset loading
 
+### Results Page Design
+- **Best Matches Section**: Displays top 1-3 recommended methods as card components with placeholder images
+- **Other Options Page**: Separate page listing remaining recommendations (caution + contraindicated)
+- **Navigation**: "View other options" button on results page, "Back to Best Matches" on other options page
+- **Card Components**: 
+  - `render_best_match_card()` - mint background cards for best matches
+  - `render_other_option_card()` - lighter cards for other options
+  - `render_method_details()` - shared detail view with pros/cons, effectiveness, telehealth CTA
+- **Color Palette**: Mint (#74B89A), Charcoal (#211816), Coral (#D1495B for contraindicated)
+
 ## External Dependencies
 
 ### Python Packages

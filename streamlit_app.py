@@ -30,6 +30,8 @@ if "show_results" not in st.session_state:
     st.session_state.show_results = False
 if "selected_method_id" not in st.session_state:
     st.session_state.selected_method_id = None
+if "view_other_options" not in st.session_state:
+    st.session_state.view_other_options = False
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
@@ -961,111 +963,191 @@ def render_quiz():
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-def render_category(tier_key, methods):
-    if not methods:
-        return
-    
+def render_method_details(method, tier_key):
+    """Render full method details with pros/cons, effectiveness, telehealth CTA."""
     tier = TIER_CONFIG[tier_key]
+    method_id = get_method_id(method)
+    
+    st.markdown('<div class="details-card">', unsafe_allow_html=True)
+    
+    st.markdown(
+        f"<div style='display:flex; justify-content:space-between; align-items:center; gap:12px;'>"
+        f"<div style='font-weight:800; font-size:1.05rem; color:var(--ink); text-align:left !important;'>{method['name']}</div>"
+        f"<div class='badge {tier['class']}'>{tier['icon']} {tier['badge']}</div>"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+    
+    if method.get("image"):
+        try:
+            st.image(method["image"], use_container_width=True)
+        except:
+            st.caption("Image unavailable")
+    
+    st.markdown("<div class='section-h'>Pros</div>", unsafe_allow_html=True)
+    if method.get("pros"):
+        st.markdown("<ul class='pros-list'>" + "".join([f"<li>{p}</li>" for p in method["pros"]]) + "</ul>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='rec-meta'>Pros coming soon.</div>", unsafe_allow_html=True)
+    
+    st.markdown("<div class='section-h'>Cons</div>", unsafe_allow_html=True)
+    if method.get("cons"):
+        st.markdown("<ul class='cons-list'>" + "".join([f"<li>{c}</li>" for c in method["cons"]]) + "</ul>", unsafe_allow_html=True)
+    else:
+        st.markdown("<div class='rec-meta'>Cons coming soon.</div>", unsafe_allow_html=True)
+    
+    effectiveness = method.get("typical", "")
+    if effectiveness:
+        st.markdown("<div class='section-h'>Typical effectiveness</div>", unsafe_allow_html=True)
+        st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
+    
+    cta_class = "details-cta unlikely" if tier_key == "unlikely" else "details-cta"
+    helper = (
+        "Based on your answers, this option is less likely to fit. A clinician can help you review safer alternatives."
+        if tier_key == "unlikely"
+        else "If you'd like, you can book a telehealth visit to talk through your options."
+    )
+    
+    st.markdown(f"<div class='rec-meta' style='margin-top:14px;'>{helper}</div>", unsafe_allow_html=True)
+    st.markdown(
+        f"<a class='{cta_class}' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Book a telehealth visit →</a>",
+        unsafe_allow_html=True
+    )
+    
+    col_a, col_b = st.columns([1, 1])
+    with col_a:
+        if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
+            st.session_state.selected_method_id = None
+            st.rerun()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+def render_best_match_card(method, index):
+    """Render a best match card with placeholder image and method name."""
+    method_id = get_method_id(method)
+    is_expanded = st.session_state.selected_method_id == method_id
     
     st.markdown(f"""
-    <div class="category-card">
-        <p class="category-title">{tier['icon']} {tier['title']}</p>
-        <p class="category-sub">{tier['microcopy']}</p>
+    <div class="best-match-card">
+        <div class="best-match-image-placeholder"></div>
+        <div class="best-match-info">
+            <span class="best-match-name">{method['name']}</span>
+            <span class="best-match-badge">✓ Best match</span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    for method in methods:
-        method_id = get_method_id(method)
-        is_expanded = st.session_state.selected_method_id == method_id
-        
-        col1, col2 = st.columns([3, 1])
-        
-        with col1:
-            st.markdown(f"""
-            <div style="text-align: left !important;">
-                <span class="rec-name">{method['name']}</span><br/>
-                <span class="badge {tier['class']}">{tier['icon']} {tier['badge']}</span>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            label = "Hide" if is_expanded else "View"
-            if st.button(label, key=f"view_{method_id}", use_container_width=True):
-                if is_expanded:
-                    st.session_state.selected_method_id = None
-                else:
-                    st.session_state.selected_method_id = method_id
-                st.rerun()
-        
+    if st.button("View details", key=f"best_{method_id}", use_container_width=True):
         if is_expanded:
-            st.markdown('<div class="details-card">', unsafe_allow_html=True)
-            
-            st.markdown(
-                f"<div style='display:flex; justify-content:space-between; align-items:center; gap:12px;'>"
-                f"<div style='font-weight:800; font-size:1.05rem; color:var(--ink); text-align:left !important;'>{method['name']}</div>"
-                f"<div class='badge {tier['class']}'>{tier['icon']} {tier['badge']}</div>"
-                f"</div>",
-                unsafe_allow_html=True
-            )
-            
-            if method.get("image"):
-                try:
-                    st.image(method["image"], use_container_width=True)
-                except:
-                    st.caption("Image unavailable")
-            
-            st.markdown("<div class='section-h'>Pros</div>", unsafe_allow_html=True)
-            if method.get("pros"):
-                st.markdown("<ul class='pros-list'>" + "".join([f"<li>{p}</li>" for p in method["pros"]]) + "</ul>", unsafe_allow_html=True)
-            else:
-                st.markdown("<div class='rec-meta'>Pros coming soon.</div>", unsafe_allow_html=True)
-            
-            st.markdown("<div class='section-h'>Cons</div>", unsafe_allow_html=True)
-            if method.get("cons"):
-                st.markdown("<ul class='cons-list'>" + "".join([f"<li>{c}</li>" for c in method["cons"]]) + "</ul>", unsafe_allow_html=True)
-            else:
-                st.markdown("<div class='rec-meta'>Cons coming soon.</div>", unsafe_allow_html=True)
-            
-            effectiveness = method.get("typical", "")
-            if effectiveness:
-                st.markdown("<div class='section-h'>Typical effectiveness</div>", unsafe_allow_html=True)
-                st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
-            
-            cta_class = "details-cta unlikely" if tier_key == "unlikely" else "details-cta"
-            helper = (
-                "Based on your answers, this option is less likely to fit. A clinician can help you review safer alternatives."
-                if tier_key == "unlikely"
-                else "If you'd like, you can book a telehealth visit to talk through your options."
-            )
-            
-            st.markdown(f"<div class='rec-meta' style='margin-top:14px;'>{helper}</div>", unsafe_allow_html=True)
-            st.markdown(
-                f"<a class='{cta_class}' href='{BOOK_URL}' target='_blank' rel='noopener noreferrer'>Book a telehealth visit →</a>",
-                unsafe_allow_html=True
-            )
-            
-            col_a, col_b = st.columns([1, 1])
-            with col_a:
-                if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
-                    st.session_state.selected_method_id = None
-                    st.rerun()
-            
-            st.markdown("</div>", unsafe_allow_html=True)
+            st.session_state.selected_method_id = None
+        else:
+            st.session_state.selected_method_id = method_id
+        st.rerun()
+    
+    if is_expanded:
+        render_method_details(method, "best")
 
 
 def render_results():
+    """Render main results page with best matches and view other options button."""
+    st.markdown("""
+    <style>
+    .best-match-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(116,184,154,0.10);
+        border: 1px solid rgba(116,184,154,0.55);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 8px;
+    }
+    .best-match-image-placeholder {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        background: rgba(116,184,154,0.25);
+        border-radius: 8px;
+    }
+    .best-match-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        text-align: left;
+    }
+    .best-match-name {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #211816;
+    }
+    .best-match-badge {
+        font-size: 0.75rem;
+        color: #74B89A;
+        font-weight: 500;
+    }
+    .other-options-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(116,184,154,0.05);
+        border: 1px solid rgba(116,184,154,0.35);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 24px;
+        cursor: pointer;
+    }
+    .other-options-thumbnail {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+    .other-options-text {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #211816;
+    }
+    .results-header {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #211816;
+        margin-bottom: 16px;
+        text-align: left;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     st.markdown(f'<p class="progress-text">Complete</p>', unsafe_allow_html=True)
     st.progress(1.0)
     
-    st.markdown("---")
-    st.markdown("### Your Personalized Recommendations")
+    st.markdown("<p class='results-header'>Your Personalized Recommendations</p>", unsafe_allow_html=True)
     
     encoded = encode_answers(st.session_state.answers)
     results = get_recommendations(METHODS, encoded)
     
-    render_category("best", results["recommended"])
-    render_category("consider", results["caution"])
-    render_category("unlikely", results["contraindicated"])
+    best_matches = results["recommended"][:3]
+    other_options = results["recommended"][3:] + results["caution"] + results["contraindicated"]
+    
+    if best_matches:
+        for i, method in enumerate(best_matches):
+            render_best_match_card(method, i)
+    else:
+        st.markdown("<p style='color:#211816;'>No perfect matches found, but check out other options below.</p>", unsafe_allow_html=True)
+    
+    if other_options:
+        st.markdown(f"""
+        <div class="other-options-card" style="pointer-events: none;">
+            <img class="other-options-thumbnail" src="data:image/jpeg;base64,{hero_base64}" alt="Options">
+            <span class="other-options-text">View other options ({len(other_options)} more)</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("View other options", use_container_width=True):
+            st.session_state.view_other_options = True
+            st.session_state.selected_method_id = None
+            st.rerun()
     
     st.markdown("---")
     
@@ -1084,12 +1166,116 @@ def render_results():
             st.session_state.q_idx = 0
             st.session_state.answers = {}
             st.session_state.show_results = False
+            st.session_state.view_other_options = False
             st.session_state.selected_method_id = None
             st.rerun()
 
 
+def render_other_options():
+    """Render the other options page with all remaining methods."""
+    st.markdown("""
+    <style>
+    .other-option-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(116,184,154,0.05);
+        border: 1px solid rgba(116,184,154,0.35);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 8px;
+    }
+    .other-option-image-placeholder {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        background: rgba(116,184,154,0.20);
+        border-radius: 8px;
+    }
+    .other-option-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        text-align: left;
+        flex: 1;
+    }
+    .other-option-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #211816;
+    }
+    .other-option-badge {
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+    .other-option-badge.consider {
+        color: #64748b;
+    }
+    .other-option-badge.unlikely {
+        color: #D1495B;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<p style='font-size:1.2rem; font-weight:700; color:#211816; margin-bottom:16px;'>Other Options</p>", unsafe_allow_html=True)
+    
+    encoded = encode_answers(st.session_state.answers)
+    results = get_recommendations(METHODS, encoded)
+    
+    other_recommended = results["recommended"][3:]
+    caution_methods = results["caution"]
+    contraindicated_methods = results["contraindicated"]
+    
+    for method in other_recommended:
+        render_other_option_card(method, "best")
+    
+    for method in caution_methods:
+        render_other_option_card(method, "consider")
+    
+    for method in contraindicated_methods:
+        render_other_option_card(method, "unlikely")
+    
+    st.markdown("---")
+    
+    if st.button("← Back to Best Matches", use_container_width=True):
+        st.session_state.view_other_options = False
+        st.session_state.selected_method_id = None
+        st.rerun()
+
+
+def render_other_option_card(method, tier_key):
+    """Render a card for other options page."""
+    method_id = get_method_id(method)
+    tier = TIER_CONFIG[tier_key]
+    is_expanded = st.session_state.selected_method_id == method_id
+    
+    badge_class = "consider" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "")
+    
+    st.markdown(f"""
+    <div class="other-option-card">
+        <div class="other-option-image-placeholder"></div>
+        <div class="other-option-info">
+            <span class="other-option-name">{method['name']}</span>
+            <span class="other-option-badge {badge_class}">{tier['icon']} {tier['badge']}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("View details", key=f"other_{method_id}", use_container_width=True):
+        if is_expanded:
+            st.session_state.selected_method_id = None
+        else:
+            st.session_state.selected_method_id = method_id
+        st.rerun()
+    
+    if is_expanded:
+        render_method_details(method, tier_key)
+
+
 if not st.session_state.started:
     render_landing()
+elif st.session_state.view_other_options:
+    render_other_options()
 elif st.session_state.show_results:
     render_results()
 else:
