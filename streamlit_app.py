@@ -32,8 +32,6 @@ if "selected_method_id" not in st.session_state:
     st.session_state.selected_method_id = None
 if "view_other_options" not in st.session_state:
     st.session_state.view_other_options = False
-if "show_why" not in st.session_state:
-    st.session_state.show_why = False
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
@@ -134,23 +132,11 @@ def get_recommendation_reasons(answers):
     return reasons
 
 
-def render_why_recommendation():
-    """Render the explanation modal for why these recommendations were made."""
+@st.dialog("Why these recommendations?")
+def show_why_dialog():
+    """Render the explanation as a native Streamlit modal dialog."""
     st.markdown("""
     <style>
-    .why-modal {
-        background: #fff;
-        border: 1px solid rgba(116,184,154,0.3);
-        border-radius: 12px;
-        padding: 20px;
-        margin: 16px 0;
-    }
-    .why-header {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #211816;
-        margin-bottom: 16px;
-    }
     .why-reason {
         background: rgba(116,184,154,0.08);
         border-left: 3px solid #74B89A;
@@ -163,17 +149,11 @@ def render_why_recommendation():
     </style>
     """, unsafe_allow_html=True)
     
-    st.markdown('<div class="why-modal">', unsafe_allow_html=True)
-    st.markdown('<p class="why-header">Why these recommendations?</p>', unsafe_allow_html=True)
-    
     reasons = get_recommendation_reasons(st.session_state.answers)
     for reason in reasons:
         st.markdown(f'<div class="why-reason">{reason}</div>', unsafe_allow_html=True)
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if st.button("Close explanation", use_container_width=True):
-        st.session_state.show_why = False
+    if st.button("Close", use_container_width=True):
         st.rerun()
 
 IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
@@ -1255,8 +1235,7 @@ def render_results():
         st.markdown('</div>', unsafe_allow_html=True)
     
     if st.button("Why this recommendation?", use_container_width=True):
-        st.session_state.show_why = True
-        st.rerun()
+        show_why_dialog()
     if st.button("Start Over", use_container_width=True):
         st.session_state.started = False
         st.session_state.q_idx = 0
@@ -1264,12 +1243,7 @@ def render_results():
         st.session_state.show_results = False
         st.session_state.view_other_options = False
         st.session_state.selected_method_id = None
-        st.session_state.show_why = False
         st.rerun()
-    
-    # Show explanation modal if requested
-    if st.session_state.get("show_why", False):
-        render_why_recommendation()
 
 
 def render_other_options():
