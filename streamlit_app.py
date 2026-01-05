@@ -1134,7 +1134,7 @@ def render_results():
     .best-card-row {
         display: flex;
         align-items: stretch;
-        background: var(--mint-bg);
+        background: rgba(116,184,154,0.05);
         border: 1px solid var(--mint-border);
         border-radius: 12px;
         margin-bottom: 12px;
@@ -1147,11 +1147,11 @@ def render_results():
         width: 100%;
         height: 100%;
         min-height: 70px;
-        background: rgba(116,184,154,0.30);
+        background: rgba(116,184,154,0.10);
         border-radius: 0;
     }
     .best-card-row .stButton > button {
-        background: rgba(116,184,154,0.15) !important;
+        background: rgba(116,184,154,0.08) !important;
         border: none !important;
         color: var(--ink) !important;
         border-radius: 0 12px 12px 0 !important;
@@ -1167,7 +1167,7 @@ def render_results():
         margin: 0 !important;
     }
     .best-card-row .stButton > button:hover {
-        background: rgba(116,184,154,0.25) !important;
+        background: rgba(116,184,154,0.15) !important;
     }
     .view-other-row {
         display: flex;
