@@ -842,7 +842,7 @@ def render_landing():
     <div class="landing-grid">
         <div class="landing-hero-cell">
             <div class="landing-hero">
-                <h1>Find your contraceptive<br>in seven questions</h1>
+                <h1><span class="hero-accent">Find your contraceptive</span><br>in seven questions</h1>
             </div>
         </div>
         <div class="landing-footer">
@@ -1019,6 +1019,7 @@ def render_quiz():
     
     with col1:
         if q_idx > 0:
+            st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
             if st.button("Back", use_container_width=True):
                 st.session_state.answers[q_id] = answer
                 prev_q_id = QUESTION_IDS[q_idx - 1]
@@ -1027,8 +1028,10 @@ def render_quiz():
                     del st.session_state[tile_key]
                 st.session_state.q_idx -= 1
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
+        st.markdown('<div class="cc-primary">', unsafe_allow_html=True)
         if q_idx < NUM_QUESTIONS - 1:
             if st.button("Next →", use_container_width=True, disabled=not is_valid):
                 if is_valid:
@@ -1042,6 +1045,7 @@ def render_quiz():
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1234,8 +1238,12 @@ def render_results():
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
+    st.markdown('<div class="cc-primary">', unsafe_allow_html=True)
     if st.button("Why this recommendation?", use_container_width=True):
         show_why_dialog()
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
     if st.button("Start Over", use_container_width=True):
         st.session_state.started = False
         st.session_state.q_idx = 0
@@ -1244,6 +1252,7 @@ def render_results():
         st.session_state.view_other_options = False
         st.session_state.selected_method_id = None
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_other_options():
@@ -1351,10 +1360,12 @@ def render_other_options():
     
     st.markdown("---")
     
+    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
     if st.button("← Back to Best Matches", use_container_width=True):
         st.session_state.view_other_options = False
         st.session_state.selected_method_id = None
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_other_option_card(method, tier_key):
