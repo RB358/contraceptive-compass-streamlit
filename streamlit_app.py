@@ -811,7 +811,7 @@ def render_landing():
         padding-bottom: 80px;
     }}
     .landing-start-btn {{
-        background: white;
+        background: rgba(116,184,154,0.30);
         color: #0F172A;
         border: none;
         border-radius: 999px;
@@ -820,10 +820,11 @@ def render_landing():
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         white-space: nowrap;
     }}
     .landing-start-btn:hover {{
+        background: rgba(116,184,154,0.45);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }}
