@@ -647,7 +647,7 @@ div[data-testid="stProgress"] {{
     border: 1px solid rgba(209, 73, 91, 0.35);
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
     text-decoration: none;
-    color: var(--ink);
+    color: #1C83E1;
     font-weight: 700;
 }}
 
@@ -669,6 +669,11 @@ div[data-testid="stProgress"] {{
     color: rgba(15, 23, 42, 0.70);
     font-size: 0.85rem;
     margin-left: 6px;
+    display: none;
+}}
+
+.floating-cta:hover .sub {{
+    display: inline;
 }}
 
 @media (max-width: 640px) {{
