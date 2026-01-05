@@ -348,9 +348,13 @@ h1, h2, h3, h4, .stMarkdown, p, div {{text-align: center !important;}}
 
 div.stButton {{text-align: center !important;}}
 
-.stButton > button {{
-    display: inline-block !important;
-    margin: 10px auto !important;
+/* Close details button - full width */
+button[kind="secondary"]:has(p),
+.stButton > button[kind="secondary"] {{
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
 }}
 
 .stSelectbox, .stMultiselect {{
