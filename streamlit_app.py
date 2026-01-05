@@ -138,8 +138,8 @@ def show_why_dialog():
     st.markdown("""
     <style>
     .why-reason {
-        background: rgba(116,184,154,0.08);
-        border-left: 3px solid #74B89A;
+        background: var(--mint-bg);
+        border-left: 3px solid var(--mint);
         padding: 12px 16px;
         margin-bottom: 12px;
         border-radius: 0 8px 8px 0;
@@ -820,7 +820,7 @@ def render_landing():
         padding-bottom: 80px;
     }}
     .landing-start-btn {{
-        background: rgba(116,184,154,0.30);
+        background: var(--mint-border);
         color: #0F172A;
         border: none;
         border-radius: 999px;
@@ -833,7 +833,7 @@ def render_landing():
         white-space: nowrap;
     }}
     .landing-start-btn:hover {{
-        background: rgba(116,184,154,0.45);
+        background: var(--mint-btn-hover);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }}
@@ -1264,7 +1264,7 @@ def render_other_options():
     .other-card-row {
         display: flex;
         align-items: stretch;
-        background: rgba(116,184,154,0.05);
+        background: var(--mint-bg);
         border: 1px solid var(--mint-border);
         border-radius: 12px;
         margin-bottom: 10px;
@@ -1378,7 +1378,7 @@ def render_other_option_card(method, tier_key):
     
     # Define tier-specific colors
     if css_class == "best":
-        thumb_color = "rgba(116,184,154,0.30)"
+        thumb_color = "var(--mint-border)"
     elif css_class == "caution":
         thumb_color = "rgba(100,116,139,0.25)"
     else:  # unlikely

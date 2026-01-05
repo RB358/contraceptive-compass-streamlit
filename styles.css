@@ -5,6 +5,7 @@
   --mint-bg: rgba(116,184,154,0.05);      /* very pale mint background */
   --mint-bg-hover: rgba(116,184,154,0.15);
   --mint-border: rgba(116,184,154,0.30);
+  --mint-btn-hover: rgba(116,184,154,0.45);  /* button hover state */
   --mint-border-strong: rgba(116,184,154,0.95);
 }
 
