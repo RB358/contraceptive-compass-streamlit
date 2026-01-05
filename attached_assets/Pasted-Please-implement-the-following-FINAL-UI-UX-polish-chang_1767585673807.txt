@@ -1,0 +1,293 @@
+Please implement the following FINAL UI/UX polish changes based on the attached screenshots. Do NOT change quiz logic, question data, scoring, or navigation flow. Only CSS + safe, minimal markup wrappers.
+
+GOAL
+- Keep the clean, centered, Typeform-like vibe.
+- Reduce “empty space” and oversized components.
+- Unify Start + all buttons into one system.
+- Improve interactivity states (hover / selected / focus-visible).
+- Prevent the “Talk to a clinician” floating CTA from overlapping or competing with the quiz/results CTAs.
+
+0) SINGLE SOURCE OF TRUTH FOR CSS (critical)
+Confirm whether styles exist in BOTH styles.css and inline <style> in streamlit_app.py.
+- Keep ONE source of truth for global styles (typography, spacing, tiles, buttons).
+- If the hero needs base64, keep ONLY the hero-related CSS inline; move everything else to styles.css (preferred).
+
+1) FIX LANDING: START BUTTON MUST MATCH PRIMARY BUTTON SYSTEM
+Right now Start is a custom <a> with its own embedded CSS and drop shadow. This is why it looks inconsistent.
+Refactor ui_components.start_cta() as follows:
+
+A) Remove the entire <style> block inside start_cta() (delete it).
+B) Replace the <a> with a Streamlit button using cc-primary wrapper:
+
+def start_cta():
+    st.markdown('<div class="start-cta-wrapper cc-primary">', unsafe_allow_html=True)
+    if st.button("Start quiz", key="start_quiz_btn"):
+        st.query_params["start"] = "1"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+C) Add/adjust global CSS:
+.start-cta-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-top: -120px;   /* reduce the excessive overlap seen in screenshot */
+  margin-bottom: 34px;
+  position: relative;
+  z-index: 10;
+}
+
+(Do not use big drop shadows; primary button should be consistent with Next/Results.)
+
+2) GLOBAL SPACING: REMOVE EXCESSIVE WHITESPACE ON QUIZ SCREENS
+In the quiz screenshot, there is too much unused space and the tiles are too tall.
+Add/adjust:
+
+.main .block-container{
+  max-width: 880px !important;
+  padding-top: 16px !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+  padding-bottom: 28px !important;
+}
+
+@media (max-width: 640px){
+  .main .block-container{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 12px !important;
+  }
+}
+
+Reduce the gap under the progress bar:
+.progress-wrap, .progress-text{
+  margin-top: 6px !important;
+  margin-bottom: 10px !important;
+}
+
+3) TYPOGRAPHY: IMPROVE HIERARCHY (CURRENTLY TOO SMALL FOR THE SPACE)
+Quiz question should feel like the focal point.
+Add:
+
+.quiz-card h3{
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+  font-weight: 750 !important;
+  margin: 0 0 8px 0 !important;
+  text-align: center !important;
+}
+.quiz-card .stCaption, .quiz-card [data-testid="stCaptionContainer"]{
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+  opacity: 0.84 !important;
+  margin-bottom: 14px !important;
+  text-align: center !important;
+}
+@media (max-width: 640px){
+  .quiz-card h3{ font-size: 20px !important; }
+  .quiz-card .stCaption, .quiz-card [data-testid="stCaptionContainer"]{ font-size: 15px !important; }
+}
+
+4) OPTION TILES: REDUCE HEIGHT + IMPROVE CLICK AFFORDANCE + SELECTED STATE
+Tiles are currently too tall and “flat”.
+Apply to the real tile selector used (radio tiles). Use both selectors safely:
+
+[data-testid="stRadio"] label,
+div[role="radiogroup"] > label{
+  width: 100% !important;
+  border-radius: 14px !important;
+  padding: 14px 16px !important;      /* reduced from 18+ */
+  margin: 12px auto !important;
+  border: 1px solid rgba(15,118,110,0.32) !important;
+  background: rgba(15,118,110,0.055) !important;
+  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  cursor: pointer;
+  text-align: center !important;
+  font-size: 16px !important;
+}
+
+/* Hover */
+[data-testid="stRadio"] label:hover,
+div[role="radiogroup"] > label:hover{
+  background: rgba(15,118,110,0.085) !important;
+  border-color: rgba(15,118,110,0.55) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06) !important;
+}
+
+/* Selected */
+[data-testid="stRadio"] label:has(input:checked),
+div[role="radiogroup"] > label:has(input:checked){
+  background: rgba(15,118,110,0.12) !important;
+  border: 2px solid rgba(15,118,110,0.72) !important;
+}
+
+/* Focus-visible */
+[data-testid="stRadio"] label:has(input:focus-visible),
+div[role="radiogroup"] > label:has(input:focus-visible){
+  box-shadow: 0 0 0 4px rgba(15,118,110,0.18) !important;
+  outline: none !important;
+}
+
+/* Active press */
+[data-testid="stRadio"] label:active,
+div[role="radiogroup"] > label:active{
+  transform: translateY(1px) !important;
+}
+
+5) BUTTON SYSTEM: CONSISTENT SIZES + CLEAR PRIMARY/SECONDARY
+In screenshots, many CTAs render as huge green bars; buttons feel too tall and too many look primary.
+Keep your cc-primary / cc-secondary wrappers and ensure the base is consistent:
+
+.stButton > button{
+  border-radius: 14px !important;
+  padding: 12px 18px !important;      /* reduce height */
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+.stButton > button:active{ transform: translateY(1px) !important; }
+.stButton > button:focus-visible{
+  box-shadow: 0 0 0 4px rgba(15,118,110,0.18) !important;
+  outline: none !important;
+}
+
+.cc-primary .stButton > button{
+  background: #0F766E !important;
+  border: 1px solid #0F766E !important;
+  color: #fff !important;
+}
+.cc-primary .stButton > button:hover{
+  background: #0B5F59 !important;
+  border-color: #0B5F59 !important;
+}
+
+.cc-secondary .stButton > button{
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(15,118,110,0.45) !important;
+  color: #0F766E !important;
+}
+.cc-secondary .stButton > button:hover{
+  background: rgba(15,118,110,0.06) !important;
+  border-color: rgba(15,118,110,0.65) !important;
+}
+
+IMPORTANT: On Results page:
+- “Why this recommendation?” should be secondary (it’s a utility/info action).
+- “View other options” should be secondary (or a lighter primary-outline), not full primary.
+- “Start over” should be secondary.
+
+Please wrap those specific buttons with cc-secondary in Python. Keep only ONE primary on that screen (if any).
+
+6) RESULTS LIST: CHANGE OVERSIZED GREEN BARS INTO CARDS
+Current results are long full-width green bars with thin separators; they feel heavy and repetitive.
+Implement a card style for each recommendation row:
+- light surface
+- thin border
+- small mint tag for “Best match”
+- row height reduced
+- image placeholder should not be a large empty block
+
+CSS:
+.rec-row{
+  display:flex;
+  gap: 16px;
+  align-items:center;
+  padding: 14px 16px;
+  margin: 14px 0;
+  border: 1px solid rgba(15,118,110,0.22);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.75);
+}
+.rec-thumb{
+  width: 120px;
+  height: 72px;
+  border-radius: 12px;
+  background: rgba(15,118,110,0.10);
+  flex: 0 0 auto;
+  overflow:hidden;
+}
+.rec-title{
+  flex: 1 1 auto;
+  font-weight: 700;
+  text-align: left;
+}
+.rec-badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(15,118,110,0.10);
+  border: 1px solid rgba(15,118,110,0.35);
+  font-size: 13px;
+}
+
+Then update the results row markup (where you currently render the green bars) to use:
+<div class="rec-row">
+  <div class="rec-thumb">…image…</div>
+  <div class="rec-title">Method name</div>
+  <div class="rec-badge">✓ Best match</div>
+</div>
+
+(This makes the results page feel premium and reduces the “green wall” effect.)
+
+7) DETAILS VIEW: FIX ALIGNMENT + “CLOSE DETAILS” POSITION
+In the screenshot, Pros/Cons are left aligned (good), but “Close details” is a huge bar and sits awkwardly.
+- Make details content max width and centered.
+- Make Close Details a secondary button and place it BOTH top-right of the details card and at the bottom (for long scroll).
+
+CSS:
+.details-card{
+  max-width: 860px;
+  margin: 18px auto;
+  padding: 18px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(15,118,110,0.18);
+  background: rgba(255,255,255,0.78);
+}
+.details-card .pros-list, .details-card .cons-list{
+  text-align: left !important;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.details-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom: 10px;
+}
+
+Wrap the Close button with cc-secondary and place it in a .details-actions div above the content.
+
+8) FLOATING “TALK TO A CLINICIAN” CTA: STOP OVERLAP + REDUCE COMPETITION
+It overlaps content on results/detail screens and competes with primary actions.
+Change it to:
+- smaller footprint
+- higher bottom/right margin
+- hide on small screens OR collapse to an icon chip
+
+CSS:
+.floating-cta{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 50;
+  max-width: 280px;
+}
+@media (max-width: 640px){
+  .floating-cta{
+    right: 12px;
+    bottom: 12px;
+    max-width: 220px;
+    transform: scale(0.92);
+    transform-origin: bottom right;
+  }
+}
+
+Also: add a close “×” on the floating CTA (optional) to dismiss it in-session (store in session_state so it stays dismissed).
+
+9) DELIVERABLES
+After implementing, send:
+- Landing screenshot (Start button clearly matches quiz buttons)
+- Quiz Q1 screenshot (less empty space, tiles shorter, hover/selected/focus works)
+- Results list screenshot (card rows, not giant green bars)
+- One expanded details screenshot (close button placement + alignment)
+- Mobile screenshot for quiz + results (CTA not overlapping)
