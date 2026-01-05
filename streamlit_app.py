@@ -1130,7 +1130,7 @@ def render_results():
     .best-card-row {
         display: flex;
         align-items: stretch;
-        background: rgba(116,184,154,0.05);
+        background: var(--mint-bg);
         border: 1px solid var(--mint-border);
         border-radius: 12px;
         margin-bottom: 12px;
@@ -1143,11 +1143,11 @@ def render_results():
         width: 100%;
         height: 100%;
         min-height: 70px;
-        background: rgba(116,184,154,0.10);
+        background: var(--mint-bg-hover);
         border-radius: 0;
     }
     .best-card-row .stButton > button {
-        background: rgba(116,184,154,0.30) !important;
+        background: var(--mint-bg-hover) !important;
         border: none !important;
         color: var(--ink) !important;
         border-radius: 0 12px 12px 0 !important;
@@ -1163,12 +1163,12 @@ def render_results():
         margin: 0 !important;
     }
     .best-card-row .stButton > button:hover {
-        background: rgba(116,184,154,0.45) !important;
+        background: var(--mint-border) !important;
     }
     .view-other-row {
         display: flex;
         align-items: stretch;
-        background: rgba(116,184,154,0.05);
+        background: var(--mint-bg);
         border: 1px solid var(--mint-border);
         border-radius: 12px;
         margin-top: 16px;
@@ -1198,7 +1198,7 @@ def render_results():
         margin: 0 !important;
     }
     .view-other-row .stButton > button:hover {
-        background: rgba(116,184,154,0.08) !important;
+        background: var(--mint-bg) !important;
     }
     </style>
     """
