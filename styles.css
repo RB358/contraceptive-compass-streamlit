@@ -1,68 +1,11 @@
 :root{
-  /* Brand colors */
-  --ink: #211816;
-  --mint: #74B89A;
-  --mint-dark: #5A9A7D;
-  --mint-bg: rgba(116,184,154,0.10);
+  /* Your chosen palette */
+  --ink: #211816;                 /* dark grey-brown text */
+  --mint: #74B89A;                /* mint text/border */
+  --mint-bg: rgba(116,184,154,0.10);      /* very pale mint background */
   --mint-bg-hover: rgba(116,184,154,0.14);
   --mint-border: rgba(116,184,154,0.55);
   --mint-border-strong: rgba(116,184,154,0.95);
-  --coral: #D1495B;
-  --coral-hover: #E06372;
-  --surface: #FFFFFF;
-  --warm-bg: #FFFBFA;
-  --border: #E5E7EB;
-
-  /* Teal variant for button system */
-  --teal: #0F766E;
-  --teal-dark: #0B5F59;
-  --teal-bg: rgba(15,118,110,0.055);
-  --teal-bg-hover: rgba(15,118,110,0.085);
-  --teal-border: rgba(15,118,110,0.32);
-  --teal-border-hover: rgba(15,118,110,0.55);
-  --teal-border-strong: rgba(15,118,110,0.72);
-  --teal-focus-ring: 0 0 0 4px rgba(15,118,110,0.18);
-
-  /* Typography scale */
-  --text-xs: 12px;
-  --text-sm: 14px;
-  --text-md: 16px;
-  --text-lg: 18px;
-  --text-xl: 22px;
-  --text-2xl: 28px;
-
-  --lh-tight: 1.2;
-  --lh-normal: 1.5;
-
-  /* Spacing scale */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-
-  /* Radius */
-  --radius-sm: 12px;
-  --radius-md: 14px;
-  --radius-lg: 16px;
-  --radius-xl: 18px;
-  --radius-pill: 999px;
-
-  /* Shadows */
-  --shadow-1: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-2: 0 10px 25px rgba(0,0,0,0.08);
-
-  /* Focus */
-  --focus-ring: 0 0 0 4px rgba(116,184,154,0.25);
-}
-
-/* Base typography */
-html, body, [class*="stApp"] {
-  color: var(--ink);
-  background: var(--warm-bg);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* Prevent horizontal overflow on all pages */
@@ -85,224 +28,63 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
 }
 
 /* Card rows must not overflow */
-.best-card-row, .other-card-row, .view-other-row, .rec-row {
+.best-card-row, .other-card-row, .view-other-row {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
-/* GLOBAL SPACING: Reduce excessive whitespace on quiz screens */
-.main .block-container {
-  max-width: 880px !important;
-  padding-top: 16px !important;
-  padding-left: 28px !important;
-  padding-right: 28px !important;
-  padding-bottom: 28px !important;
-}
-
-@media (max-width: 640px) {
-  .main .block-container {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    padding-top: 12px !important;
+/* Buttons inside cards can wrap text if needed on very small screens */
+@media (max-width: 400px) {
+  .best-card-row .stButton > button,
+  .other-card-row .stButton > button,
+  .view-other-row .stButton > button {
+    white-space: normal !important;
+    word-wrap: break-word !important;
   }
 }
 
-/* Progress text styling */
-.progress-text {
-  font-size: var(--text-sm) !important;
-  font-weight: 650 !important;
-  margin-top: 6px !important;
-  margin-bottom: 10px !important;
-  color: var(--teal) !important;
+/* Keep scope tight: set base text only (safe) */
+html, body, [class*="stApp"]{
+  color: var(--ink);
 }
 
-.progress-wrap {
-  margin-top: 6px !important;
-  margin-bottom: 10px !important;
-}
-
-/* TYPOGRAPHY: Quiz question styling */
-.quiz-question {
-  font-size: 22px !important;
-  line-height: 1.2 !important;
-  margin: 0 0 8px 0 !important;
-  color: var(--ink) !important;
-  font-weight: 750 !important;
-  text-align: center !important;
-}
-
-.quiz-help {
-  font-size: 16px !important;
-  line-height: 1.45 !important;
-  opacity: 0.84 !important;
-  margin-bottom: 14px !important;
-  text-align: center !important;
-}
-
-@media (max-width: 640px) {
-  .quiz-question {
-    font-size: 20px !important;
-  }
-  .quiz-help {
-    font-size: 15px !important;
-  }
-}
-
-/* Quiz card typography */
-.quiz-card h3 {
-  font-size: 22px !important;
-  line-height: 1.2 !important;
-  font-weight: 750 !important;
-  margin: 0 0 8px 0 !important;
-  text-align: center !important;
-}
-
-.quiz-card .stCaption,
-.quiz-card [data-testid="stCaptionContainer"] {
-  font-size: 16px !important;
-  line-height: 1.45 !important;
-  opacity: 0.84 !important;
-  margin-bottom: 14px !important;
-  text-align: center !important;
-}
-
-@media (max-width: 640px) {
-  .quiz-card h3 {
-    font-size: 20px !important;
-  }
-  .quiz-card .stCaption,
-  .quiz-card [data-testid="stCaptionContainer"] {
-    font-size: 15px !important;
-  }
-}
-
-/* OPTION TILES: Reduced height + improved click affordance + selected state */
-[data-testid="stRadio"] label,
-div[role="radiogroup"] > label {
-  width: 100% !important;
-  border-radius: 14px !important;
-  padding: 14px 16px !important;
-  margin: 12px auto !important;
-  border: 1px solid var(--teal-border) !important;
-  background: var(--teal-bg) !important;
-  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-  cursor: pointer;
-  text-align: center !important;
-  font-size: 16px !important;
+/* RADIO OPTIONS ONLY: pale mint tiles with mint text */
+div[role="radiogroup"] > label{
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
-  color: var(--ink) !important;
-  box-shadow: none !important;
+
+  background-color: var(--mint-bg) !important;
+  border: 1px solid var(--mint-border) !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  margin: 10px 0 !important;
+
+  color: var(--mint) !important;
 }
 
 /* Hover */
-[data-testid="stRadio"] label:hover,
-div[role="radiogroup"] > label:hover {
-  background: var(--teal-bg-hover) !important;
-  border-color: var(--teal-border-hover) !important;
-  box-shadow: var(--shadow-1) !important;
+div[role="radiogroup"] > label:hover{
+  background-color: var(--mint-bg-hover) !important;
 }
 
 /* Selected */
-[data-testid="stRadio"] label:has(input:checked),
-div[role="radiogroup"] > label:has(input:checked) {
-  background: rgba(15,118,110,0.12) !important;
-  border: 2px solid var(--teal-border-strong) !important;
+div[role="radiogroup"] > label:has(input:checked){
+  border: 2px solid var(--mint-border-strong) !important;
 }
 
-/* Focus-visible */
-[data-testid="stRadio"] label:has(input:focus-visible),
-div[role="radiogroup"] > label:has(input:focus-visible) {
-  box-shadow: var(--teal-focus-ring) !important;
-  outline: none !important;
-}
-
-/* Active press */
-[data-testid="stRadio"] label:active,
-div[role="radiogroup"] > label:active {
-  transform: translateY(1px) !important;
-}
-
-/* Hide default radio circle */
-div[role="radiogroup"] > label input {
+/* Hide default radio circle (optional; remove if you want it visible) */
+div[role="radiogroup"] > label input{
   display: none !important;
 }
 
-/* BUTTON SYSTEM: Consistent sizes + clear primary/secondary */
-.stButton > button {
-  border-radius: 14px !important;
-  padding: 12px 18px !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-}
-
-.stButton > button:active {
-  transform: translateY(1px) !important;
-}
-
-.stButton > button:focus-visible {
-  box-shadow: var(--teal-focus-ring) !important;
-  outline: none !important;
-}
-
-/* PRIMARY BUTTON (Start, Next, Results) */
-.cc-primary .stButton > button {
-  background: var(--teal) !important;
-  border: 1px solid var(--teal) !important;
-  color: #fff !important;
-}
-
-.cc-primary .stButton > button:hover {
-  background: var(--teal-dark) !important;
-  border-color: var(--teal-dark) !important;
-}
-
-/* SECONDARY BUTTON (Back, Why, Start Over, View Other) */
-.cc-secondary .stButton > button {
-  background: rgba(255,255,255,0.92) !important;
-  border: 1px solid rgba(15,118,110,0.45) !important;
-  color: var(--teal) !important;
-}
-
-.cc-secondary .stButton > button:hover {
-  background: rgba(15,118,110,0.06) !important;
-  border-color: rgba(15,118,110,0.65) !important;
-}
-
-/* START CTA WRAPPER */
-.start-cta-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: -80px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 100;
-  max-width: 280px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.start-cta-wrapper .stButton > button {
-  border-radius: 999px !important;
-  padding: 14px 36px !important;
-  font-size: 1.1rem !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-}
-
-/* TILE BUTTONS (quiz options, cards) */
+/* BUTTON TILES: pale mint tiles with mint accents */
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button {
-  background-color: var(--teal-bg) !important;
-  border: 1px solid var(--teal-border) !important;
-  border-radius: var(--radius-md) !important;
+  background-color: var(--mint-bg) !important;
+  border: 1px solid var(--mint-border) !important;
+  border-radius: 12px !important;
   padding: 14px 16px !important;
   color: var(--ink) !important;
-}
-
-div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {
-  background-color: var(--teal-bg-hover) !important;
-  border-color: var(--teal-border-hover) !important;
 }
 
 /* Mobile: smaller button text */
@@ -324,7 +106,6 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {
 div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) {
   flex-wrap: nowrap !important;
 }
-
 div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(3)) .stButton > button {
   white-space: nowrap !important;
 }
@@ -361,226 +142,15 @@ div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child
   }
 }
 
-/* Buttons inside cards can wrap text if needed on very small screens */
-@media (max-width: 400px) {
-  .best-card-row .stButton > button,
-  .other-card-row .stButton > button,
-  .view-other-row .stButton > button,
-  .rec-row .stButton > button {
-    white-space: normal !important;
-    word-wrap: break-word !important;
-  }
+/* Hover */
+div[data-testid="stVerticalBlock"] > div > div > .stButton > button:hover {
+  background-color: var(--mint-bg-hover) !important;
+  border-color: var(--mint-border-strong) !important;
 }
 
 /* Selected tile override */
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button[kind="secondary"]:focus,
 div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:checked) {
-  border: 2px solid var(--teal-border-strong) !important;
-  background-color: var(--teal-bg) !important;
-}
-
-/* Make selectbox / multiselect feel intentional and calm */
-.stSelectbox, 
-.stMultiselect {
-  max-width: 520px !important;
-  margin: 0 auto !important;
-}
-
-.stSelectbox [data-baseweb="select"] > div,
-.stMultiselect [data-baseweb="select"] > div {
-  background: rgba(255,255,255,0.95) !important;
-  border: 1px solid var(--teal-border) !important;
-  border-radius: 14px !important;
-  padding: 6px 10px !important;
-  box-shadow: var(--shadow-1) !important;
-}
-
-/* Hero accent for headline */
-.hero-accent {
-  color: rgba(255,255,255,0.95);
-}
-
-/* RESULTS LIST: Card style rows */
-.rec-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding: 14px 16px;
-  margin: 14px 0;
-  border: 1px solid rgba(15,118,110,0.22);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.75);
-  cursor: pointer;
-  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-}
-
-.rec-row:hover {
-  background: rgba(255,255,255,0.95);
-  border-color: rgba(15,118,110,0.45);
-  box-shadow: var(--shadow-1);
-}
-
-.rec-thumb {
-  width: 120px;
-  height: 72px;
-  border-radius: 12px;
-  background: rgba(15,118,110,0.10);
-  flex: 0 0 auto;
-  overflow: hidden;
-}
-
-.rec-title {
-  flex: 1 1 auto;
-  font-weight: 700;
-  text-align: left;
-  color: var(--ink);
-  font-size: 16px;
-}
-
-.rec-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(15,118,110,0.10);
-  border: 1px solid rgba(15,118,110,0.35);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--teal);
-  flex-shrink: 0;
-}
-
-.rec-badge.badge-consider {
-  background: rgba(255,193,7,0.12);
-  border-color: rgba(255,193,7,0.45);
-  color: #B8860B;
-}
-
-.rec-badge.badge-unlikely {
-  background: rgba(209,73,91,0.08);
-  border-color: rgba(209,73,91,0.35);
-  color: var(--coral);
-}
-
-@media (max-width: 640px) {
-  .rec-row {
-    padding: 12px;
-    gap: 12px;
-  }
-  .rec-thumb {
-    width: 80px;
-    height: 56px;
-  }
-  .rec-title {
-    font-size: 14px;
-  }
-  .rec-badge {
-    font-size: 11px;
-    padding: 4px 8px;
-  }
-}
-
-/* DETAILS VIEW: Fix alignment + centered */
-.details-card {
-  max-width: 860px;
-  margin: 18px auto;
-  padding: 18px 18px;
-  border-radius: 18px;
-  border: 1px solid rgba(15,118,110,0.18);
-  background: rgba(255,255,255,0.78);
-}
-
-.details-card .pros-list,
-.details-card .cons-list {
-  text-align: left !important;
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.details-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-
-/* FLOATING CTA: Stop overlap + reduce competition */
-.floating-cta {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 50;
-  max-width: 280px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.96);
-  border: 1px solid rgba(209,73,91,0.25);
-  border-radius: 999px;
-  padding: 10px 16px;
-  box-shadow: 0 8px 20px rgba(15,23,42,0.10);
-  transition: all 0.2s ease;
-  text-decoration: none;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.floating-cta:hover {
-  border-color: rgba(209,73,91,0.55);
-  box-shadow: 0 12px 32px rgba(15,23,42,0.16);
-}
-
-.floating-cta .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--coral);
-  flex: 0 0 auto;
-}
-
-.floating-cta .sub {
-  font-weight: 500;
-  color: rgba(15,23,42,0.60);
-  font-size: 12px;
-  margin-left: 4px;
-}
-
-@media (max-width: 640px) {
-  .floating-cta {
-    right: 12px;
-    bottom: 12px;
-    max-width: 220px;
-    transform: scale(0.92);
-    transform-origin: bottom right;
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-  .floating-cta .sub {
-    display: none;
-  }
-}
-
-/* Dismiss button for floating CTA */
-.floating-cta-close {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.95);
-  border: 1px solid rgba(0,0,0,0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  cursor: pointer;
-  color: rgba(0,0,0,0.5);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.floating-cta-close:hover {
-  background: rgba(255,255,255,1);
-  color: rgba(0,0,0,0.7);
+  border: 2px solid var(--mint-border-strong) !important;
+  background-color: var(--mint-bg) !important;
 }

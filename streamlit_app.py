@@ -7,6 +7,7 @@ from core.methods_data import METHODS, TELEHEALTH_OPTIONS
 from core.schema import QUIZ_QUESTIONS, encode_answers
 from core.quiz_logic import get_recommendations
 from core.render_helpers import format_telehealth_link
+from ui_components import start_cta
 
 st.set_page_config(
     page_title="Find the contraceptive that fits you — in seven questions",
@@ -31,8 +32,6 @@ if "selected_method_id" not in st.session_state:
     st.session_state.selected_method_id = None
 if "view_other_options" not in st.session_state:
     st.session_state.view_other_options = False
-if "cta_dismissed" not in st.session_state:
-    st.session_state.cta_dismissed = False
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
@@ -139,8 +138,8 @@ def show_why_dialog():
     st.markdown("""
     <style>
     .why-reason {
-        background: rgba(15,118,110,0.06);
-        border-left: 3px solid #0F766E;
+        background: rgba(116,184,154,0.08);
+        border-left: 3px solid #74B89A;
         padding: 12px 16px;
         margin-bottom: 12px;
         border-radius: 0 8px 8px 0;
@@ -172,13 +171,12 @@ st.markdown(f"""
     --surface: #FFFFFF;
     --warm-bg: #FFFBFA;
     --border: #E5E7EB;
-    --teal: #0F766E;
-    --teal-dark: #0B5F59;
-    --teal-bg: rgba(15,118,110,0.055);
-    --teal-bg-hover: rgba(15,118,110,0.085);
-    --teal-border: rgba(15,118,110,0.32);
-    --teal-border-hover: rgba(15,118,110,0.55);
-    --teal-border-strong: rgba(15,118,110,0.72);
+    --mint: #74B89A;
+    --mint-dark: #5A9A7D;
+    --mint-bg: rgba(116,184,154,0.10);
+    --mint-bg-hover: rgba(116,184,154,0.14);
+    --mint-border: rgba(116,184,154,0.55);
+    --mint-border-strong: rgba(116,184,154,0.95);
 }}
 
 .stApp, .main {{
@@ -275,16 +273,104 @@ header[data-testid="stHeader"] {{
     justify-content: center;
 }}
 
+.start-cta-wrapper {{
+    margin-top: -50px !important;
+    text-align: center;
+}}
+
+.landing-disclaimer {{
+    text-align: center;
+    font-size: 0.58rem;
+    color: rgba(15,23,42,0.65);
+    padding: 6px 0 30px 0;
+    margin: 0;
+    line-height: 1.2;
+}}
+@media (min-width: 768px) {{
+    .landing-disclaimer {{
+        padding-bottom: 0;
+    }}
+}}
+
+@media (max-height: 600px) {{
+    .landing-disclaimer {{
+        font-size: 0.7rem;
+        padding: 4px 0 0 0;
+    }}
+    .cc-landing {{
+        padding-bottom: 64px;
+    }}
+}}
+
 h1, h2, h3 {{
-    color: var(--teal);
+    color: var(--mint);
     font-family: 'Helvetica Neue', sans-serif;
+}}
+
+.stButton > button {{
+    background: var(--mint) !important;
+    border: 1px solid var(--mint) !important;
+    color: white !important;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: bold;
+}}
+
+.stButton > button:hover {{
+    background: var(--mint-dark) !important;
+    border-color: var(--mint-dark) !important;
+}}
+
+.cc-quiz button[data-testid="baseButton-secondary"],
+.cc-quiz .stButton > button {{
+    background: var(--mint-bg) !important;
+    border: 1px solid var(--mint-border) !important;
+    color: var(--ink) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    transition: all 0.15s ease !important;
+}}
+
+.cc-quiz button[data-testid="baseButton-secondary"]:hover,
+.cc-quiz .stButton > button:hover {{
+    border-color: var(--mint-border-strong) !important;
+    background: var(--mint-bg-hover) !important;
+}}
+
+.main .block-container {{
+    max-width: 90% !important;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    padding-top: 2rem !important;
 }}
 
 h1, h2, h3, h4, .stMarkdown, p, div {{text-align: center !important;}}
 
+.stButton {{text-align: center !important;}}
+
+div.stButton {{text-align: center !important;}}
+
+.stButton > button {{
+    display: inline-block !important;
+    margin: 10px auto !important;
+}}
+
 .stSelectbox, .stMultiselect {{
     margin: 0 auto !important;
     max-width: 400px !important;
+}}
+
+@media (min-width: 768px) {{
+    .main .block-container {{max-width: 700px !important;}}
+}}
+
+.progress-text {{
+    color: var(--coral);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 4px 0 !important;
 }}
 
 div[data-testid="stProgress"] {{
@@ -331,19 +417,19 @@ div[data-testid="stProgress"] {{
 }}
 
 .cc-tile:hover {{
-    border-color: var(--teal);
-    background: var(--teal-bg);
+    border-color: var(--mint);
+    background: var(--mint-bg);
 }}
 
 .cc-tile--selected {{
-    border-color: var(--teal) !important;
+    border-color: var(--mint) !important;
     border-width: 2.5px !important;
-    background: var(--teal-bg) !important;
+    background: var(--mint-bg) !important;
 }}
 
 .cc-tile--selected::before {{
     content: "✓ ";
-    color: var(--teal);
+    color: var(--mint);
     font-weight: 700;
 }}
 
@@ -446,9 +532,9 @@ div[data-testid="stProgress"] {{
 }}
 
 .badge-best {{
-    border-color: var(--teal-border);
-    color: var(--teal);
-    background: var(--teal-bg);
+    border-color: var(--mint-border);
+    color: var(--mint);
+    background: var(--mint-bg);
 }}
 
 .badge-consider {{
@@ -497,7 +583,7 @@ div[data-testid="stProgress"] {{
 }}
 
 .details-card h4 {{
-    color: var(--teal);
+    color: var(--mint);
     margin-bottom: 12px;
 }}
 
@@ -520,7 +606,7 @@ div[data-testid="stProgress"] {{
 }}
 
 .pros-list li::marker {{
-    color: var(--teal);
+    color: var(--mint);
 }}
 
 .cons-list li {{
@@ -532,6 +618,52 @@ div[data-testid="stProgress"] {{
     color: var(--coral);
 }}
 
+.floating-cta {{
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(209, 73, 91, 0.35);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 700;
+}}
+
+.floating-cta:hover {{
+    border-color: rgba(209, 73, 91, 0.55);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}}
+
+.floating-cta .dot {{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--coral);
+    flex: 0 0 auto;
+}}
+
+.floating-cta .sub {{
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.70);
+    font-size: 0.85rem;
+    margin-left: 6px;
+}}
+
+@media (max-width: 640px) {{
+    .floating-cta {{
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        justify-content: center;
+    }}
+}}
 
 .details-cta {{
     display: inline-flex;
@@ -541,8 +673,8 @@ div[data-testid="stProgress"] {{
     margin-top: 10px;
     padding: 12px 14px;
     border-radius: 999px;
-    background: var(--teal);
-    border: 1px solid var(--teal);
+    background: var(--mint);
+    border: 1px solid var(--mint);
     color: white !important;
     text-decoration: none;
     font-weight: 750;
@@ -550,8 +682,8 @@ div[data-testid="stProgress"] {{
 }}
 
 .details-cta:hover {{
-    background: var(--teal-dark);
-    border-color: var(--teal-dark);
+    background: var(--mint-dark);
+    border-color: var(--mint-dark);
 }}
 
 .details-cta.unlikely {{
@@ -596,7 +728,7 @@ div[data-testid="stProgress"] {{
 </style>
 """, unsafe_allow_html=True)
 
-if (not st.session_state.started or st.session_state.show_results) and not st.session_state.cta_dismissed:
+if not st.session_state.started or st.session_state.show_results:
     st.markdown(
         f'''
         <a class="floating-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">
@@ -675,29 +807,25 @@ def render_landing():
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 6px;
         padding-bottom: 80px;
     }}
     .landing-start-btn {{
-        background: #0F766E;
-        color: #fff;
+        background: white;
+        color: #0F172A;
         border: none;
-        border-radius: 14px;
-        padding: 12px 32px;
-        font-size: 16px;
-        font-weight: 700;
+        border-radius: 999px;
+        padding: 14px 36px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         cursor: pointer;
-        transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+        transition: transform 0.2s, box-shadow 0.2s;
+        white-space: nowrap;
     }}
     .landing-start-btn:hover {{
-        background: #0B5F59;
-    }}
-    .landing-start-btn:active {{
-        transform: translateY(1px);
-    }}
-    .landing-start-btn:focus-visible {{
-        box-shadow: 0 0 0 4px rgba(15,118,110,0.18);
-        outline: none;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }}
     .landing-disclaimer {{
         text-align: center;
@@ -714,7 +842,7 @@ def render_landing():
     <div class="landing-grid">
         <div class="landing-hero-cell">
             <div class="landing-hero">
-                <h1><span class="hero-accent">Find your contraceptive</span><br>in seven questions</h1>
+                <h1>Find your contraceptive<br>in seven questions</h1>
             </div>
         </div>
         <div class="landing-footer">
@@ -755,8 +883,8 @@ def render_single_select_tiles(question_key, options):
             <style>
             button[data-testid="stBaseButton-secondary"][key="{btn_key}"],
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal-border-strong) !important;
-                background: rgba(15,118,110,0.12) !important;
+                border: 2.5px solid var(--mint-border-strong) !important;
+                background: var(--mint-bg) !important;
             }}
             </style>
             """, unsafe_allow_html=True)
@@ -788,8 +916,8 @@ def render_multi_select_tiles(question_key, options):
             st.markdown(f"""
             <style>
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal-border-strong) !important;
-                background: rgba(15,118,110,0.12) !important;
+                border: 2.5px solid var(--mint-border-strong) !important;
+                background: var(--mint-bg) !important;
             }}
             </style>
             """, unsafe_allow_html=True)
@@ -827,22 +955,22 @@ def render_quiz():
     .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
     }
-    /* Teal tile styles for quiz answer buttons */
+    /* Mint tile styles for quiz answer buttons */
     button[data-testid="baseButton-secondary"],
     .stButton > button {
-        background: rgba(15,118,110,0.055) !important;
-        border: 1px solid rgba(15,118,110,0.32) !important;
+        background: rgba(116,184,154,0.10) !important;
+        border: 1px solid rgba(116,184,154,0.55) !important;
         color: #211816 !important;
-        border-radius: 14px !important;
+        border-radius: 12px !important;
         padding: 14px 16px !important;
         font-weight: 500 !important;
         text-align: left !important;
-        transition: all 0.12s ease !important;
+        transition: all 0.15s ease !important;
     }
     button[data-testid="baseButton-secondary"]:hover,
     .stButton > button:hover {
-        border-color: rgba(15,118,110,0.55) !important;
-        background: rgba(15,118,110,0.085) !important;
+        border-color: rgba(116,184,154,0.95) !important;
+        background: rgba(116,184,154,0.14) !important;
     }
     /* Force navigation buttons to stay horizontal on mobile */
     [data-testid="stHorizontalBlock"] {
@@ -891,7 +1019,6 @@ def render_quiz():
     
     with col1:
         if q_idx > 0:
-            st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
             if st.button("Back", use_container_width=True):
                 st.session_state.answers[q_id] = answer
                 prev_q_id = QUESTION_IDS[q_idx - 1]
@@ -900,10 +1027,8 @@ def render_quiz():
                     del st.session_state[tile_key]
                 st.session_state.q_idx -= 1
                 st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
-        st.markdown('<div class="cc-primary">', unsafe_allow_html=True)
         if q_idx < NUM_QUESTIONS - 1:
             if st.button("Next →", use_container_width=True, disabled=not is_valid):
                 if is_valid:
@@ -917,7 +1042,6 @@ def render_quiz():
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -961,13 +1085,11 @@ def render_method_details(method, tier_key):
         st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
     
     
-    st.markdown('<div class="details-actions">', unsafe_allow_html=True)
-    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
-    if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
-        st.session_state.selected_method_id = None
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    col_a, col_b = st.columns([1, 1])
+    with col_a:
+        if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
+            st.session_state.selected_method_id = None
+            st.rerun()
     
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1008,17 +1130,11 @@ def render_results():
     .best-card-row {
         display: flex;
         align-items: stretch;
-        background: rgba(255,255,255,0.75);
-        border: 1px solid rgba(15,118,110,0.22);
-        border-radius: 16px;
-        margin-bottom: 14px;
+        background: var(--mint-bg);
+        border: 1px solid var(--mint-border);
+        border-radius: 12px;
+        margin-bottom: 12px;
         overflow: hidden;
-        transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-    }
-    .best-card-row:hover {
-        background: rgba(255,255,255,0.95);
-        border-color: rgba(15,118,110,0.45);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.06);
     }
     .best-card-row [data-testid="column"] {
         padding: 0 !important;
@@ -1026,44 +1142,37 @@ def render_results():
     .best-thumb {
         width: 100%;
         height: 100%;
-        min-height: 72px;
-        background: rgba(15,118,110,0.10);
-        border-radius: 12px 0 0 12px;
+        min-height: 70px;
+        background: rgba(116,184,154,0.30);
+        border-radius: 0;
     }
     .best-card-row .stButton > button {
-        background: transparent !important;
+        background: rgba(116,184,154,0.15) !important;
         border: none !important;
         color: var(--ink) !important;
-        border-radius: 0 16px 16px 0 !important;
+        border-radius: 0 12px 12px 0 !important;
         padding: 14px 16px !important;
-        font-weight: 700 !important;
+        font-weight: 600 !important;
         text-align: left !important;
-        min-height: 72px !important;
+        min-height: 70px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: flex-start !important;
         white-space: pre-line !important;
         margin: 0 !important;
-        font-size: 16px !important;
     }
     .best-card-row .stButton > button:hover {
-        background: rgba(15,118,110,0.04) !important;
+        background: rgba(116,184,154,0.25) !important;
     }
     .view-other-row {
         display: flex;
         align-items: stretch;
-        background: rgba(255,255,255,0.75);
-        border: 1px solid rgba(15,118,110,0.22);
-        border-radius: 16px;
+        background: rgba(116,184,154,0.05);
+        border: 1px solid var(--mint-border);
+        border-radius: 12px;
         margin-top: 16px;
         overflow: hidden;
-        transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-    }
-    .view-other-row:hover {
-        background: rgba(255,255,255,0.95);
-        border-color: rgba(15,118,110,0.45);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.06);
     }
     .view-other-row [data-testid="column"] {
         padding: 0 !important;
@@ -1071,25 +1180,25 @@ def render_results():
     .view-other-thumb {
         width: 100%;
         height: 100%;
-        min-height: 72px;
+        min-height: 70px;
         background-image: url("data:image/jpeg;base64,HERO_BASE64_PLACEHOLDER");
         background-size: cover;
         background-position: center;
-        border-radius: 12px 0 0 12px;
+        border-radius: 0;
     }
     .view-other-row .stButton > button {
         background: transparent !important;
         border: none !important;
         color: var(--ink) !important;
-        border-radius: 0 16px 16px 0 !important;
+        border-radius: 0 12px 12px 0 !important;
         padding: 16px 20px !important;
         font-weight: 600 !important;
         text-align: left !important;
-        min-height: 72px !important;
+        min-height: 70px !important;
         margin: 0 !important;
     }
     .view-other-row .stButton > button:hover {
-        background: rgba(15,118,110,0.04) !important;
+        background: rgba(116,184,154,0.08) !important;
     }
     </style>
     """
@@ -1125,12 +1234,8 @@ def render_results():
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
     if st.button("Why this recommendation?", use_container_width=True):
         show_why_dialog()
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
     if st.button("Start Over", use_container_width=True):
         st.session_state.started = False
         st.session_state.q_idx = 0
@@ -1139,7 +1244,6 @@ def render_results():
         st.session_state.view_other_options = False
         st.session_state.selected_method_id = None
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_other_options():
@@ -1149,28 +1253,19 @@ def render_other_options():
     .other-card-row {
         display: flex;
         align-items: stretch;
-        background: rgba(255,255,255,0.75);
-        border: 1px solid rgba(15,118,110,0.22);
-        border-radius: 16px;
-        margin-bottom: 12px;
+        background: rgba(116,184,154,0.05);
+        border: 1px solid var(--mint-border);
+        border-radius: 12px;
+        margin-bottom: 10px;
         overflow: hidden;
-        transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
-    }
-    .other-card-row:hover {
-        background: rgba(255,255,255,0.95);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.06);
     }
     .other-card-row.caution {
-        border-color: rgba(255,193,7,0.35);
-    }
-    .other-card-row.caution:hover {
-        border-color: rgba(255,193,7,0.55);
+        background: rgba(100,116,139,0.05);
+        border-color: rgba(100,116,139,0.35);
     }
     .other-card-row.unlikely {
+        background: rgba(209,73,91,0.05);
         border-color: rgba(209,73,91,0.35);
-    }
-    .other-card-row.unlikely:hover {
-        border-color: rgba(209,73,91,0.55);
     }
     .other-card-row [data-testid="column"] {
         padding: 0 !important;
@@ -1179,24 +1274,23 @@ def render_other_options():
         width: 100%;
         height: 100%;
         min-height: 64px;
-        border-radius: 12px 0 0 12px;
+        border-radius: 0;
     }
     .other-thumb.best {
-        background: rgba(15,118,110,0.10);
+        background: rgba(116,184,154,0.30);
     }
     .other-thumb.caution {
-        background: rgba(255,193,7,0.15);
+        background: rgba(100,116,139,0.25);
     }
     .other-thumb.unlikely {
-        background: rgba(209,73,91,0.10);
+        background: rgba(209,73,91,0.25);
     }
     .other-btn-wrap .stButton > button {
         border: none !important;
-        background: transparent !important;
         color: var(--ink) !important;
-        border-radius: 0 16px 16px 0 !important;
+        border-radius: 12px !important;
         padding: 12px 14px !important;
-        font-weight: 600 !important;
+        font-weight: 500 !important;
         text-align: left !important;
         min-height: 64px !important;
         display: flex !important;
@@ -1206,14 +1300,26 @@ def render_other_options():
         white-space: pre-line !important;
         margin: 0 !important;
     }
-    .other-btn-wrap .stButton > button:hover {
-        background: rgba(15,118,110,0.04) !important;
+    .other-btn-wrap.best .stButton > button {
+        background: rgba(116,184,154,0.25) !important;
+        border: 1px solid rgba(116,184,154,0.4) !important;
+    }
+    .other-btn-wrap.best .stButton > button:hover {
+        background: rgba(116,184,154,0.35) !important;
+    }
+    .other-btn-wrap.caution .stButton > button {
+        background: rgba(100,116,139,0.20) !important;
+        border: 1px solid rgba(100,116,139,0.35) !important;
     }
     .other-btn-wrap.caution .stButton > button:hover {
-        background: rgba(255,193,7,0.06) !important;
+        background: rgba(100,116,139,0.30) !important;
+    }
+    .other-btn-wrap.unlikely .stButton > button {
+        background: rgba(209,73,91,0.20) !important;
+        border: 1px solid rgba(209,73,91,0.35) !important;
     }
     .other-btn-wrap.unlikely .stButton > button:hover {
-        background: rgba(209,73,91,0.06) !important;
+        background: rgba(209,73,91,0.30) !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1245,12 +1351,10 @@ def render_other_options():
     
     st.markdown("---")
     
-    st.markdown('<div class="cc-secondary">', unsafe_allow_html=True)
     if st.button("← Back to Best Matches", use_container_width=True):
         st.session_state.view_other_options = False
         st.session_state.selected_method_id = None
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_other_option_card(method, tier_key):
