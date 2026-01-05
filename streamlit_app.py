@@ -1127,7 +1127,7 @@ def render_results():
         color: #211816;
         margin-bottom: 16px;
         text-align: left;
-        background: rgba(116,184,154,0.30);
+        background: white;
         padding: 12px 16px;
         border-radius: 8px;
     }
