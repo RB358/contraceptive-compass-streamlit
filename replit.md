@@ -45,6 +45,17 @@ Contraceptive methods are stored as dictionaries with:
 - Session state management for quiz flow
 - Base64-encoded local images for reliable asset loading
 
+### CSS Architecture
+- **Single source of truth**: `styles.css` defines all mint color CSS variables
+- **Variable hierarchy** (opacity scale): 
+  - `--mint-bg` (5%) - very pale backgrounds
+  - `--mint-bg-hover` (15%) - hover states for tiles
+  - `--mint-border` (30%) - borders and button backgrounds
+  - `--mint-btn-hover` (45%) - button hover states
+  - `--mint-border-strong` (95%) - selected/active states
+- **Inline CSS in streamlit_app.py**: Only defines unique variables (`--coral`, `--surface`, `--warm-bg`, `--border`, `--ink`, `--mint-dark`)
+- **Important**: Never use hardcoded `rgba(116,184,154,x)` values - always use CSS variables
+
 ### Results Page Design
 - **Best Matches Section**: Displays top 1-3 recommended methods as card components with placeholder images
 - **Other Options Page**: Separate page listing remaining recommendations (caution + contraindicated)
