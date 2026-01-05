@@ -676,6 +676,14 @@ div[data-testid="stProgress"] {{
     display: inline;
 }}
 
+.floating-cta .main-text {{
+    display: inline;
+}}
+
+.floating-cta:hover .main-text {{
+    display: none;
+}}
+
 @media (max-width: 640px) {{
     .floating-cta {{
         right: 12px;
@@ -753,7 +761,7 @@ if not st.session_state.started or st.session_state.show_results:
         f'''
         <a class="floating-cta" href="{BOOK_URL}" target="_blank" rel="noopener noreferrer">
             <span class="dot"></span>
-            <span>Talk to a clinician<span class="sub">Book a telehealth visit</span></span>
+            <span><span class="main-text">Talk to a clinician</span><span class="sub">Book a telehealth visit</span></span>
         </a>
         ''',
         unsafe_allow_html=True
