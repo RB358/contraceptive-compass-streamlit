@@ -125,6 +125,14 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
   margin-bottom: 10px !important;
 }
 
+/* Progress bar pink color */
+div[data-testid="stProgress"] > div > div > div {
+  background-color: #d5968f !important;
+}
+div[data-testid="stProgress"] [role="progressbar"] > div {
+  background-color: #d5968f !important;
+}
+
 /* TYPOGRAPHY: Quiz question styling */
 .quiz-question {
   font-size: 22px !important;

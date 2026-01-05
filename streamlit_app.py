@@ -291,6 +291,14 @@ div[data-testid="stProgress"] {{
     margin-bottom: 8px !important;
 }}
 
+/* Progress bar pink color */
+div[data-testid="stProgress"] > div > div > div {{
+    background-color: #d5968f !important;
+}}
+div[data-testid="stProgress"] [role="progressbar"] > div {{
+    background-color: #d5968f !important;
+}}
+
 .quiz-container {{
     max-width: 480px;
     width: 100%;
@@ -830,8 +838,8 @@ def render_quiz():
         margin: 0 0 4px 0 !important;
     }
     /* Green tile styles for quiz answer buttons */
-    button[data-testid="baseButton-secondary"],
-    .stButton > button {
+    .cc-quiz button[data-testid="baseButton-secondary"],
+    .cc-quiz .stButton > button {
         background: rgba(116,184,154,0.08) !important;
         border: 1px solid rgba(116,184,154,0.45) !important;
         color: #211816 !important;
@@ -841,10 +849,30 @@ def render_quiz():
         text-align: left !important;
         transition: all 0.12s ease !important;
     }
-    button[data-testid="baseButton-secondary"]:hover,
-    .stButton > button:hover {
+    .cc-quiz button[data-testid="baseButton-secondary"]:hover,
+    .cc-quiz .stButton > button:hover {
         border-color: rgba(116,184,154,0.65) !important;
         background: rgba(116,184,154,0.14) !important;
+    }
+    /* Back button stays secondary style */
+    .cc-secondary .stButton > button {
+        background: rgba(255,255,255,0.92) !important;
+        border: 1px solid rgba(116,184,154,0.55) !important;
+        color: #74b89a !important;
+    }
+    .cc-secondary .stButton > button:hover {
+        background: rgba(116,184,154,0.08) !important;
+        border-color: rgba(116,184,154,0.75) !important;
+    }
+    /* Next button pink style */
+    .cc-next .stButton > button {
+        background: #d5968f !important;
+        border: 1px solid #d5968f !important;
+        color: #fff !important;
+    }
+    .cc-next .stButton > button:hover {
+        background: #c4857e !important;
+        border-color: #c4857e !important;
     }
     /* Force navigation buttons to stay horizontal on mobile */
     [data-testid="stHorizontalBlock"] {
