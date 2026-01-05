@@ -376,11 +376,11 @@ button[kind="secondary"]:has(p),
 div[data-testid="stProgress"] {{
     margin-bottom: 8px !important;
 }}
-div[data-testid="stProgress"] div[role="progressbar"] {{
-    background-color: rgba(209,73,91,0.15) !important;
-}}
-div[data-testid="stProgress"] div[role="progressbar"] > div {{
+.stProgress > div > div > div > div {{
     background-color: var(--coral) !important;
+}}
+.stProgress > div > div > div {{
+    background-color: rgba(209,73,91,0.15) !important;
 }}
 
 .quiz-container {{
