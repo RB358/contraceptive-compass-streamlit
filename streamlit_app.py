@@ -1095,11 +1095,9 @@ def render_method_details(method, tier_key):
         st.markdown(f"<p style='text-align: left !important;'>{effectiveness} failure rate with typical use</p>", unsafe_allow_html=True)
     
     
-    col_a, col_b = st.columns([1, 1])
-    with col_a:
-        if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
-            st.session_state.selected_method_id = None
-            st.rerun()
+    if st.button("Close details", key=f"close_{method_id}", use_container_width=True):
+        st.session_state.selected_method_id = None
+        st.rerun()
     
     st.markdown("</div>", unsafe_allow_html=True)
 
