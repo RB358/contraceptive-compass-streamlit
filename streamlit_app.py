@@ -1151,7 +1151,7 @@ def render_results():
         border-radius: 0;
     }
     .best-card-row .stButton > button {
-        background: rgba(116,184,154,0.08) !important;
+        background: rgba(116,184,154,0.30) !important;
         border: none !important;
         color: var(--ink) !important;
         border-radius: 0 12px 12px 0 !important;
@@ -1167,7 +1167,7 @@ def render_results():
         margin: 0 !important;
     }
     .best-card-row .stButton > button:hover {
-        background: rgba(116,184,154,0.15) !important;
+        background: rgba(116,184,154,0.45) !important;
     }
     .view-other-row {
         display: flex;
