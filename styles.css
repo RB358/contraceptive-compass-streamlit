@@ -3,7 +3,7 @@
   --ink: #211816;                 /* dark grey-brown text */
   --mint: #74B89A;                /* mint text/border */
   --mint-bg: rgba(116,184,154,0.10);      /* very pale mint background */
-  --mint-bg-hover: rgba(116,184,154,0.25);
+  --mint-bg-hover: rgba(116,184,154,0.30);
   --mint-border: rgba(116,184,154,0.55);
   --mint-border-strong: rgba(116,184,154,0.95);
 }
