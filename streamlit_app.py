@@ -173,10 +173,6 @@ st.markdown(f"""
     --border: #E5E7EB;
     --mint: #74B89A;
     --mint-dark: #5A9A7D;
-    --mint-bg: rgba(116,184,154,0.10);
-    --mint-bg-hover: rgba(116,184,154,0.14);
-    --mint-border: rgba(116,184,154,0.55);
-    --mint-border-strong: rgba(116,184,154,0.95);
 }}
 
 .stApp, .main {{
