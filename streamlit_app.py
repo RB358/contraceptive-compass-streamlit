@@ -955,8 +955,8 @@ def render_quiz():
     /* Mint tile styles for quiz answer buttons */
     button[data-testid="baseButton-secondary"],
     .stButton > button {
-        background: rgba(116,184,154,0.10) !important;
-        border: 1px solid rgba(116,184,154,0.55) !important;
+        background: var(--mint-bg) !important;
+        border: 1px solid var(--mint-border) !important;
         color: #211816 !important;
         border-radius: 12px !important;
         padding: 14px 16px !important;
@@ -966,8 +966,8 @@ def render_quiz():
     }
     button[data-testid="baseButton-secondary"]:hover,
     .stButton > button:hover {
-        border-color: rgba(116,184,154,0.95) !important;
-        background: rgba(116,184,154,0.14) !important;
+        border-color: var(--mint-border-strong) !important;
+        background: var(--mint-bg-hover) !important;
     }
     /* Force navigation buttons to stay horizontal on mobile */
     [data-testid="stHorizontalBlock"] {
@@ -1277,7 +1277,7 @@ def render_other_options():
         border-radius: 0;
     }
     .other-thumb.best {
-        background: rgba(116,184,154,0.30);
+        background: var(--mint-bg-hover);
     }
     .other-thumb.caution {
         background: rgba(100,116,139,0.25);
@@ -1301,11 +1301,11 @@ def render_other_options():
         margin: 0 !important;
     }
     .other-btn-wrap.best .stButton > button {
-        background: rgba(116,184,154,0.25) !important;
-        border: 1px solid rgba(116,184,154,0.4) !important;
+        background: var(--mint-bg-hover) !important;
+        border: 1px solid var(--mint-border) !important;
     }
     .other-btn-wrap.best .stButton > button:hover {
-        background: rgba(116,184,154,0.35) !important;
+        background: var(--mint-border) !important;
     }
     .other-btn-wrap.caution .stButton > button {
         background: rgba(100,116,139,0.20) !important;
