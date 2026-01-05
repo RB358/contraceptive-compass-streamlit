@@ -13,15 +13,19 @@
   --warm-bg: #FFFBFA;
   --border: #E5E7EB;
 
-  /* Teal variant for button system */
-  --teal: #0F766E;
-  --teal-dark: #0B5F59;
-  --teal-bg: rgba(15,118,110,0.055);
-  --teal-bg-hover: rgba(15,118,110,0.085);
-  --teal-border: rgba(15,118,110,0.32);
-  --teal-border-hover: rgba(15,118,110,0.55);
-  --teal-border-strong: rgba(15,118,110,0.72);
-  --teal-focus-ring: 0 0 0 4px rgba(15,118,110,0.18);
+  /* Green variant for button system */
+  --teal: #74b89a;
+  --teal-dark: #5fa882;
+  --teal-bg: rgba(116,184,154,0.08);
+  --teal-bg-hover: rgba(116,184,154,0.14);
+  --teal-border: rgba(116,184,154,0.45);
+  --teal-border-hover: rgba(116,184,154,0.65);
+  --teal-border-strong: rgba(116,184,154,0.85);
+  --teal-focus-ring: 0 0 0 4px rgba(116,184,154,0.25);
+  
+  /* Next button color */
+  --next-btn: #d5968f;
+  --next-btn-dark: #c4857e;
 
   /* Typography scale */
   --text-xs: 12px;
@@ -204,11 +208,12 @@ div[role="radiogroup"] > label:hover {
   box-shadow: var(--shadow-1) !important;
 }
 
-/* Selected */
+/* Selected - solid green with white text */
 [data-testid="stRadio"] label:has(input:checked),
 div[role="radiogroup"] > label:has(input:checked) {
-  background: rgba(15,118,110,0.12) !important;
-  border: 2px solid var(--teal-border-strong) !important;
+  background: #74b89a !important;
+  border: 2px solid #74b89a !important;
+  color: #fff !important;
 }
 
 /* Focus-visible */
@@ -262,13 +267,25 @@ div[role="radiogroup"] > label input {
 /* SECONDARY BUTTON (Back, Why, Start Over, View Other) */
 .cc-secondary .stButton > button {
   background: rgba(255,255,255,0.92) !important;
-  border: 1px solid rgba(15,118,110,0.45) !important;
+  border: 1px solid rgba(116,184,154,0.55) !important;
   color: var(--teal) !important;
 }
 
 .cc-secondary .stButton > button:hover {
-  background: rgba(15,118,110,0.06) !important;
-  border-color: rgba(15,118,110,0.65) !important;
+  background: rgba(116,184,154,0.08) !important;
+  border-color: rgba(116,184,154,0.75) !important;
+}
+
+/* NEXT BUTTON (special pink/coral) */
+.cc-next .stButton > button {
+  background: #d5968f !important;
+  border: 1px solid #d5968f !important;
+  color: #fff !important;
+}
+
+.cc-next .stButton > button:hover {
+  background: #c4857e !important;
+  border-color: #c4857e !important;
 }
 
 /* START CTA WRAPPER */
@@ -407,7 +424,7 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:
   align-items: center;
   padding: 14px 16px;
   margin: 14px 0;
-  border: 1px solid rgba(15,118,110,0.22);
+  border: 1px solid rgba(116,184,154,0.35);
   border-radius: 16px;
   background: rgba(255,255,255,0.75);
   cursor: pointer;
@@ -416,7 +433,7 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:
 
 .rec-row:hover {
   background: rgba(255,255,255,0.95);
-  border-color: rgba(15,118,110,0.45);
+  border-color: rgba(116,184,154,0.55);
   box-shadow: var(--shadow-1);
 }
 
@@ -424,7 +441,7 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:
   width: 120px;
   height: 72px;
   border-radius: 12px;
-  background: rgba(15,118,110,0.10);
+  background: rgba(116,184,154,0.12);
   flex: 0 0 auto;
   overflow: hidden;
 }
@@ -443,8 +460,8 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:
   gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(15,118,110,0.10);
-  border: 1px solid rgba(15,118,110,0.35);
+  background: rgba(116,184,154,0.12);
+  border: 1px solid rgba(116,184,154,0.45);
   font-size: 13px;
   font-weight: 600;
   color: var(--teal);
@@ -487,7 +504,7 @@ div[data-testid="stVerticalBlock"] > div > div > .stButton > button:has(~ input:
   margin: 18px auto;
   padding: 18px 18px;
   border-radius: 18px;
-  border: 1px solid rgba(15,118,110,0.18);
+  border: 1px solid rgba(116,184,154,0.25);
   background: rgba(255,255,255,0.78);
 }
 

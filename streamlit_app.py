@@ -139,8 +139,8 @@ def show_why_dialog():
     st.markdown("""
     <style>
     .why-reason {
-        background: rgba(15,118,110,0.06);
-        border-left: 3px solid #0F766E;
+        background: rgba(116,184,154,0.08);
+        border-left: 3px solid #74b89a;
         padding: 12px 16px;
         margin-bottom: 12px;
         border-radius: 0 8px 8px 0;
@@ -172,13 +172,13 @@ st.markdown(f"""
     --surface: #FFFFFF;
     --warm-bg: #FFFBFA;
     --border: #E5E7EB;
-    --teal: #0F766E;
-    --teal-dark: #0B5F59;
-    --teal-bg: rgba(15,118,110,0.055);
-    --teal-bg-hover: rgba(15,118,110,0.085);
-    --teal-border: rgba(15,118,110,0.32);
-    --teal-border-hover: rgba(15,118,110,0.55);
-    --teal-border-strong: rgba(15,118,110,0.72);
+    --teal: #74b89a;
+    --teal-dark: #5fa882;
+    --teal-bg: rgba(116,184,154,0.08);
+    --teal-bg-hover: rgba(116,184,154,0.14);
+    --teal-border: rgba(116,184,154,0.45);
+    --teal-border-hover: rgba(116,184,154,0.65);
+    --teal-border-strong: rgba(116,184,154,0.85);
 }}
 
 .stApp, .main {{
@@ -679,7 +679,7 @@ def render_landing():
         padding-bottom: 80px;
     }}
     .landing-start-btn {{
-        background: #0F766E;
+        background: #74b89a;
         color: #fff;
         border: none;
         border-radius: 14px;
@@ -690,7 +690,7 @@ def render_landing():
         transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
     }}
     .landing-start-btn:hover {{
-        background: #0B5F59;
+        background: #5fa882;
     }}
     .landing-start-btn:active {{
         transform: translateY(1px);
@@ -714,12 +714,12 @@ def render_landing():
     <div class="landing-grid">
         <div class="landing-hero-cell">
             <div class="landing-hero">
-                <h1><span class="hero-accent">Find your contraceptive</span><br>in seven questions</h1>
+                <h1><span class="hero-accent">Find Your Contraceptive</span><br>in Seven Questions</h1>
             </div>
         </div>
         <div class="landing-footer">
             <a href="?start=1" style="text-decoration: none;">
-                <button class="landing-start-btn">Start quiz</button>
+                <button class="landing-start-btn">Start Quiz</button>
             </a>
             <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
         </div>
@@ -755,8 +755,9 @@ def render_single_select_tiles(question_key, options):
             <style>
             button[data-testid="stBaseButton-secondary"][key="{btn_key}"],
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal-border-strong) !important;
-                background: rgba(15,118,110,0.12) !important;
+                border: 2px solid #74b89a !important;
+                background: #74b89a !important;
+                color: #fff !important;
             }}
             </style>
             """, unsafe_allow_html=True)
@@ -788,8 +789,9 @@ def render_multi_select_tiles(question_key, options):
             st.markdown(f"""
             <style>
             div[data-testid="stVerticalBlock"] div:nth-child({i + 1}) .stButton > button {{
-                border: 2.5px solid var(--teal-border-strong) !important;
-                background: rgba(15,118,110,0.12) !important;
+                border: 2px solid #74b89a !important;
+                background: #74b89a !important;
+                color: #fff !important;
             }}
             </style>
             """, unsafe_allow_html=True)
@@ -827,11 +829,11 @@ def render_quiz():
     .cc-quiz-header .progress-text {
         margin: 0 0 4px 0 !important;
     }
-    /* Teal tile styles for quiz answer buttons */
+    /* Green tile styles for quiz answer buttons */
     button[data-testid="baseButton-secondary"],
     .stButton > button {
-        background: rgba(15,118,110,0.055) !important;
-        border: 1px solid rgba(15,118,110,0.32) !important;
+        background: rgba(116,184,154,0.08) !important;
+        border: 1px solid rgba(116,184,154,0.45) !important;
         color: #211816 !important;
         border-radius: 14px !important;
         padding: 14px 16px !important;
@@ -841,8 +843,8 @@ def render_quiz():
     }
     button[data-testid="baseButton-secondary"]:hover,
     .stButton > button:hover {
-        border-color: rgba(15,118,110,0.55) !important;
-        background: rgba(15,118,110,0.085) !important;
+        border-color: rgba(116,184,154,0.65) !important;
+        background: rgba(116,184,154,0.14) !important;
     }
     /* Force navigation buttons to stay horizontal on mobile */
     [data-testid="stHorizontalBlock"] {
@@ -903,21 +905,23 @@ def render_quiz():
             st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
-        st.markdown('<div class="cc-primary">', unsafe_allow_html=True)
         if q_idx < NUM_QUESTIONS - 1:
+            st.markdown('<div class="cc-next">', unsafe_allow_html=True)
             if st.button("Next →", use_container_width=True, disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.q_idx += 1
                     st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         else:
+            st.markdown('<div class="cc-primary">', unsafe_allow_html=True)
             if st.button("Results", use_container_width=True, disabled=not is_valid):
                 if is_valid:
                     st.session_state.answers[q_id] = answer
                     st.session_state.show_results = True
                     st.session_state.selected_method_id = None
                     st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 

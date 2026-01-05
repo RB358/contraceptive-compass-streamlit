@@ -53,8 +53,8 @@ Contraceptive methods are stored as dictionaries with:
   - `render_best_match_card()` - light surface cards (rgba(255,255,255,0.75)) with teal accents
   - `render_other_option_card()` - lighter cards for other options
   - `render_method_details()` - shared detail view with pros/cons, effectiveness, telehealth CTA
-- **Color Palette**: Teal (#0F766E primary, #0B5F59 dark), Charcoal (#211816, #0F172A), Coral (#D1495B for contraindicated)
-- **Button System**: cc-primary (teal background), cc-secondary (white background, teal border)
+- **Color Palette**: Green (#74B89A primary, #5FA882 dark), Charcoal (#211816, #0F172A), Coral (#D1495B for contraindicated), Pink (#D5968F for Next button)
+- **Button System**: cc-primary (green background), cc-secondary (white background, green border), cc-next (pink #D5968F for Next button)
 - **CSS Architecture**: styles.css contains shared design tokens; inline CSS for hero image and Streamlit-specific overrides only
 
 ## External Dependencies
