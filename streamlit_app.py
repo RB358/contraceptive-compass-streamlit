@@ -583,6 +583,15 @@ div[data-testid="stProgress"] {{
     margin-bottom: 12px;
 }}
 
+.details-card .stButton > button {{
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    white-space: nowrap !important;
+    width: 100% !important;
+}}
+
 .section-h {{
     margin: 12px 0 6px 0;
     font-weight: 700;
