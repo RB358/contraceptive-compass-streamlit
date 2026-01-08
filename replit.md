@@ -57,13 +57,14 @@ Contraceptive methods are stored as dictionaries with:
 - **Important**: Never use hardcoded `rgba(116,184,154,x)` values - always use CSS variables
 
 ### Results Page Design
-- **Best Matches Section**: Displays top 1-3 recommended methods as card components with placeholder images
+- **Best Matches Section**: Displays top 1-3 recommended methods as card components with thumbnail images
 - **Other Options Page**: Separate page listing remaining recommendations (caution + contraindicated)
 - **Navigation**: "View other options" button on results page, "Back to Best Matches" on other options page
 - **Card Components**: 
-  - `render_best_match_card()` - mint background cards for best matches
-  - `render_other_option_card()` - lighter cards for other options
-  - `render_method_details()` - shared detail view with pros/cons, effectiveness, telehealth CTA
+  - `render_best_match_card()` - mint background cards for best matches with thumbnail images
+  - `render_other_option_card()` - lighter cards for other options with thumbnail images
+  - `render_method_details()` - shared detail view with full-size image, pros/cons, effectiveness, telehealth CTA
+  - `get_thumb_base64()` - helper function to load thumbnail images as base64
 - **Color Palette**: Mint (#74B89A), Charcoal (#211816), Coral (#D1495B for contraindicated)
 
 ## External Dependencies
@@ -75,8 +76,11 @@ Contraceptive methods are stored as dictionaries with:
 | `pandas` | Data manipulation (available but minimally used currently) |
 
 ### Assets
-- Local image assets stored in `Assets/` directory
-- External image URLs for contraceptive method cards (hosted on healthline.com, self.com, plannedparenthood.org)
+- Local image assets stored in `Assets/` directory:
+  - `Assets/contraceptivefull/` - Full-size webp images for method detail views (13 images + hero)
+  - `Assets/Contraceptivethumbs/` - Thumbnail webp images for card displays (13 images)
+  - Hero image: `Assets/contraceptivefull/iStockhero.webp`
+- All images loaded as base64 for reliable inline display in Streamlit
 
 ### Telehealth Integration
 - `TELEHEALTH_OPTIONS` in `methods_data.py` contains links to external telehealth services
