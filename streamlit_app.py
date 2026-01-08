@@ -156,7 +156,7 @@ def show_why_dialog():
     if st.button("Close", use_container_width=True):
         st.rerun()
 
-IMG_PATH = Path(__file__).resolve().parent / "Assets" / "iStock-contraceptives2.jpg"
+IMG_PATH = Path(__file__).resolve().parent / "Assets" / "contraceptivefull" / "iStockhero.webp"
 hero_base64 = base64.b64encode(IMG_PATH.read_bytes()).decode()
 
 hero_margin = "12px" if st.session_state.started else "0"
@@ -1092,7 +1092,8 @@ def render_method_details(method, tier_key):
     
     if method.get("image"):
         try:
-            st.image(method["image"], use_container_width=True)
+            image_path = Path(__file__).resolve().parent / method["image"]
+            st.image(str(image_path), use_container_width=True)
         except:
             st.caption("Image unavailable")
     
@@ -1121,15 +1122,30 @@ def render_method_details(method, tier_key):
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+def get_thumb_base64(method):
+    """Get base64-encoded thumbnail for a method."""
+    thumb_path = method.get("thumb", "")
+    if thumb_path:
+        try:
+            full_path = Path(__file__).resolve().parent / thumb_path
+            return base64.b64encode(full_path.read_bytes()).decode()
+        except:
+            return None
+    return None
+
 def render_best_match_card(method, index):
     """Render a clickable best match card with thumbnail and method name."""
     method_id = get_method_id(method)
     is_expanded = st.session_state.selected_method_id == method_id
+    thumb_b64 = get_thumb_base64(method)
     
     st.markdown('<div class="best-card-row">', unsafe_allow_html=True)
     col_thumb, col_btn = st.columns([0.18, 0.82], gap="small")
     with col_thumb:
-        st.markdown('<div class="best-thumb"></div>', unsafe_allow_html=True)
+        if thumb_b64:
+            st.markdown(f'<div class="best-thumb" style="background-image: url(data:image/webp;base64,{thumb_b64}); background-size: cover; background-position: center;"></div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="best-thumb"></div>', unsafe_allow_html=True)
     with col_btn:
         if st.button(f"{method['name']}\n✓ Best match", key=f"best_{method_id}", use_container_width=True):
             if is_expanded:
@@ -1392,10 +1408,11 @@ def render_other_option_card(method, tier_key):
     method_id = get_method_id(method)
     tier = TIER_CONFIG[tier_key]
     is_expanded = st.session_state.selected_method_id == method_id
+    thumb_b64 = get_thumb_base64(method)
     
     css_class = "caution" if tier_key == "consider" else ("unlikely" if tier_key == "unlikely" else "best")
     
-    # Define tier-specific colors
+    # Define tier-specific fallback colors
     if css_class == "best":
         thumb_color = "var(--mint-border)"
     elif css_class == "caution":
@@ -1405,7 +1422,10 @@ def render_other_option_card(method, tier_key):
     
     col_thumb, col_btn = st.columns([0.16, 0.84], gap="small")
     with col_thumb:
-        st.markdown(f'<div style="width:100%; height:100%; min-height:64px; background:{thumb_color}; border-radius:0;"></div>', unsafe_allow_html=True)
+        if thumb_b64:
+            st.markdown(f'<div style="width:100%; height:100%; min-height:64px; background-image: url(data:image/webp;base64,{thumb_b64}); background-size: cover; background-position: center; border-radius:0;"></div>', unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div style="width:100%; height:100%; min-height:64px; background:{thumb_color}; border-radius:0;"></div>', unsafe_allow_html=True)
     with col_btn:
         if st.button(f"{method['name']}\n{tier['icon']} {tier['badge']}", key=f"other_{method_id}", use_container_width=True):
             if is_expanded:

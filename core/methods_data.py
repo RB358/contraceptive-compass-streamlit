@@ -1,7 +1,8 @@
 METHODS = [
     {
         "name": "Combined Oral Contraceptive Pill",
-        "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
+        "image": "Assets/contraceptivefull/istockcocporiginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockcocpthumb.webp",
         "hormone_type": "combined",
         "perfect": "<1%",
         "typical": "7%",
@@ -11,7 +12,8 @@ METHODS = [
     },
     {
         "name": "Progestin-only Pill",
-        "image": "http://media.self.com/photos/5e986f441911a00008b4275d/master/pass/birthcontrol_pills.jpg",
+        "image": "Assets/contraceptivefull/istockprogestinoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockprogestinthumb.webp",
         "hormone_type": "progestin_only",
         "perfect": "<1%",
         "typical": "7%",
@@ -21,7 +23,8 @@ METHODS = [
     },
     {
         "name": "Male Condom",
-        "image": "https://post.healthline.com/wp-content/uploads/2022/02/male-condoms-1296x1000-body-1296x1004.png",
+        "image": "Assets/contraceptivefull/istockmalecondomoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockmalecondomthumb.webp",
         "perfect": "2%",
         "typical": "13%",
         "typical_failure": 13.0,
@@ -30,7 +33,8 @@ METHODS = [
     },
     {
         "name": "Contraceptive Implant",
-        "image": "https://blog.thelowdown.com/wp-content/uploads/2020/10/implant-side-effects.png",
+        "image": "Assets/contraceptivefull/istockhormonalimplantoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockhormonalimplantthumb.webp",
         "perfect": "<1%",
         "typical": "<1%",
         "typical_failure": 0.2,
@@ -39,7 +43,8 @@ METHODS = [
     },
     {
         "name": "Hormonal IUD (e.g., Mirena)",
-        "image": "https://www.plannedparenthood.org/uploads/filer_public_thumbnails/filer_public/6b/ed/6bedc931-35c4-4f5a-bc65-e3839ae6b6de/hormonal-and-copper-iud-illustration.gif__1200x1200_q65_subsampling-2.jpg",
+        "image": "Assets/contraceptivefull/istockhormonaliudoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockhormonaliudthumb.webp",
         "perfect": "<1%",
         "typical": "<1%",
         "typical_failure": 0.2,
@@ -48,7 +53,8 @@ METHODS = [
     },
     {
         "name": "Copper IUD (ParaGard)",
-        "image": "https://www.mayoclinic.org/-/media/kcms/gbs/patient-consumer/images/2013/08/26/10/19/my00997_im04275_mcdc7_paragard_photothu_jpg.jpg",
+        "image": "Assets/contraceptivefull/istockcopperiudoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockcopperiudthumb.webp",
         "perfect": "<1%",
         "typical": "<1%",
         "typical_failure": 0.2,
@@ -57,7 +63,8 @@ METHODS = [
     },
     {
         "name": "Depo-Provera Injection",
-        "image": "https://www.verywellhealth.com/thmb/zML8U8nV3QmdRdO_eC1l1QI5Sqs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/depo-56a1c4193df78cf7726dc0e9.jpg",
+        "image": "Assets/contraceptivefull/istockdepoproveraoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockdepoproverathumb.webp",
         "perfect": "<1%",
         "typical": "4%",
         "typical_failure": 4.0,
@@ -66,7 +73,8 @@ METHODS = [
     },
     {
         "name": "Contraceptive Patch",
-        "image": "https://www.nhsinform.scot/wp-content/uploads/2024/02/contraceptive-patch-1.jpg",
+        "image": "Assets/contraceptivefull/istockhormonalpatchoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockhormonalpatchthumb.webp",
         "perfect": "<1%",
         "typical": "7%",
         "typical_failure": 7.0,
@@ -75,7 +83,8 @@ METHODS = [
     },
     {
         "name": "Vaginal Ring (NuvaRing)",
-        "image": "https://www.obgynecologistnyc.com/wp-content/uploads/2016/09/Nuvaring-Birth-Control-Vaginal-Ring.jpg",
+        "image": "Assets/contraceptivefull/istockvaginalringoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockvaginalringthumb.webp",
         "perfect": "<1%",
         "typical": "7%",
         "typical_failure": 7.0,
@@ -84,7 +93,8 @@ METHODS = [
     },
     {
         "name": "Female Condom",
-        "image": "https://www.cdc.gov/condom-use/media/images/Femalecondom5hires.png",
+        "image": "Assets/contraceptivefull/istockfemalecondomoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockfemalecondomthumb.webp",
         "perfect": "5%",
         "typical": "21%",
         "typical_failure": 21.0,
@@ -93,7 +103,8 @@ METHODS = [
     },
     {
         "name": "Diaphragm",
-        "image": "https://ixbapi.healthwise.net/Resource/14.7/en-us/media/medical/hw/aco3583_368x240.jpg",
+        "image": "Assets/contraceptivefull/istockdiaphragmoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istockdiaphragmthumb.webp",
         "perfect": "6%",
         "typical": "17%",
         "typical_failure": 17.0,
@@ -102,7 +113,8 @@ METHODS = [
     },
     {
         "name": "Fertility Awareness",
-        "image": "https://images.squarespace-cdn.com/content/v1/5ce5fdaed49c8900017d5630/1604508343420-GX1XCK067VKE20TZ1FWY/Cycle+13+marked.png",
+        "image": "Assets/contraceptivefull/istckfertilityawarenessoriginal.webp",
+        "thumb": "Assets/Contraceptivethumbs/istckfertilityawarenessthumb.webp",
         "perfect": "1-9%",
         "typical": "24%",
         "typical_failure": 24.0,
