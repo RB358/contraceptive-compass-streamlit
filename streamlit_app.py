@@ -32,6 +32,8 @@ if "selected_method_id" not in st.session_state:
     st.session_state.selected_method_id = None
 if "view_other_options" not in st.session_state:
     st.session_state.view_other_options = False
+if "show_legal" not in st.session_state:
+    st.session_state.show_legal = False
 
 QUESTION_IDS = list(QUIZ_QUESTIONS.keys())
 NUM_QUESTIONS = len(QUESTION_IDS)
@@ -862,6 +864,12 @@ def render_landing():
         color: rgba(15,23,42,0.65);
         margin: 0;
         line-height: 1.2;
+        cursor: pointer;
+        text-decoration: underline;
+        transition: color 0.2s;
+    }}
+    .landing-disclaimer:hover {{
+        color: rgba(15,23,42,0.85);
     }}
     @media (max-height: 600px) {{
         .landing-disclaimer {{ font-size: 0.47rem; }}
@@ -878,10 +886,15 @@ def render_landing():
             <a href="?start=1" style="text-decoration: none;">
                 <button class="landing-start-btn">Start quiz</button>
             </a>
-            <p class="landing-disclaimer">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</p>
+            <a href="?legal=1" class="landing-disclaimer" style="text-decoration: underline; color: rgba(15,23,42,0.65);">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</a>
         </div>
     </div>
     ''', unsafe_allow_html=True)
+    
+    if st.query_params.get("legal") == "1":
+        st.query_params.clear()
+        st.session_state.show_legal = True
+        st.rerun()
     
     if st.query_params.get("start") == "1":
         st.query_params.clear()
@@ -1438,7 +1451,125 @@ def render_other_option_card(method, tier_key):
         render_method_details(method, tier_key)
 
 
-if not st.session_state.started:
+def render_legal():
+    """Render full privacy policy and medical disclaimer."""
+    st.markdown("""
+    <style>
+    .legal-container {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        margin: 12px 0;
+    }
+    .legal-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #211816;
+        margin-bottom: 16px;
+    }
+    .legal-section {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #211816;
+        margin: 20px 0 8px 0;
+    }
+    .legal-text {
+        font-size: 0.9rem;
+        color: #64748B;
+        line-height: 1.6;
+        margin-bottom: 8px;
+    }
+    .legal-list {
+        font-size: 0.9rem;
+        color: #64748B;
+        line-height: 1.6;
+        margin: 8px 0 8px 20px;
+        padding: 0;
+    }
+    .legal-list li {
+        margin-bottom: 4px;
+    }
+    .legal-divider {
+        border: none;
+        border-top: 1px solid #E2E8F0;
+        margin: 24px 0;
+    }
+    </style>
+    <div class="legal-container">
+        <div class="legal-title">Privacy Policy</div>
+        <p class="legal-text"><strong>Effective date:</strong> 09 January 2026</p>
+        <p class="legal-text">Contraceptive Compass ("we", "us", "our") respects your privacy. This Privacy Policy explains how information is handled when you use our website and contraceptive selection tool (the "Service").</p>
+        
+        <div class="legal-section">1. Anonymity and data collection</div>
+        <p class="legal-text">You must use the Service anonymously. We do not require, request, or collect information that identifies you.</p>
+        <p class="legal-text">We do not collect:</p>
+        <ul class="legal-list">
+            <li>names or contact details</li>
+            <li>account or login information</li>
+            <li>medical records or diagnoses</li>
+            <li>personally identifiable health information</li>
+        </ul>
+        <p class="legal-text">You access and use the Service without creating an account.</p>
+        
+        <div class="legal-section">2. Questionnaire responses</div>
+        <p class="legal-text">During use of the Service, you may voluntarily answer general, non-identifying questions (such as preferences or lifestyle considerations).</p>
+        <ul class="legal-list">
+            <li>These responses are used only to generate on-screen educational content</li>
+            <li>Responses are not stored, not linked to you, and not shared</li>
+        </ul>
+        
+        <div class="legal-section">3. Analytics and technical information</div>
+        <p class="legal-text">We may collect limited, non-identifying usage data to understand how the Service is used, such as:</p>
+        <ul class="legal-list">
+            <li>page views</li>
+            <li>quiz starts and completions</li>
+            <li>button interactions (for example, "Talk to a clinician")</li>
+        </ul>
+        <p class="legal-text">This information does not identify you personally, does not include questionnaire responses, and is used only to improve the Service.</p>
+        
+        <div class="legal-section">4. Cookies</div>
+        <p class="legal-text">We may use essential or analytics cookies to support basic functionality and understand usage. We do not use cookies to identify individuals, we do not sell personal data, and we do not use targeted advertising cookies.</p>
+        
+        <div class="legal-section">5. Third-party services</div>
+        <p class="legal-text">If you choose to follow a link to a third-party service (including telehealth providers), that service operates independently and is governed by its own privacy policy and terms. We are not responsible for the privacy practices of third-party services.</p>
+        
+        <div class="legal-section">6. Data security</div>
+        <p class="legal-text">Although we do not store personal information, we take reasonable measures to protect the Service from unauthorized access or misuse.</p>
+        
+        <div class="legal-section">7. Children's privacy</div>
+        <p class="legal-text">The Service is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe that personal information has been provided by a child, please contact us and we will take appropriate steps to address it.</p>
+        
+        <div class="legal-section">8. Changes to this policy</div>
+        <p class="legal-text">We may update this Privacy Policy from time to time. Updates will be posted on this page with a revised effective date.</p>
+        
+        <div class="legal-section">9. Contact</div>
+        <p class="legal-text">If you have questions about this Privacy Policy, contact us at: lre358@proton.me</p>
+        
+        <hr class="legal-divider">
+        
+        <div class="legal-title">Medical Disclaimer</div>
+        <p class="legal-text"><strong>Contraceptive Compass is an educational information tool only.</strong></p>
+        <p class="legal-text">The information provided by this Service:</p>
+        <ul class="legal-list">
+            <li>is general in nature</li>
+            <li>is not medical advice</li>
+            <li>does not replace consultation with a licensed healthcare professional</li>
+        </ul>
+        <p class="legal-text">Use of this Service does not create a doctor-patient or clinician-patient relationship.</p>
+        <p class="legal-text">Contraceptive suitability varies between individuals. Medical guidance, availability, and recommendations may change over time.</p>
+        <p class="legal-text">If you have questions about contraception or your health, you should consult a qualified healthcare provider.</p>
+        <p class="legal-text"><strong>This Service is not for medical emergencies. In an emergency, call emergency services immediately.</strong></p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("← Back", use_container_width=True):
+        st.session_state.show_legal = False
+        st.rerun()
+
+
+if st.session_state.show_legal:
+    render_legal()
+elif not st.session_state.started:
     render_landing()
 elif st.session_state.view_other_options:
     render_other_options()
