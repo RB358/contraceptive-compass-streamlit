@@ -886,7 +886,7 @@ def render_landing():
             <a href="?start=1" style="text-decoration: none;">
                 <button class="landing-start-btn">Start quiz</button>
             </a>
-            <a href="?legal=1" class="landing-disclaimer" style="text-decoration: underline; color: rgba(15,23,42,0.65);">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</a> <span style="color: rgba(15,23,42,0.5); font-size: 0.7rem;">© Contraceptive Compass</span>
+            <a href="?legal=1" class="landing-disclaimer" style="text-decoration: underline; color: rgba(15,23,42,0.65);">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider. © Contraceptive Compass</a>
         </div>
     </div>
     ''', unsafe_allow_html=True)
