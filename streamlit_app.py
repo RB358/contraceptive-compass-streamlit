@@ -1454,82 +1454,78 @@ def render_other_option_card(method, tier_key):
 def render_legal():
     """Render full privacy policy and medical disclaimer using native Streamlit."""
     
-    st.markdown("## Privacy Policy")
-    st.markdown("**Effective date:** 09 January 2026")
     st.markdown("""
-Contraceptive Compass ("we", "us", "our") respects your privacy. This Privacy Policy explains how information is handled when you use our website and contraceptive selection tool (the "Service").
+<style>
+.legal-page { text-align: center; }
+.legal-page h2, .legal-page h3, .legal-page p { text-align: center; }
+.legal-page ul { display: inline-block; text-align: left; margin: 0 auto; }
+</style>
+<div class="legal-page">
+<h2>Privacy Policy</h2>
+<p><strong>Effective date:</strong> 09 January 2026</p>
+<p>Contraceptive Compass ("we", "us", "our") respects your privacy. This Privacy Policy explains how information is handled when you use our website and contraceptive selection tool (the "Service").</p>
 
-### 1. Anonymity and data collection
+<h3>1. Anonymity and data collection</h3>
+<p>You must use the Service anonymously. We do not require, request, or collect information that identifies you.</p>
+<p>We do not collect:</p>
+<ul>
+<li>names or contact details</li>
+<li>account or login information</li>
+<li>medical records or diagnoses</li>
+<li>personally identifiable health information</li>
+</ul>
+<p>You access and use the Service without creating an account.</p>
 
-You must use the Service anonymously. We do not require, request, or collect information that identifies you.
+<h3>2. Questionnaire responses</h3>
+<p>During use of the Service, you may voluntarily answer general, non-identifying questions (such as preferences or lifestyle considerations).</p>
+<ul>
+<li>These responses are used only to generate on-screen educational content</li>
+<li>Responses are not stored, not linked to you, and not shared</li>
+</ul>
 
-We do not collect:
-- names or contact details
-- account or login information
-- medical records or diagnoses
-- personally identifiable health information
+<h3>3. Analytics and technical information</h3>
+<p>We may collect limited, non-identifying usage data to understand how the Service is used, such as:</p>
+<ul>
+<li>page views</li>
+<li>quiz starts and completions</li>
+<li>button interactions (for example, "Talk to a clinician")</li>
+</ul>
+<p>This information does not identify you personally, does not include questionnaire responses, and is used only to improve the Service.</p>
 
-You access and use the Service without creating an account.
+<h3>4. Cookies</h3>
+<p>We may use essential or analytics cookies to support basic functionality and understand usage. We do not use cookies to identify individuals, we do not sell personal data, and we do not use targeted advertising cookies.</p>
 
-### 2. Questionnaire responses
+<h3>5. Third-party services</h3>
+<p>If you choose to follow a link to a third-party service (including telehealth providers), that service operates independently and is governed by its own privacy policy and terms. We are not responsible for the privacy practices of third-party services.</p>
 
-During use of the Service, you may voluntarily answer general, non-identifying questions (such as preferences or lifestyle considerations).
+<h3>6. Data security</h3>
+<p>Although we do not store personal information, we take reasonable measures to protect the Service from unauthorized access or misuse.</p>
 
-- These responses are used only to generate on-screen educational content
-- Responses are not stored, not linked to you, and not shared
+<h3>7. Children's privacy</h3>
+<p>The Service is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe that personal information has been provided by a child, please contact us and we will take appropriate steps to address it.</p>
 
-### 3. Analytics and technical information
+<h3>8. Changes to this policy</h3>
+<p>We may update this Privacy Policy from time to time. Updates will be posted on this page with a revised effective date.</p>
 
-We may collect limited, non-identifying usage data to understand how the Service is used, such as:
-- page views
-- quiz starts and completions
-- button interactions (for example, "Talk to a clinician")
+<h3>9. Contact</h3>
+<p>If you have questions about this Privacy Policy, contact us at: lre358@proton.me</p>
 
-This information does not identify you personally, does not include questionnaire responses, and is used only to improve the Service.
+<hr style="margin: 24px 0;">
 
-### 4. Cookies
-
-We may use essential or analytics cookies to support basic functionality and understand usage. We do not use cookies to identify individuals, we do not sell personal data, and we do not use targeted advertising cookies.
-
-### 5. Third-party services
-
-If you choose to follow a link to a third-party service (including telehealth providers), that service operates independently and is governed by its own privacy policy and terms. We are not responsible for the privacy practices of third-party services.
-
-### 6. Data security
-
-Although we do not store personal information, we take reasonable measures to protect the Service from unauthorized access or misuse.
-
-### 7. Children's privacy
-
-The Service is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe that personal information has been provided by a child, please contact us and we will take appropriate steps to address it.
-
-### 8. Changes to this policy
-
-We may update this Privacy Policy from time to time. Updates will be posted on this page with a revised effective date.
-
-### 9. Contact
-
-If you have questions about this Privacy Policy, contact us at: lre358@proton.me
-
----
-
-## Medical Disclaimer
-
-**Contraceptive Compass is an educational information tool only.**
-
-The information provided by this Service:
-- is general in nature
-- is not medical advice
-- does not replace consultation with a licensed healthcare professional
-
-Use of this Service does not create a doctor-patient or clinician-patient relationship.
-
-Contraceptive suitability varies between individuals. Medical guidance, availability, and recommendations may change over time.
-
-If you have questions about contraception or your health, you should consult a qualified healthcare provider.
-
-**This Service is not for medical emergencies. In an emergency, call emergency services immediately.**
-""")
+<h2>Medical Disclaimer</h2>
+<p><strong>Contraceptive Compass is an educational information tool only.</strong></p>
+<p>The information provided by this Service:</p>
+<ul>
+<li>is general in nature</li>
+<li>is not medical advice</li>
+<li>does not replace consultation with a licensed healthcare professional</li>
+</ul>
+<p>Use of this Service does not create a doctor-patient or clinician-patient relationship.</p>
+<p>Contraceptive suitability varies between individuals. Medical guidance, availability, and recommendations may change over time.</p>
+<p>If you have questions about contraception or your health, you should consult a qualified healthcare provider.</p>
+<p><strong>This Service is not for medical emergencies. In an emergency, call emergency services immediately.</strong></p>
+</div>
+""", unsafe_allow_html=True)
     
     if st.button("← Back", use_container_width=True):
         st.session_state.show_legal = False
