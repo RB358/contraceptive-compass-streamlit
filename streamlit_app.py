@@ -1532,14 +1532,28 @@ def render_legal():
         st.rerun()
 
 
+def render_footer():
+    """Render copyright footer on every page."""
+    st.markdown("""
+<div style="text-align: center; padding: 24px 0 12px 0; margin-top: 40px; border-top: 1px solid #E2E8F0;">
+    <span style="color: #94A3B8; font-size: 0.85rem;">© Contraceptive Compass</span>
+</div>
+""", unsafe_allow_html=True)
+
+
 if st.session_state.show_legal:
     render_legal()
+    render_footer()
 elif not st.session_state.started:
     render_landing()
+    render_footer()
 elif st.session_state.view_other_options:
     render_other_options()
+    render_footer()
 elif st.session_state.show_results:
     render_results()
+    render_footer()
 else:
     render_quiz()
+    render_footer()
 
