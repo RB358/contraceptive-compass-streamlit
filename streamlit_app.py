@@ -7,6 +7,10 @@ from core.methods_data import METHODS, TELEHEALTH_OPTIONS
 from core.schema import QUIZ_QUESTIONS, encode_answers
 from core.quiz_logic import get_recommendations
 from core.render_helpers import format_telehealth_link
+from core.analytics import inject_google_analytics
+
+inject_google_analytics()
+
 from ui_components import start_cta
 
 st.set_page_config(
