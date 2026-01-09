@@ -887,6 +887,7 @@ def render_landing():
                 <button class="landing-start-btn">Start quiz</button>
             </a>
             <a href="?legal=1" class="landing-disclaimer" style="text-decoration: underline; color: rgba(15,23,42,0.65);">None of your data is stored. This is an educational tool only, not medical advice. Always consult a healthcare provider.</a>
+            <div style="color: rgba(15,23,42,0.5); font-size: 0.75rem; margin-top: 8px;">© Contraceptive Compass</div>
         </div>
     </div>
     ''', unsafe_allow_html=True)
@@ -1546,7 +1547,6 @@ if st.session_state.show_legal:
     render_footer()
 elif not st.session_state.started:
     render_landing()
-    render_footer()
 elif st.session_state.view_other_options:
     render_other_options()
     render_footer()
