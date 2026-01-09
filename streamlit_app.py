@@ -1453,7 +1453,7 @@ def render_other_option_card(method, tier_key):
 
 def render_legal():
     """Render full privacy policy and medical disclaimer."""
-    st.markdown("""
+    legal_css = """
     <style>
     .legal-container {
         background: white;
@@ -1495,6 +1495,10 @@ def render_legal():
         margin: 24px 0;
     }
     </style>
+    """
+    st.markdown(legal_css, unsafe_allow_html=True)
+    
+    legal_content = """
     <div class="legal-container">
         <div class="legal-title">Privacy Policy</div>
         <p class="legal-text"><strong>Effective date:</strong> 09 January 2026</p>
@@ -1560,7 +1564,8 @@ def render_legal():
         <p class="legal-text">If you have questions about contraception or your health, you should consult a qualified healthcare provider.</p>
         <p class="legal-text"><strong>This Service is not for medical emergencies. In an emergency, call emergency services immediately.</strong></p>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(legal_content, unsafe_allow_html=True)
     
     if st.button("← Back", use_container_width=True):
         st.session_state.show_legal = False
